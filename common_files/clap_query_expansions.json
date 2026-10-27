@@ -1,0 +1,54 @@
+{
+  "_comment": "Query expansion table for CLAP search, focused on home relationship dynamics (voice-originating manifestations). If a search query contains one of a category's 'triggers' (substring match, case-insensitive), that category's 'related' terms are ensembled into the query embedding and its 'negative' terms are used to penalize the score of dissimilar matches. Categories are additive: a query can match more than one. Edit freely; picked up on next search, no restart needed.",
+
+  "categories": [
+    {
+      "name": "shouting",
+      "triggers": ["shout", "yell", "scream", "raised voice", "loud voice"],
+      "related": ["yelling", "raised voices", "loud angry voice", "screaming"],
+      "negative": ["calm speech", "quiet conversation", "music", "silence"]
+    },
+    {
+      "name": "anger",
+      "triggers": ["anger", "angry", "furious", "rage", "irritated", "annoyed", "mad"],
+      "related": ["furious voice", "angry tone", "irritated speech", "harsh tone"],
+      "negative": ["calm speech", "happy voice", "silence", "music"]
+    },
+    {
+      "name": "altercation",
+      "triggers": ["altercation", "argument", "arguing", "fight", "quarrel", "dispute", "conflict"],
+      "related": ["two people arguing", "heated argument", "loud dispute", "quarreling voices"],
+      "negative": ["calm conversation", "friendly talking", "silence", "music"]
+    },
+    {
+      "name": "pain",
+      "triggers": ["pain", "hurt", "agony", "suffering"],
+      "related": ["screaming in pain", "someone hurt", "agonized voice", "moaning in pain"],
+      "negative": ["calm speech", "happy voice", "silence", "music"]
+    },
+    {
+      "name": "happiness",
+      "triggers": ["happy", "happiness", "glad", "cheerful", "pleased"],
+      "related": ["happy voice", "cheerful talking", "joyful speech", "pleased tone"],
+      "negative": ["angry shouting", "crying", "silence", "music"]
+    },
+    {
+      "name": "joy",
+      "triggers": ["joy", "joyful", "delighted", "elated", "excited"],
+      "related": ["joyful laughter", "excited voice", "delighted tone", "elated speech"],
+      "negative": ["sad crying", "angry shouting", "silence", "music"]
+    },
+    {
+      "name": "calmness",
+      "triggers": ["calm", "relaxed", "peaceful", "serene"],
+      "related": ["calm conversation", "relaxed talking", "peaceful voice", "quiet discussion"],
+      "negative": ["shouting", "crying", "loud argument", "music"]
+    },
+    {
+      "name": "laughter",
+      "triggers": ["laugh", "giggle", "chuckle"],
+      "related": ["giggling", "chuckling", "happy laughter", "playful laughing"],
+      "negative": ["crying", "shouting", "silence", "music"]
+    }
+  ]
+}

@@ -1,0 +1,1159 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Part B in the app</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"><style>/* custom.css */
+/* Custom CSS for Audio Surveillance Dashboard */
+
+/* -------------------------------------------------------------------------
+   1. Tab Highlighting (Navigation)
+   ------------------------------------------------------------------------- */
+/* Default state for nav links (matching previous inline styles generally) */
+.nav-pills .nav-link {
+    color: white !important;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+/* Hover state */
+.nav-pills .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Active/Selected state - This is the "highlight" requested */
+.nav-pills .nav-link.active {
+    background-color: white !important;
+    color: #0d6efd !important; /* Bootstrap primary blue */
+    border-color: white;
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* -------------------------------------------------------------------------
+   2. Table Row Highlighting (AG Grid)
+   ------------------------------------------------------------------------- */
+/* Customize the selected row background color */
+.ag-theme-alpine .ag-row-selected {
+    background-color: rgba(13, 110, 253, 0.3) !important; /* Semi-transparent blue */
+    border: none !important; /* Remove border to prevent dislocation */
+}
+
+/* Ensure text remains readable */
+.ag-theme-alpine .ag-row-selected .ag-cell {
+    font-weight: 500;
+}
+
+/* Hover effect for rows */
+.ag-theme-alpine .ag-row:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+</style><style>/* family_bulbs.css */
+/* Part B — the family reflection panel.
+ *
+ * The panel paints its own dark "room" rather than inheriting the page theme,
+ * because the whole device is a set of lamps: a bulb only reads as lit or unlit
+ * against a dark ground, and this way the panel looks the same wherever it is
+ * dropped. Colours are declared explicitly for that reason, not inherited.
+ */
+
+.fb-panel {
+  --fb-night: #131A22;
+  --fb-night-2: #1A232D;
+  --fb-rule: #27333F;
+  --fb-text: #E7EDF3;
+  --fb-dim: #93A3B2;
+  --fb-green: #57C98A;
+  --fb-green-deep: #1E7A4C;
+  --fb-amber: #F0A63C;
+  --fb-amber-deep: #A96A12;
+  --fb-grey: #4A5765;
+
+  background: radial-gradient(120% 90% at 50% -10%, var(--fb-night-2) 0%, var(--fb-night) 62%);
+  border: 1px solid var(--fb-rule);
+  border-radius: 14px;
+  padding: 34px 28px 30px;
+  color: var(--fb-text);
+  overflow: hidden;
+}
+
+.fb-head { text-align: center; margin-bottom: 6px; }
+.fb-head h3 {
+  font-size: 24px; font-weight: 600; letter-spacing: -.01em;
+  margin: 0; color: var(--fb-text);
+}
+.fb-head p {
+  margin: 6px 0 0; font-size: 13.5px; color: var(--fb-dim);
+}
+
+/* ---- the bulb row ---- */
+/* Three across, two rows: the lamps are the point of this panel, so they get
+   the room. Six in a line only on a genuinely wide screen. */
+.fb-bulbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 12px;
+  margin: 30px 0 10px;
+}
+@media (min-width: 1320px) { .fb-bulbs { grid-template-columns: repeat(6, 1fr); } }
+@media (max-width: 520px)  { .fb-bulbs { grid-template-columns: repeat(2, 1fr); } }
+
+.fb-bulb {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 14px 6px 18px;
+  border-radius: 16px;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .25s ease;
+  /* Each lamp switches on in turn as the panel appears. */
+  animation: fb-switch-on .55s cubic-bezier(.34,1.56,.64,1) backwards;
+}
+.fb-bulb:hover { transform: translateY(-5px) scale(1.03); background: rgba(255,255,255,.04); }
+
+@keyframes fb-switch-on {
+  from { opacity: 0; transform: translateY(14px) scale(.9); }
+  to   { opacity: 1; transform: none; }
+}
+.fb-bulb:nth-child(1) { animation-delay: .05s }
+.fb-bulb:nth-child(2) { animation-delay: .14s }
+.fb-bulb:nth-child(3) { animation-delay: .23s }
+.fb-bulb:nth-child(4) { animation-delay: .32s }
+.fb-bulb:nth-child(5) { animation-delay: .41s }
+.fb-bulb:nth-child(6) { animation-delay: .50s }
+
+.fb-glass {
+  width: 100%; max-width: 164px; height: auto; display: block;
+  margin-bottom: 4px;
+}
+/* A lit lamp spills a little light onto the panel beneath it. */
+.fb-bulb[data-state="green"] .fb-glass { filter: drop-shadow(0 10px 26px rgba(87,201,138,.30)); }
+.fb-bulb[data-state="amber"] .fb-glass { filter: drop-shadow(0 10px 26px rgba(240,166,60,.30)); }
+
+/* Halo behind the glass. Sized by state so a lit bulb spills light and a
+   grey one sits dark without a ring of colour around nothing. */
+.fb-halo { transition: opacity .5s ease; }
+.fb-bulb[data-state="grey"] .fb-halo { opacity: .06; }
+.fb-bulb[data-state="green"] .fb-halo { opacity: .55; }
+.fb-bulb[data-state="amber"] .fb-halo { opacity: .55; }
+
+.fb-filament { transition: stroke .5s ease, opacity .5s ease; }
+.fb-bulb[data-state="grey"] .fb-filament { stroke: #3B4653; opacity: .8; }
+
+/* The gentle breathing of a filament. Lit bulbs only. */
+@keyframes fb-glow {
+  0%, 100% { opacity: .50; transform: scale(1); }
+  50%      { opacity: .72; transform: scale(1.045); }
+}
+.fb-bulb[data-state="green"] .fb-halo,
+.fb-bulb[data-state="amber"] .fb-halo {
+  transform-origin: 60px 56px;
+  animation: fb-glow 4.5s ease-in-out infinite;
+}
+.fb-bulb:nth-child(2) .fb-halo { animation-delay: -.7s; }
+.fb-bulb:nth-child(3) .fb-halo { animation-delay: -1.5s; }
+.fb-bulb:nth-child(4) .fb-halo { animation-delay: -2.2s; }
+.fb-bulb:nth-child(5) .fb-halo { animation-delay: -3.1s; }
+.fb-bulb:nth-child(6) .fb-halo { animation-delay: -3.8s; }
+
+.fb-name {
+  font-size: 17px; font-weight: 600; margin-top: 2px; color: var(--fb-text);
+}
+.fb-bulb[data-state="grey"] .fb-name { color: var(--fb-dim); }
+.fb-blurb {
+  font-size: 12.5px; line-height: 1.4; color: var(--fb-dim);
+  margin-top: 3px; max-width: 17ch;
+}
+
+/* State chip. Carries the polarity note for the two inverted indicators, so a
+   green "Tension" bulb cannot be misread as "lots of healthy tension". */
+.fb-chip {
+  margin-top: 11px; font-size: 11.5px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 999px;
+  border: 1px solid transparent; white-space: nowrap;
+}
+.fb-bulb[data-state="green"] .fb-chip {
+  color: var(--fb-green); background: rgba(87,201,138,.12); border-color: rgba(87,201,138,.32);
+}
+.fb-bulb[data-state="amber"] .fb-chip {
+  color: var(--fb-amber); background: rgba(240,166,60,.12); border-color: rgba(240,166,60,.32);
+}
+.fb-bulb[data-state="grey"] .fb-chip {
+  color: var(--fb-dim); background: rgba(147,163,178,.08); border-color: rgba(147,163,178,.22);
+}
+
+.fb-evidence {
+  margin-top: 9px; font-size: 12.5px; line-height: 1.45;
+  color: var(--fb-dim); max-width: 24ch;
+}
+
+/* ---- overall meter ---- */
+.fb-meter {
+  margin: 22px auto 0; max-width: 460px; text-align: center;
+  padding-top: 22px; border-top: 1px solid var(--fb-rule);
+}
+.fb-meter-label {
+  font-size: 12px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--fb-dim);
+}
+.fb-segs {
+  display: flex; gap: 5px; justify-content: center; margin: 12px 0 10px;
+}
+.fb-seg {
+  width: 34px; height: 15px; border-radius: 3px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--fb-rule);
+}
+.fb-seg.on {
+  background: linear-gradient(180deg, var(--fb-green) 0%, var(--fb-green-deep) 100%);
+  border-color: transparent;
+  box-shadow: 0 0 10px rgba(87,201,138,.4);
+}
+.fb-meter.sparse .fb-seg.on {
+  background: linear-gradient(180deg, var(--fb-amber) 0%, var(--fb-amber-deep) 100%);
+  box-shadow: 0 0 10px rgba(240,166,60,.35);
+}
+.fb-verdict { font-size: 22px; font-weight: 600; }
+.fb-basis { font-size: 12.5px; color: var(--fb-dim); margin-top: 5px; }
+
+/* ---- questions ---- */
+.fb-questions { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--fb-rule); }
+.fb-questions > .fb-qhead {
+  font-size: 12px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--fb-dim);
+  text-align: center; margin-bottom: 4px;
+}
+.fb-qsub { text-align: center; font-size: 13px; color: var(--fb-dim); margin-bottom: 18px; }
+
+.fb-q {
+  display: grid; grid-template-columns: 34px 1fr; gap: 14px;
+  padding: 15px 18px; margin-bottom: 10px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid var(--fb-rule);
+  border-left: 3px solid var(--fb-grey);
+  border-radius: 9px;
+}
+.fb-q[data-priority="highest"] { border-left-color: var(--fb-amber); }
+.fb-q[data-priority="medium"]  { border-left-color: var(--fb-green); }
+.fb-qnum {
+  font-size: 21px; font-weight: 600; line-height: 1.1;
+  color: var(--fb-dim); opacity: .55;
+}
+.fb-qtext { font-size: 16px; line-height: 1.5; color: var(--fb-text); }
+.fb-qwhy {
+  margin-top: 6px; font-size: 12.5px; color: var(--fb-dim); font-style: italic;
+}
+
+.fb-note {
+  margin-top: 18px; font-size: 12px; color: var(--fb-dim);
+  text-align: center; line-height: 1.5;
+}
+.fb-empty {
+  text-align: center; color: var(--fb-dim); font-size: 14px; padding: 18px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-bulb[data-state="green"] .fb-halo,
+  .fb-bulb[data-state="amber"] .fb-halo { animation: none; }
+  .fb-bulb, .fb-halo, .fb-filament { transition: none; }
+  .fb-bulb { animation: none; }
+  .fb-bulb:hover { transform: none; }
+}
+</style><style>/* sentinel_dark.css */
+/* =====================================================================
+   Sentinel - dark theme + Audio Events grid styling
+   ---------------------------------------------------------------------
+   Loaded after custom.css (Dash serves assets alphabetically), so rules
+   here intentionally win where the two overlap.
+
+   Pure presentation: no Dash component, id or callback is involved.
+   Deleting this file returns the dashboard to its previous appearance.
+   ===================================================================== */
+
+:root {
+    --sx-bg:        #0a0e1a;
+    --sx-panel:     #111726;
+    --sx-panel-alt: #0e1420;
+    --sx-raised:    #161e30;
+    --sx-border:    rgba(255, 255, 255, 0.07);
+    --sx-border-str:rgba(255, 255, 255, 0.13);
+    --sx-text:      #e8eef9;
+    --sx-text-dim:  #c3cee1;   /* ~10:1 on --sx-panel */
+    --sx-muted:     #9aa8c0;   /* was #7d8ba4 -- only 4.4:1, too dim for labels */
+    --sx-accent:    #7c5cff;
+    --sx-accent-dim:rgba(124, 92, 255, 0.16);
+
+    --sx-high:      #ef4444;
+    --sx-med:       #f0b429;
+    --sx-low:       #a855f7;
+    --sx-none:      #55627a;
+
+    --sx-radius:    12px;
+}
+
+/* ---------------------------------------------------------------
+   1. Page shell
+   --------------------------------------------------------------- */
+
+/* Bootstrap colours most text through its own tokens rather than by
+   inheriting from body, so overriding these fixes .form-label,
+   .form-check-label, table text and friends in one place. Without this
+   they stay at #212529 -- a 1.16:1 contrast ratio on the dark page. */
+:root {
+    --bs-body-color:         #e8eef9;
+    --bs-body-color-rgb:     232, 238, 249;
+    --bs-body-bg:            #0a0e1a;
+    --bs-body-bg-rgb:        10, 14, 26;
+    --bs-emphasis-color:     #ffffff;
+    --bs-heading-color:      #e8eef9;
+    --bs-secondary-color:    rgba(232, 238, 249, 0.72);
+    --bs-tertiary-color:     rgba(232, 238, 249, 0.52);
+    --bs-border-color:       rgba(255, 255, 255, 0.13);
+}
+
+body {
+    background-color: var(--sx-bg) !important;
+    color: var(--sx-text);
+}
+
+/* Labels and helper text render at --bs-body-color / --bs-secondary-color;
+   restate them so no page has to opt in. */
+.form-label,
+.form-check-label,
+.col-form-label,
+label {
+    color: var(--sx-text) !important;
+}
+
+.form-text,
+small.text-secondary,
+.text-secondary {
+    color: var(--sx-text-dim) !important;
+}
+
+.text-dark,
+.text-body {
+    color: var(--sx-text) !important;
+}
+
+/* Navbar: the mockup's near-black header rather than Bootstrap blue. */
+.navbar.bg-primary,
+nav.navbar {
+    background-color: var(--sx-panel-alt) !important;
+    border-bottom: 1px solid var(--sx-border);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) !important;
+}
+
+/* custom.css turns the active pill solid white; on dark that reads as a
+   hole punched in the header. Restate it as a tinted accent chip. */
+.nav-pills .nav-link {
+    color: var(--sx-text-dim) !important;
+    border-color: var(--sx-border-str) !important;
+}
+.nav-pills .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: #fff !important;
+}
+.nav-pills .nav-link.active {
+    background-color: rgba(124, 92, 255, 0.26) !important;
+    color: #ffffff !important;
+    border-color: rgba(124, 92, 255, 0.75) !important;
+    box-shadow: none !important;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------------
+   2. Cards
+   --------------------------------------------------------------- */
+
+.card {
+    background-color: var(--sx-panel) !important;
+    border: 1px solid var(--sx-border) !important;
+    border-radius: var(--sx-radius) !important;
+}
+
+.card-header {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--sx-border) !important;
+    color: var(--sx-text) !important;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    padding: 0.85rem 1.1rem;
+}
+
+/* Both light and dark header variants used across the page. */
+.card-header.bg-light,
+.card-header.bg-dark {
+    background-color: transparent !important;
+    color: var(--sx-text) !important;
+}
+
+.card-body { padding: 1.1rem; }
+
+.shadow-sm { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important; }
+
+h2, h5, .text-primary { color: var(--sx-text) !important; }
+.text-muted { color: var(--sx-muted) !important; }
+.font-weight-bold { font-weight: 600; }
+
+/* ---------------------------------------------------------------
+   3. Form controls
+   --------------------------------------------------------------- */
+
+.form-control,
+.form-select,
+input.form-control,
+textarea.form-control {
+    background-color: var(--sx-panel-alt) !important;
+    border: 1px solid var(--sx-border-str) !important;
+    color: var(--sx-text) !important;
+}
+.form-control::placeholder { color: var(--sx-muted) !important; }
+.form-control:focus {
+    border-color: var(--sx-accent) !important;
+    box-shadow: 0 0 0 2px var(--sx-accent-dim) !important;
+}
+
+/* These two textareas carry inline light backgrounds set in Python.
+   Inline styles outrank plain rules, hence !important. */
+#llm-verdict-output {
+    background-color: rgba(239, 68, 68, 0.07) !important;
+    border-color: rgba(239, 68, 68, 0.28) !important;
+    color: var(--sx-text) !important;
+}
+#speech-analysis-output textarea {
+    background-color: var(--sx-panel-alt) !important;
+    color: var(--sx-text) !important;
+}
+
+/* Dropdowns. Dash 4 renders these as a <button class="dash-dropdown">
+   with a hard-coded white background, so lifting the text colour alone
+   turns them into white-on-white. Both the Dash 4 markup and the older
+   react-select (.Select-*) markup are covered. */
+.dash-dropdown,
+button.dash-dropdown,
+.dash-dropdown-wrapper .dash-dropdown,
+.Select-control,
+.Select--single > .Select-control {
+    background-color: var(--sx-panel-alt) !important;
+    border: 1px solid var(--sx-border-str) !important;
+    color: var(--sx-text) !important;
+}
+
+.dash-dropdown-value,
+.dash-dropdown-value-item,
+.dash-dropdown-trigger,
+.Select-value-label,
+.Select-placeholder {
+    color: var(--sx-text) !important;
+}
+
+.dash-dropdown-clear,
+.Select-arrow-zone,
+.Select-clear-zone { color: var(--sx-muted) !important; }
+
+/* Popup list */
+.dash-dropdown-menu,
+[class*="dash-dropdown"][role="listbox"],
+.Select-menu-outer,
+.Select-menu {
+    background-color: var(--sx-raised) !important;
+    border: 1px solid var(--sx-border-str) !important;
+    color: var(--sx-text) !important;
+}
+
+.dash-dropdown-option,
+.Select-option {
+    background-color: transparent !important;
+    color: var(--sx-text) !important;
+}
+.dash-dropdown-option:hover,
+.Select-option.is-focused {
+    background-color: var(--sx-accent-dim) !important;
+    color: #fff !important;
+}
+
+/* Native selects too */
+select, select.form-select, select option {
+    background-color: var(--sx-panel-alt) !important;
+    color: var(--sx-text) !important;
+}
+
+/* Dash 4 number inputs and their +/- steppers (used inside the calendar's
+   year field) also ship a white surface. */
+.dash-input-element,
+.dash-input-wrapper,
+.dash-input-container,
+[class*="dash-range-slider-input"],
+.dash-input-stepper {
+    background-color: var(--sx-panel-alt) !important;
+    color: var(--sx-text) !important;
+    border-color: var(--sx-border-str) !important;
+}
+.dash-input-stepper:hover { background-color: var(--sx-raised) !important; }
+.dash-datepicker-month-nav { color: var(--sx-text-dim) !important; }
+
+/* Date pickers. Dash 4 uses .dash-datepicker*; older versions ship the
+   react-dates .DateInput* markup. Both default to a white surface. */
+.dash-datepicker,
+.dash-datepicker-input-wrapper,
+.dash-datepicker-input,
+.dash-datepicker input {
+    background-color: var(--sx-panel-alt) !important;
+    color: var(--sx-text) !important;
+    border-color: var(--sx-border-str) !important;
+}
+.dash-datepicker { border: 1px solid var(--sx-border-str) !important; }
+
+/* Calendar popup */
+.dash-datepicker-calendar,
+.dash-datepicker-popup,
+.dash-datepicker-dropdown {
+    background-color: var(--sx-raised) !important;
+    color: var(--sx-text) !important;
+    border: 1px solid var(--sx-border-str) !important;
+}
+.dash-datepicker-day,
+.dash-datepicker-weekday,
+.dash-datepicker-month,
+.dash-datepicker-year { color: var(--sx-text) !important; }
+.dash-datepicker-day:hover { background-color: var(--sx-accent-dim) !important; }
+.dash-datepicker-day-selected,
+.dash-datepicker-day--selected {
+    background-color: var(--sx-accent) !important;
+    color: #fff !important;
+}
+.dash-datepicker-day-disabled,
+.dash-datepicker-day--outside { color: var(--sx-muted) !important; opacity: 0.55; }
+
+/* DatePickerRange (statistics.py, audio_details.py) renders a different DOM
+ * than DatePickerSingle above -- confirmed live, not guessed: opening the
+ * range calendar shows -calendar-date-inside / -calendar-month-header, none
+ * of which the -day/-weekday/-month rules above ever matched. Plain day
+ * numbers default to rgba(0,9,38,0.9), a near-black navy, sitting on the
+ * dark popup from the generic .dash-datepicker-calendar rule further up --
+ * text and background both dark, which is the "black on black" symptom.
+ * "Today" and the selected date already render fine on their own (a themed
+ * purple and white-on-accent respectively) and are left alone; only the
+ * plain, unstyled day and the month/year header needed a colour. */
+.dash-datepicker-calendar-month-header { color: var(--sx-text) !important; }
+
+.dash-datepicker-calendar-date-inside { color: var(--sx-text) !important; }
+.dash-datepicker-calendar-date-inside.dash-datepicker-calendar-date-highlighted:not(.dash-datepicker-calendar-date-selected) {
+    color: #c9a0ff !important;   /* keep "today" visually distinct */
+}
+.dash-datepicker-calendar-date-inside.dash-datepicker-calendar-date-selected {
+    color: #ffffff !important;
+    background-color: var(--sx-accent) !important;
+}
+/* Adjacent-month days: unverified against a live "-outside" row (none was on
+ * screen when this was checked), inferred from the -inside/-outside pairing
+ * the sibling DatePickerSingle component already uses above. */
+.dash-datepicker-calendar-date-outside { color: var(--sx-muted) !important; opacity: 0.5; }
+
+.DateInput, .DateInput_input, .DateRangePickerInput, .SingleDatePickerInput {
+    background-color: var(--sx-panel-alt) !important;
+    color: var(--sx-text) !important;
+}
+.DateRangePickerInput, .SingleDatePickerInput { border: 1px solid var(--sx-border-str) !important; }
+.DateInput_input { border-bottom: none !important; }
+.DateRangePickerInput_arrow svg { fill: var(--sx-muted) !important; }
+.CalendarDay__default {
+    background: var(--sx-raised) !important;
+    color: var(--sx-text) !important;
+    border-color: var(--sx-border) !important;
+}
+.CalendarMonth, .CalendarMonthGrid, .DayPicker, .DayPicker_transitionContainer {
+    background: var(--sx-raised) !important;
+}
+.CalendarMonth_caption, .DayPicker_weekHeader { color: var(--sx-text) !important; }
+
+/* Slider track/handle.
+   Dash 4 renders marks as .dash-slider-mark, not the rc-slider class name
+   used by older versions -- the default is a near-black navy that scores
+   1.07:1 here. Both are covered so this survives either version. */
+.rc-slider-rail,
+.dash-slider .rc-slider-rail { background-color: rgba(255,255,255,0.12) !important; }
+.rc-slider-track { background-color: var(--sx-accent) !important; }
+.rc-slider-handle {
+    border-color: var(--sx-accent) !important;
+    background-color: #fff !important;
+}
+.rc-slider-dot {
+    background-color: var(--sx-panel-alt) !important;
+    border-color: rgba(255,255,255,0.25) !important;
+}
+.rc-slider-dot-active { border-color: var(--sx-accent) !important; }
+
+.rc-slider-mark-text,
+.dash-slider-mark,
+.rc-slider-mark span,
+.rc-slider-mark-text-active,
+.dash-slider-mark-active {
+    color: var(--sx-text-dim) !important;
+    opacity: 1 !important;
+    font-size: 11.5px;
+}
+.rc-slider-mark-text-active,
+.dash-slider-mark-active { color: #ffffff !important; font-weight: 600; }
+
+/* Value bubble shown on drag */
+.rc-slider-tooltip-inner {
+    background-color: var(--sx-raised) !important;
+    color: var(--sx-text) !important;
+    border: 1px solid var(--sx-border-str);
+}
+
+/* ---------------------------------------------------------------
+   4. AG Grid - dark surface, soft separators, room to breathe
+   --------------------------------------------------------------- */
+
+.ag-theme-alpine-dark,
+.ag-theme-alpine {
+    --ag-background-color:            var(--sx-panel);
+    --ag-odd-row-background-color:    var(--sx-panel);
+    --ag-header-background-color:     var(--sx-panel-alt);
+    --ag-foreground-color:            var(--sx-text);
+    --ag-header-foreground-color:     var(--sx-muted);
+    --ag-border-color:                transparent;
+    --ag-row-border-color:            var(--sx-border);
+    --ag-secondary-border-color:      var(--sx-border);
+    --ag-row-hover-color:             rgba(124, 92, 255, 0.09);
+    --ag-selected-row-background-color: rgba(124, 92, 255, 0.16);
+    --ag-font-size:                   13px;
+    --ag-grid-size:                   5px;
+    --ag-borders:                     none;
+    --ag-input-focus-border-color:    var(--sx-accent);
+}
+
+/* No vertical rules -- the mockup separates rows only. */
+.ag-theme-alpine-dark .ag-cell,
+.ag-theme-alpine .ag-cell {
+    border-right: none !important;
+    display: flex;
+    align-items: center;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    line-height: 1.35;
+}
+
+.ag-theme-alpine-dark .ag-header,
+.ag-theme-alpine .ag-header {
+    border-bottom: 1px solid var(--sx-border) !important;
+}
+
+.ag-theme-alpine-dark .ag-header-cell-text,
+.ag-theme-alpine .ag-header-cell-text {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--sx-muted);
+}
+
+.ag-theme-alpine-dark .ag-row,
+.ag-theme-alpine .ag-row {
+    border-bottom: 1px solid var(--sx-border) !important;
+    background-color: transparent !important;
+}
+
+/* Restated from custom.css, which sets a blue tint + dark hover. */
+.ag-theme-alpine-dark .ag-row-selected,
+.ag-theme-alpine .ag-row-selected {
+    background-color: rgba(124, 92, 255, 0.16) !important;
+    border: none !important;
+    border-bottom: 1px solid var(--sx-border) !important;
+}
+.ag-theme-alpine-dark .ag-row:hover,
+.ag-theme-alpine .ag-row:hover {
+    background-color: rgba(124, 92, 255, 0.09) !important;
+}
+
+.ag-theme-alpine-dark .ag-paging-panel,
+.ag-theme-alpine .ag-paging-panel {
+    border-top: 1px solid var(--sx-border) !important;
+    color: var(--sx-muted);
+}
+
+.ag-theme-alpine-dark .ag-checkbox-input-wrapper.ag-checked::after,
+.ag-theme-alpine .ag-checkbox-input-wrapper.ag-checked::after {
+    color: var(--sx-accent) !important;
+}
+
+/* Menus / filter popups need the dark surface too. */
+.ag-theme-alpine-dark .ag-menu,
+.ag-theme-alpine .ag-menu,
+.ag-theme-alpine-dark .ag-filter,
+.ag-theme-alpine .ag-filter {
+    background-color: var(--sx-raised) !important;
+    color: var(--sx-text) !important;
+    border: 1px solid var(--sx-border-str) !important;
+}
+
+/* ---------------------------------------------------------------
+   5. Cell renderers (see sentinel_grid_renderers.js)
+   --------------------------------------------------------------- */
+
+.sx-cell {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.sx-muted { color: var(--sx-muted) !important; }
+
+/* Band colours, shared by badges / bars / accents */
+.sx-band-high { --sx-band: var(--sx-high); }
+.sx-band-med  { --sx-band: var(--sx-med); }
+.sx-band-low  { --sx-band: var(--sx-low); }
+.sx-band-none { --sx-band: var(--sx-none); }
+
+/* Band colours are tuned for fills/borders; as *text* the red and purple
+   are too dark on this background, so the label variants are lightened. */
+.sx-band-text-high { color: #ff8080; }
+.sx-band-text-med  { color: #f5c451; }
+.sx-band-text-low  { color: #c9a0ff; }
+.sx-band-text-none { color: var(--sx-muted); }
+
+/* --- time --- */
+.sx-time { gap: 12px; }
+.sx-time-accent {
+    flex: 0 0 3px;
+    width: 3px;
+    height: 42px;
+    border-radius: 2px;
+    background: var(--sx-band, var(--sx-none));
+}
+.sx-time-clock {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--sx-text);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.2px;
+}
+.sx-time-meta { font-size: 11px; color: var(--sx-muted); margin-top: 2px; }
+
+/* --- device --- */
+.sx-device-icon {
+    flex: 0 0 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.12);
+    color: #f78a8a;
+    font-size: 13px;
+}
+.sx-device-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--sx-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sx-device-meta { font-size: 11px; color: var(--sx-muted); margin-top: 1px; }
+
+/* --- transcription --- */
+.sx-transcript { gap: 12px; }
+
+.sx-play {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--sx-border-str);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--sx-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    padding-left: 2px;              /* optically centre the triangle */
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+.sx-play:hover {
+    background: var(--sx-accent-dim);
+    border-color: rgba(124, 92, 255, 0.6);
+    color: #fff;
+}
+
+.sx-transcript-body { min-width: 0; flex: 1 1 auto; }
+
+.sx-transcript-text {
+    font-size: 13.5px;
+    color: var(--sx-text);
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;          /* wrap naturally, cap at two lines */
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+}
+
+.sx-speaker { color: #c4b5ff; font-weight: 600; }
+
+.sx-emotion { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
+.sx-emotion-emoji { font-size: 12px; line-height: 1; }
+.sx-emotion-label { font-size: 11px; color: var(--sx-muted); }
+/* Capture quality sits on the same line as the emotion, in the same muted
+   weight: it is context for the transcript, never competing with it. */
+.sx-meta-sep { font-size: 11px; color: var(--sx-border); }
+.sx-snr { font-size: 11px; color: var(--sx-muted); font-variant-numeric: tabular-nums; }
+
+/* --- detections --- */
+.sx-detections { gap: 7px; flex-wrap: nowrap; }
+
+.sx-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+    padding: 6px 10px;
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--sx-band, var(--sx-none)) 13%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sx-band, var(--sx-none)) 42%, transparent);
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.sx-badge-rank {
+    flex: 0 0 auto;
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #0a0e1a;
+    background: var(--sx-band, var(--sx-none));
+}
+
+.sx-badge-label {
+    color: var(--sx-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.sx-badge-prob {
+    flex: 0 0 auto;
+    color: var(--sx-text-dim);
+    font-variant-numeric: tabular-nums;
+    font-size: 11.5px;
+}
+
+/* --- confidence --- */
+.sx-conf { flex-direction: column; align-items: flex-start; justify-content: center; gap: 5px; }
+
+.sx-conf-track {
+    width: 100%;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.09);
+    overflow: hidden;
+}
+.sx-conf-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--sx-band, var(--sx-none));
+}
+.sx-conf-meta { display: flex; align-items: baseline; gap: 7px; }
+.sx-conf-value {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--sx-text);
+    font-variant-numeric: tabular-nums;
+}
+.sx-conf-band { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ---------------------------------------------------------------
+   6. Legend + buttons
+   --------------------------------------------------------------- */
+
+/* --- Sentinels panel ---------------------------------------- */
+
+.sx-sentinel {
+    background-color: var(--sx-raised) !important;
+    border: 1px solid var(--sx-border) !important;
+    box-shadow: none !important;
+}
+
+/* A round swatch reads its colour far better than a "●" glyph. */
+.sx-sentinel-dot {
+    flex: 0 0 12px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 12px;
+    margin-left: 2px;
+    display: inline-block;
+}
+
+.sx-sentinel-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sx-sentinel-meta {
+    font-size: 10.5px;
+    color: var(--sx-muted);
+    margin-top: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* --- Video library file browser ----------------------------- */
+
+.sx-filelist {
+    max-height: 230px;
+    overflow-y: auto;
+    border: 1px solid var(--sx-border);
+    border-radius: 8px;
+    background: var(--sx-panel-alt);
+    padding: 4px;
+}
+
+.sx-filelist .sx-file-row {
+    display: flex !important;
+    align-items: center;
+    width: 100%;
+    padding: 7px 10px !important;
+    border-radius: 6px;
+    color: var(--sx-text) !important;
+    text-decoration: none !important;
+    font-size: 13px;
+    border: 1px solid transparent !important;
+}
+.sx-filelist .sx-file-row:hover {
+    background: var(--sx-accent-dim) !important;
+    color: #fff !important;
+}
+.sx-filelist .sx-file-row:disabled,
+.sx-filelist .sx-file-row.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.sx-file-selected {
+    background: var(--sx-accent-dim) !important;
+    border-color: rgba(124, 92, 255, 0.6) !important;
+}
+
+.sx-lib-status { color: #c9a0ff; min-height: 1.2em; }
+
+.sx-file-folder { color: #f5c451; }
+.sx-file-video  { color: #7fb2ff; }
+.sx-file-name   { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sx-file-size   { color: var(--sx-muted); font-size: 11px; padding-left: 10px; }
+.sx-file-warn   { color: var(--sx-med); font-size: 10.5px; padding-left: 8px; }
+
+/* --- CLAP search stack -------------------------------------- */
+
+.sx-clap-stack .btn { width: 100%; }
+.sx-clap-stack .rc-slider { margin-top: 6px; }
+
+.sx-legend { display: flex; align-items: center; gap: 16px; }
+.sx-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--sx-muted); }
+.sx-legend-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--sx-band, var(--sx-none)); }
+
+.btn { border-radius: 9px; font-size: 13px; }
+
+.list-group-item {
+    background-color: var(--sx-raised) !important;
+    color: var(--sx-text) !important;
+    border-color: var(--sx-border) !important;
+}
+
+/* ---------------------------------------------------------------
+   6b. Plotly figures
+   ---------------------------------------------------------------
+   Figures are built in Python without a font colour, so Plotly falls
+   back to #2a3f5f -- 1.81:1 on this background. Axis ticks, axis and
+   plot titles, the legend and colour bars are lifted here.
+
+   Deliberately NOT touched: .annotation-text and slice/bar text. Those
+   sit on top of coloured marks and several pages already pick black or
+   white per cell for contrast (see date_sounds.py). Overriding them
+   would make heatmap value labels unreadable.
+   --------------------------------------------------------------- */
+
+.js-plotly-plot .xtick text,
+.js-plotly-plot .ytick text,
+.js-plotly-plot .ztick text,
+.js-plotly-plot .angularaxistick text,
+.js-plotly-plot g.xtick > text,
+.js-plotly-plot g.ytick > text {
+    fill: var(--sx-text-dim) !important;
+}
+
+.js-plotly-plot .gtitle,
+.js-plotly-plot .xtitle,
+.js-plotly-plot .ytitle,
+.js-plotly-plot .ztitle,
+.js-plotly-plot .g-gtitle text,
+.js-plotly-plot .g-xtitle text,
+.js-plotly-plot .g-ytitle text {
+    fill: var(--sx-text) !important;
+}
+
+.js-plotly-plot .legend text,
+.js-plotly-plot .legendtext,
+.js-plotly-plot .legendtitletext {
+    fill: var(--sx-text-dim) !important;
+}
+
+.js-plotly-plot .colorbar text,
+.js-plotly-plot .cbaxis text,
+.js-plotly-plot .cbtitle text {
+    fill: var(--sx-text-dim) !important;
+}
+
+/* Grid + zero lines: soft, not the default light-theme grey */
+.js-plotly-plot .gridlayer path,
+.js-plotly-plot .xgrid,
+.js-plotly-plot .ygrid {
+    stroke: rgba(255, 255, 255, 0.07) !important;
+}
+.js-plotly-plot .zerolinelayer path {
+    stroke: rgba(255, 255, 255, 0.16) !important;
+}
+
+/* Hover tooltips and the mode bar */
+.js-plotly-plot .hoverlayer .hovertext rect { fill: var(--sx-raised) !important; }
+.js-plotly-plot .hoverlayer .hovertext text { fill: var(--sx-text) !important; }
+.js-plotly-plot .modebar-btn path { fill: var(--sx-muted) !important; }
+.js-plotly-plot .modebar-btn:hover path { fill: var(--sx-text) !important; }
+.js-plotly-plot .modebar { background: transparent !important; }
+
+/* Spectrogram panel keeps a transparent plot surface */
+#spectrogram-graph .main-svg { background: transparent !important; }
+
+/* ---------------------------------------------------------------
+   7. Responsive - tablet
+   --------------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+    .sx-badge-label { max-width: 92px; }
+    .sx-time-clock  { font-size: 14px; }
+}
+
+@media (max-width: 992px) {
+    .card-body { padding: 0.85rem; }
+    .sx-detections { gap: 5px; }
+    .sx-badge { padding: 5px 8px; font-size: 11.5px; }
+    .sx-transcript-text { -webkit-line-clamp: 3; }
+}
+
+/* ---------------------------------------------------------------
+   Filter & Search - each row as its own panel
+   ---------------------------------------------------------------
+   The controls fall into groups that have nothing to do with each
+   other: talk/refresh/view, rooms, the result count, CLAP. Run
+   together they read as one long strip of buttons. Giving each its
+   own slightly raised, rounded surface makes the grouping visible
+   without adding a heading to every row.
+
+   Presentation only: no id, no callback, no component here.
+   --------------------------------------------------------------- */
+
+.sx-filter-group {
+    background: var(--sx-raised);
+    border: 1px solid var(--sx-border);
+    border-radius: var(--sx-radius);
+    padding: 14px 16px;
+    /* dbc .row uses negative side margins for its gutters; without this the
+       group's background would bleed past the card's padding on both sides. */
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* A label that names the group, sitting level with its controls. */
+.sx-group-label {
+    font-weight: 600;
+    color: var(--sx-text-dim);
+    padding-right: 14px;
+    margin-right: 4px;
+    border-right: 1px solid var(--sx-border-str);
+}
+
+.sx-count-icon { color: var(--sx-accent); }
+
+/* The result count reads as a statement, so it gets a tinted surface of its
+   own rather than the neutral one the control rows use. */
+.sx-count-banner {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg,
+                rgba(34, 197, 94, 0.14), rgba(34, 197, 94, 0.05));
+    border-color: rgba(34, 197, 94, 0.30);
+    color: var(--sx-text);
+    font-size: 15px;
+}
+.sx-count-banner .sx-count-icon { color: #4ade80; font-size: 18px; }
+
+/* Room chips: the icon rides with the label inside each chip. */
+#room-filter .btn { display: inline-flex; align-items: center; }
+
+/* CLAP row: the two halves are separate controls, so give the divider some
+   air rather than letting the slider and the button touch. */
+.sx-clap-row > [class*="col-"] { padding-left: 14px; padding-right: 14px; }
+
+/* ---------------------------------------------------------------
+   Room chips: all on one line
+   ---------------------------------------------------------------
+   Adding an icon to every chip cost roughly 26px each, which pushed
+   the last room onto a second row. The space comes back from the
+   padding and the icon gap rather than from the labels, which stay
+   full words.
+   --------------------------------------------------------------- */
+
+#room-filter .btn {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+.sx-room-icon { margin-right: 5px; opacity: 0.85; }
+
+/* The chips are one control, so they must not be split across lines
+   while "Clear" sits alone underneath. */
+#room-filter { flex-wrap: nowrap !important; }
+.sx-filter-group .btn-group { max-width: 100%; }
+
+/* ---------------------------------------------------------------
+   Slider tooltip
+   ---------------------------------------------------------------
+   rc-slider ships a light tooltip: white text on a white bubble, so
+   the value was invisible on this theme the moment the handle was
+   touched.
+   --------------------------------------------------------------- */
+
+.rc-slider-tooltip-inner {
+    background-color: var(--sx-raised) !important;
+    border: 1px solid var(--sx-border-str) !important;
+    color: var(--sx-text) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+    font-weight: 600;
+}
+.rc-slider-tooltip-arrow {
+    border-top-color: var(--sx-raised) !important;
+    border-bottom-color: var(--sx-raised) !important;
+}
+
+/* The label above the slider picked up a selection-like highlight from
+   Bootstrap's .form-label background on this theme. */
+.sx-clap-stack label { background: transparent !important; }
+</style></head><body class="dbc"><div class="container-fluid p-4"><div class="card shadow-sm"><div class="card-header">Generated Report</div><div class="card-body"><div class="fb-panel"><div class="fb-head"><h3>This week at home</h3><p>Six lamps for the week, and three things worth talking about.</p></div><div class="fb-bulbs"><div class="fb-bulb" data-state="green"><img alt="Connection: Present" class="fb-glass" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20150%22%20role%3D%22img%22%3E%20%3Cstyle%3E%20.halo%7Btransform-origin%3A60px%2056px%3Banimation%3Abreathe%204.5s%20ease-in-out%20infinite%7D%20%40keyframes%20breathe%7B0%25%2C100%25%7Bopacity%3A.50%3Btransform%3Ascale%281%29%7D%2050%25%7Bopacity%3A.72%3Btransform%3Ascale%281.045%29%7D%7D%20%40media%20%28prefers-reduced-motion%3Areduce%29%7B.halo%7Banimation%3Anone%7D%7D%20%3C%2Fstyle%3E%20%3Cdefs%3E%20%3CradialGradient%20id%3D%22halo-green%22%20cx%3D%2250%25%22%20cy%3D%2250%25%22%20r%3D%2250%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.95%22%2F%3E%20%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.28%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3CradialGradient%20id%3D%22glass-green%22%20cx%3D%2242%25%22%20cy%3D%2234%25%22%20r%3D%2272%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.30%22%2F%3E%20%3Cstop%20offset%3D%2270%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.10%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.03%22%2F%3E%20%3C%2FradialGradient%3E%20%3C%2Fdefs%3E%20%3Ccircle%20class%3D%22halo%22%20cx%3D%2260%22%20cy%3D%2256%22%20r%3D%2254%22%20fill%3D%22url%28%23halo-green%29%22%20opacity%3D%220.55%22%2F%3E%20%3C%21--%20glass%20envelope%3A%20a%20round%20bulb%20drawn%20down%20into%20the%20neck%20--%3E%20%3Cpath%20d%3D%22M60%2012%20a34%2034%200%200%201%2020%2061%20c-3%203%20-4%206%20-4%2010%20v4%20h-32%20v-4%20c0%20-4%20-1%20-7%20-4%20-10%20A34%2034%200%200%201%2060%2012%20z%22%20fill%3D%22url%28%23glass-green%29%22%20stroke%3D%22%2357C98A%22%20stroke-opacity%3D%220.55%22%20stroke-width%3D%222%22%2F%3E%20%3C%21--%20filament%20--%3E%20%3Cpath%20d%3D%22M50%2066%20v-9%20a10%2010%200%200%201%2020%200%20v9%22%20fill%3D%22none%22%20stroke%3D%22%23BFF3D6%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%20%3Cpath%20d%3D%22M54%2048%20q6%20-9%2012%200%22%20fill%3D%22none%22%20stroke%3D%22%23BFF3D6%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%2F%3E%20%3C%21--%20screw%20base%20--%3E%20%3Crect%20x%3D%2244%22%20y%3D%2288%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%233A4652%22%2F%3E%20%3Crect%20x%3D%2244%22%20y%3D%2299%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%2343505E%22%2F%3E%20%3Crect%20x%3D%2247%22%20y%3D%22110%22%20width%3D%2226%22%20height%3D%2210%22%20rx%3D%224%22%20fill%3D%22%23333E49%22%2F%3E%20%3C%2Fsvg%3E"><div class="fb-name">Connection</div><div class="fb-blurb">Engagement and reciprocal interaction</div><div class="fb-chip">Present</div><div class="fb-evidence">51 reciprocal conversations among all three members.</div></div><div class="fb-bulb" data-state="green"><img alt="Warmth: Present" class="fb-glass" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20150%22%20role%3D%22img%22%3E%20%3Cstyle%3E%20.halo%7Btransform-origin%3A60px%2056px%3Banimation%3Abreathe%204.5s%20ease-in-out%20infinite%7D%20%40keyframes%20breathe%7B0%25%2C100%25%7Bopacity%3A.50%3Btransform%3Ascale%281%29%7D%2050%25%7Bopacity%3A.72%3Btransform%3Ascale%281.045%29%7D%7D%20%40media%20%28prefers-reduced-motion%3Areduce%29%7B.halo%7Banimation%3Anone%7D%7D%20%3C%2Fstyle%3E%20%3Cdefs%3E%20%3CradialGradient%20id%3D%22halo-green%22%20cx%3D%2250%25%22%20cy%3D%2250%25%22%20r%3D%2250%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.95%22%2F%3E%20%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.28%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3CradialGradient%20id%3D%22glass-green%22%20cx%3D%2242%25%22%20cy%3D%2234%25%22%20r%3D%2272%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.30%22%2F%3E%20%3Cstop%20offset%3D%2270%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.10%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.03%22%2F%3E%20%3C%2FradialGradient%3E%20%3C%2Fdefs%3E%20%3Ccircle%20class%3D%22halo%22%20cx%3D%2260%22%20cy%3D%2256%22%20r%3D%2254%22%20fill%3D%22url%28%23halo-green%29%22%20opacity%3D%220.55%22%2F%3E%20%3C%21--%20glass%20envelope%3A%20a%20round%20bulb%20drawn%20down%20into%20the%20neck%20--%3E%20%3Cpath%20d%3D%22M60%2012%20a34%2034%200%200%201%2020%2061%20c-3%203%20-4%206%20-4%2010%20v4%20h-32%20v-4%20c0%20-4%20-1%20-7%20-4%20-10%20A34%2034%200%200%201%2060%2012%20z%22%20fill%3D%22url%28%23glass-green%29%22%20stroke%3D%22%2357C98A%22%20stroke-opacity%3D%220.55%22%20stroke-width%3D%222%22%2F%3E%20%3C%21--%20filament%20--%3E%20%3Cpath%20d%3D%22M50%2066%20v-9%20a10%2010%200%200%201%2020%200%20v9%22%20fill%3D%22none%22%20stroke%3D%22%23BFF3D6%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%20%3Cpath%20d%3D%22M54%2048%20q6%20-9%2012%200%22%20fill%3D%22none%22%20stroke%3D%22%23BFF3D6%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%2F%3E%20%3C%21--%20screw%20base%20--%3E%20%3Crect%20x%3D%2244%22%20y%3D%2288%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%233A4652%22%2F%3E%20%3Crect%20x%3D%2244%22%20y%3D%2299%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%2343505E%22%2F%3E%20%3Crect%20x%3D%2247%22%20y%3D%22110%22%20width%3D%2226%22%20height%3D%2210%22%20rx%3D%224%22%20fill%3D%22%23333E49%22%2F%3E%20%3C%2Fsvg%3E"><div class="fb-name">Warmth</div><div class="fb-blurb">Affection, support and positive tone</div><div class="fb-chip">Present</div><div class="fb-evidence">Happy 11.8-14.7% across all three pairs.</div></div><div class="fb-bulb" data-state="grey"><img alt="Joy: No evidence" class="fb-glass" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20150%22%20role%3D%22img%22%3E%20%3Cstyle%3E%3C%2Fstyle%3E%20%3Cdefs%3E%20%3CradialGradient%20id%3D%22halo-grey%22%20cx%3D%2250%25%22%20cy%3D%2250%25%22%20r%3D%2250%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%234A5765%22%20stop-opacity%3D%220.95%22%2F%3E%20%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%234A5765%22%20stop-opacity%3D%220.28%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%234A5765%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3CradialGradient%20id%3D%22glass-grey%22%20cx%3D%2242%25%22%20cy%3D%2234%25%22%20r%3D%2272%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%234A5765%22%20stop-opacity%3D%220.30%22%2F%3E%20%3Cstop%20offset%3D%2270%25%22%20stop-color%3D%22%234A5765%22%20stop-opacity%3D%220.10%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%234A5765%22%20stop-opacity%3D%220.03%22%2F%3E%20%3C%2FradialGradient%3E%20%3C%2Fdefs%3E%20%3Ccircle%20class%3D%22halo%22%20cx%3D%2260%22%20cy%3D%2256%22%20r%3D%2254%22%20fill%3D%22url%28%23halo-grey%29%22%20opacity%3D%220.06%22%2F%3E%20%3C%21--%20glass%20envelope%3A%20a%20round%20bulb%20drawn%20down%20into%20the%20neck%20--%3E%20%3Cpath%20d%3D%22M60%2012%20a34%2034%200%200%201%2020%2061%20c-3%203%20-4%206%20-4%2010%20v4%20h-32%20v-4%20c0%20-4%20-1%20-7%20-4%20-10%20A34%2034%200%200%201%2060%2012%20z%22%20fill%3D%22url%28%23glass-grey%29%22%20stroke%3D%22%234A5765%22%20stroke-opacity%3D%220.55%22%20stroke-width%3D%222%22%2F%3E%20%3C%21--%20filament%20--%3E%20%3Cpath%20d%3D%22M50%2066%20v-9%20a10%2010%200%200%201%2020%200%20v9%22%20fill%3D%22none%22%20stroke%3D%22%235C6A79%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%20%3Cpath%20d%3D%22M54%2048%20q6%20-9%2012%200%22%20fill%3D%22none%22%20stroke%3D%22%235C6A79%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%2F%3E%20%3C%21--%20screw%20base%20--%3E%20%3Crect%20x%3D%2244%22%20y%3D%2288%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%233A4652%22%2F%3E%20%3Crect%20x%3D%2244%22%20y%3D%2299%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%2343505E%22%2F%3E%20%3Crect%20x%3D%2247%22%20y%3D%22110%22%20width%3D%2226%22%20height%3D%2210%22%20rx%3D%224%22%20fill%3D%22%23333E49%22%2F%3E%20%3C%2Fsvg%3E"><div class="fb-name">Joy</div><div class="fb-blurb">Laughter, play and shared enjoyment</div><div class="fb-chip">No evidence</div><div class="fb-evidence">Not enough observed evidence this week to say.</div></div><div class="fb-bulb" data-state="green"><img alt="Inclusion: Present" class="fb-glass" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20150%22%20role%3D%22img%22%3E%20%3Cstyle%3E%20.halo%7Btransform-origin%3A60px%2056px%3Banimation%3Abreathe%204.5s%20ease-in-out%20infinite%7D%20%40keyframes%20breathe%7B0%25%2C100%25%7Bopacity%3A.50%3Btransform%3Ascale%281%29%7D%2050%25%7Bopacity%3A.72%3Btransform%3Ascale%281.045%29%7D%7D%20%40media%20%28prefers-reduced-motion%3Areduce%29%7B.halo%7Banimation%3Anone%7D%7D%20%3C%2Fstyle%3E%20%3Cdefs%3E%20%3CradialGradient%20id%3D%22halo-green%22%20cx%3D%2250%25%22%20cy%3D%2250%25%22%20r%3D%2250%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.95%22%2F%3E%20%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.28%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3CradialGradient%20id%3D%22glass-green%22%20cx%3D%2242%25%22%20cy%3D%2234%25%22%20r%3D%2272%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.30%22%2F%3E%20%3Cstop%20offset%3D%2270%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.10%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.03%22%2F%3E%20%3C%2FradialGradient%3E%20%3C%2Fdefs%3E%20%3Ccircle%20class%3D%22halo%22%20cx%3D%2260%22%20cy%3D%2256%22%20r%3D%2254%22%20fill%3D%22url%28%23halo-green%29%22%20opacity%3D%220.55%22%2F%3E%20%3C%21--%20glass%20envelope%3A%20a%20round%20bulb%20drawn%20down%20into%20the%20neck%20--%3E%20%3Cpath%20d%3D%22M60%2012%20a34%2034%200%200%201%2020%2061%20c-3%203%20-4%206%20-4%2010%20v4%20h-32%20v-4%20c0%20-4%20-1%20-7%20-4%20-10%20A34%2034%200%200%201%2060%2012%20z%22%20fill%3D%22url%28%23glass-green%29%22%20stroke%3D%22%2357C98A%22%20stroke-opacity%3D%220.55%22%20stroke-width%3D%222%22%2F%3E%20%3C%21--%20filament%20--%3E%20%3Cpath%20d%3D%22M50%2066%20v-9%20a10%2010%200%200%201%2020%200%20v9%22%20fill%3D%22none%22%20stroke%3D%22%23BFF3D6%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%20%3Cpath%20d%3D%22M54%2048%20q6%20-9%2012%200%22%20fill%3D%22none%22%20stroke%3D%22%23BFF3D6%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%2F%3E%20%3C%21--%20screw%20base%20--%3E%20%3Crect%20x%3D%2244%22%20y%3D%2288%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%233A4652%22%2F%3E%20%3Crect%20x%3D%2244%22%20y%3D%2299%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%2343505E%22%2F%3E%20%3Crect%20x%3D%2247%22%20y%3D%22110%22%20width%3D%2226%22%20height%3D%2210%22%20rx%3D%224%22%20fill%3D%22%23333E49%22%2F%3E%20%3C%2Fsvg%3E"><div class="fb-name">Inclusion</div><div class="fb-blurb">Participation, nobody left out</div><div class="fb-chip">Present</div><div class="fb-evidence">All three in multi-person episodes.</div></div><div class="fb-bulb" data-state="amber"><img alt="Withdrawal: Worth noticing" class="fb-glass" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20150%22%20role%3D%22img%22%3E%20%3Cstyle%3E%20.halo%7Btransform-origin%3A60px%2056px%3Banimation%3Abreathe%204.5s%20ease-in-out%20infinite%7D%20%40keyframes%20breathe%7B0%25%2C100%25%7Bopacity%3A.50%3Btransform%3Ascale%281%29%7D%2050%25%7Bopacity%3A.72%3Btransform%3Ascale%281.045%29%7D%7D%20%40media%20%28prefers-reduced-motion%3Areduce%29%7B.halo%7Banimation%3Anone%7D%7D%20%3C%2Fstyle%3E%20%3Cdefs%3E%20%3CradialGradient%20id%3D%22halo-amber%22%20cx%3D%2250%25%22%20cy%3D%2250%25%22%20r%3D%2250%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23F0A63C%22%20stop-opacity%3D%220.95%22%2F%3E%20%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%23F0A63C%22%20stop-opacity%3D%220.28%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23F0A63C%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3CradialGradient%20id%3D%22glass-amber%22%20cx%3D%2242%25%22%20cy%3D%2234%25%22%20r%3D%2272%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23F0A63C%22%20stop-opacity%3D%220.30%22%2F%3E%20%3Cstop%20offset%3D%2270%25%22%20stop-color%3D%22%23F0A63C%22%20stop-opacity%3D%220.10%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23F0A63C%22%20stop-opacity%3D%220.03%22%2F%3E%20%3C%2FradialGradient%3E%20%3C%2Fdefs%3E%20%3Ccircle%20class%3D%22halo%22%20cx%3D%2260%22%20cy%3D%2256%22%20r%3D%2254%22%20fill%3D%22url%28%23halo-amber%29%22%20opacity%3D%220.55%22%2F%3E%20%3C%21--%20glass%20envelope%3A%20a%20round%20bulb%20drawn%20down%20into%20the%20neck%20--%3E%20%3Cpath%20d%3D%22M60%2012%20a34%2034%200%200%201%2020%2061%20c-3%203%20-4%206%20-4%2010%20v4%20h-32%20v-4%20c0%20-4%20-1%20-7%20-4%20-10%20A34%2034%200%200%201%2060%2012%20z%22%20fill%3D%22url%28%23glass-amber%29%22%20stroke%3D%22%23F0A63C%22%20stroke-opacity%3D%220.55%22%20stroke-width%3D%222%22%2F%3E%20%3C%21--%20filament%20--%3E%20%3Cpath%20d%3D%22M50%2066%20v-9%20a10%2010%200%200%201%2020%200%20v9%22%20fill%3D%22none%22%20stroke%3D%22%23FFE0B0%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%20%3Cpath%20d%3D%22M54%2048%20q6%20-9%2012%200%22%20fill%3D%22none%22%20stroke%3D%22%23FFE0B0%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%2F%3E%20%3C%21--%20screw%20base%20--%3E%20%3Crect%20x%3D%2244%22%20y%3D%2288%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%233A4652%22%2F%3E%20%3Crect%20x%3D%2244%22%20y%3D%2299%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%2343505E%22%2F%3E%20%3Crect%20x%3D%2247%22%20y%3D%22110%22%20width%3D%2226%22%20height%3D%2210%22%20rx%3D%224%22%20fill%3D%22%23333E49%22%2F%3E%20%3C%2Fsvg%3E"><div class="fb-name">Withdrawal</div><div class="fb-blurb">Isolation or reduced participation</div><div class="fb-chip">Worth noticing</div><div class="fb-evidence">Participation fell against the 14-day baseline.</div></div><div class="fb-bulb" data-state="green"><img alt="Tension: Not detected" class="fb-glass" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20150%22%20role%3D%22img%22%3E%20%3Cstyle%3E%20.halo%7Btransform-origin%3A60px%2056px%3Banimation%3Abreathe%204.5s%20ease-in-out%20infinite%7D%20%40keyframes%20breathe%7B0%25%2C100%25%7Bopacity%3A.50%3Btransform%3Ascale%281%29%7D%2050%25%7Bopacity%3A.72%3Btransform%3Ascale%281.045%29%7D%7D%20%40media%20%28prefers-reduced-motion%3Areduce%29%7B.halo%7Banimation%3Anone%7D%7D%20%3C%2Fstyle%3E%20%3Cdefs%3E%20%3CradialGradient%20id%3D%22halo-green%22%20cx%3D%2250%25%22%20cy%3D%2250%25%22%20r%3D%2250%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.95%22%2F%3E%20%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.28%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220%22%2F%3E%20%3C%2FradialGradient%3E%20%3CradialGradient%20id%3D%22glass-green%22%20cx%3D%2242%25%22%20cy%3D%2234%25%22%20r%3D%2272%25%22%3E%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.30%22%2F%3E%20%3Cstop%20offset%3D%2270%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.10%22%2F%3E%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2357C98A%22%20stop-opacity%3D%220.03%22%2F%3E%20%3C%2FradialGradient%3E%20%3C%2Fdefs%3E%20%3Ccircle%20class%3D%22halo%22%20cx%3D%2260%22%20cy%3D%2256%22%20r%3D%2254%22%20fill%3D%22url%28%23halo-green%29%22%20opacity%3D%220.55%22%2F%3E%20%3C%21--%20glass%20envelope%3A%20a%20round%20bulb%20drawn%20down%20into%20the%20neck%20--%3E%20%3Cpath%20d%3D%22M60%2012%20a34%2034%200%200%201%2020%2061%20c-3%203%20-4%206%20-4%2010%20v4%20h-32%20v-4%20c0%20-4%20-1%20-7%20-4%20-10%20A34%2034%200%200%201%2060%2012%20z%22%20fill%3D%22url%28%23glass-green%29%22%20stroke%3D%22%2357C98A%22%20stroke-opacity%3D%220.55%22%20stroke-width%3D%222%22%2F%3E%20%3C%21--%20filament%20--%3E%20%3Cpath%20d%3D%22M50%2066%20v-9%20a10%2010%200%200%201%2020%200%20v9%22%20fill%3D%22none%22%20stroke%3D%22%23BFF3D6%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%20%3Cpath%20d%3D%22M54%2048%20q6%20-9%2012%200%22%20fill%3D%22none%22%20stroke%3D%22%23BFF3D6%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%2F%3E%20%3C%21--%20screw%20base%20--%3E%20%3Crect%20x%3D%2244%22%20y%3D%2288%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%233A4652%22%2F%3E%20%3Crect%20x%3D%2244%22%20y%3D%2299%22%20width%3D%2232%22%20height%3D%229%22%20rx%3D%223%22%20fill%3D%22%2343505E%22%2F%3E%20%3Crect%20x%3D%2247%22%20y%3D%22110%22%20width%3D%2226%22%20height%3D%2210%22%20rx%3D%224%22%20fill%3D%22%23333E49%22%2F%3E%20%3C%2Fsvg%3E"><div class="fb-name">Tension</div><div class="fb-blurb">Conflict or unresolved strain</div><div class="fb-chip">Not detected</div><div class="fb-evidence">No raised voices detected.</div></div></div><div class="fb-meter"><div class="fb-meter-label">Family Connection</div><div class="fb-segs"><div class="fb-seg on"></div><div class="fb-seg on"></div><div class="fb-seg on"></div><div class="fb-seg on"></div><div class="fb-seg on"></div><div class="fb-seg on"></div><div class="fb-seg on"></div><div class="fb-seg"></div><div class="fb-seg"></div><div class="fb-seg"></div></div><div class="fb-verdict">Steady</div><div class="fb-basis">Interaction held up across the week.</div></div><div class="fb-questions"><div class="fb-qhead">Worth talking about</div><div class="fb-qsub">Chosen by priority from what was actually observed.</div><div class="fb-q" data-priority="highest"><div class="fb-qnum">1</div><div><div class="fb-qtext">What one thing could we plan this week that gets all three of us into the same room?</div><div class="fb-qwhy">Multi-person interaction is low on 31 Aug compared with previous days.</div></div></div><div class="fb-q" data-priority="medium"><div class="fb-qnum">2</div><div><div class="fb-qtext">Which evening this week could we keep free to eat together?</div><div class="fb-qwhy">Shared presence drops on late-August evenings.</div></div></div><div class="fb-q" data-priority="lower"><div class="fb-qnum">3</div><div><div class="fb-qtext">What is one activity that made everyone laugh worth repeating?</div><div class="fb-qwhy">No playful events were recorded by the system.</div></div></div></div><div class="fb-note">1 of 6 indicators are unlit because the week was not observed closely enough to judge them. Unlit means unseen, not bad.</div></div><hr class="my-4"><h5>Household Dynamics Report</h5><p>Part A, the detailed written report, continues below as before.</p></div></div></div></body></html>

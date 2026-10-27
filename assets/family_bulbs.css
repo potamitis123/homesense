@@ -1,0 +1,215 @@
+/* Part B — the family reflection panel.
+ *
+ * The panel paints its own dark "room" rather than inheriting the page theme,
+ * because the whole device is a set of lamps: a bulb only reads as lit or unlit
+ * against a dark ground, and this way the panel looks the same wherever it is
+ * dropped. Colours are declared explicitly for that reason, not inherited.
+ */
+
+.fb-panel {
+  --fb-night: #131A22;
+  --fb-night-2: #1A232D;
+  --fb-rule: #27333F;
+  --fb-text: #E7EDF3;
+  --fb-dim: #93A3B2;
+  --fb-green: #57C98A;
+  --fb-green-deep: #1E7A4C;
+  --fb-amber: #F0A63C;
+  --fb-amber-deep: #A96A12;
+  --fb-grey: #4A5765;
+
+  background: radial-gradient(120% 90% at 50% -10%, var(--fb-night-2) 0%, var(--fb-night) 62%);
+  border: 1px solid var(--fb-rule);
+  border-radius: 14px;
+  padding: 34px 28px 30px;
+  color: var(--fb-text);
+  overflow: hidden;
+}
+
+.fb-head { text-align: center; margin-bottom: 6px; }
+.fb-head h3 {
+  font-size: 24px; font-weight: 600; letter-spacing: -.01em;
+  margin: 0; color: var(--fb-text);
+}
+.fb-head p {
+  margin: 6px 0 0; font-size: 13.5px; color: var(--fb-dim);
+}
+
+/* ---- the bulb row ---- */
+/* The four lamps in ONE row, so they are read against each other from left to
+   right. While there were six this was three across, which with four leaves
+   one lamp alone on a second row, and six columns on a wide screen, which
+   left the four pushed to one side. */
+.fb-bulbs {
+  display: grid;
+  /* minmax(0, ...) and not a bare 1fr: a chip that will not wrap would
+     otherwise widen its own column and leave the lamps unevenly spaced. */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px 12px;
+  margin: 30px 0 10px;
+}
+/* Only a phone breaks the row. A quarter of its width is narrower than the
+   word "Withdrawal", so four across would print the names over one another. */
+@media (max-width: 520px) { .fb-bulbs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.fb-bulb {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 14px 6px 18px;
+  border-radius: 16px;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .25s ease;
+  /* Each lamp switches on in turn as the panel appears. */
+  animation: fb-switch-on .55s cubic-bezier(.34,1.56,.64,1) backwards;
+}
+.fb-bulb:hover { transform: translateY(-5px) scale(1.03); background: rgba(255,255,255,.04); }
+
+@keyframes fb-switch-on {
+  from { opacity: 0; transform: translateY(14px) scale(.9); }
+  to   { opacity: 1; transform: none; }
+}
+.fb-bulb:nth-child(1) { animation-delay: .05s }
+.fb-bulb:nth-child(2) { animation-delay: .14s }
+.fb-bulb:nth-child(3) { animation-delay: .23s }
+.fb-bulb:nth-child(4) { animation-delay: .32s }
+
+.fb-glass {
+  width: 100%; max-width: 164px; height: auto; display: block;
+  margin-bottom: 4px;
+}
+/* A lit lamp spills a little light onto the panel beneath it. */
+.fb-bulb[data-state="green"] .fb-glass { filter: drop-shadow(0 10px 26px rgba(87,201,138,.30)); }
+.fb-bulb[data-state="amber"] .fb-glass { filter: drop-shadow(0 10px 26px rgba(240,166,60,.30)); }
+
+/* Halo behind the glass. Sized by state so a lit bulb spills light and a
+   grey one sits dark without a ring of colour around nothing. */
+.fb-halo { transition: opacity .5s ease; }
+.fb-bulb[data-state="grey"] .fb-halo { opacity: .06; }
+.fb-bulb[data-state="green"] .fb-halo { opacity: .55; }
+.fb-bulb[data-state="amber"] .fb-halo { opacity: .55; }
+
+.fb-filament { transition: stroke .5s ease, opacity .5s ease; }
+.fb-bulb[data-state="grey"] .fb-filament { stroke: #3B4653; opacity: .8; }
+
+/* The gentle breathing of a filament. Lit bulbs only. */
+@keyframes fb-glow {
+  0%, 100% { opacity: .50; transform: scale(1); }
+  50%      { opacity: .72; transform: scale(1.045); }
+}
+.fb-bulb[data-state="green"] .fb-halo,
+.fb-bulb[data-state="amber"] .fb-halo {
+  transform-origin: 60px 56px;
+  animation: fb-glow 4.5s ease-in-out infinite;
+}
+.fb-bulb:nth-child(2) .fb-halo { animation-delay: -.7s; }
+.fb-bulb:nth-child(3) .fb-halo { animation-delay: -1.5s; }
+.fb-bulb:nth-child(4) .fb-halo { animation-delay: -2.2s; }
+
+.fb-name {
+  font-size: 17px; font-weight: 600; margin-top: 2px; color: var(--fb-text);
+}
+.fb-bulb[data-state="grey"] .fb-name { color: var(--fb-dim); }
+.fb-blurb {
+  font-size: 12.5px; line-height: 1.4; color: var(--fb-dim);
+  margin-top: 3px; max-width: 17ch;
+}
+
+/* State chip. Carries the polarity note for the two inverted indicators, so a
+   green "Tension" bulb cannot be misread as "lots of healthy tension". */
+.fb-chip {
+  margin-top: 11px; font-size: 11.5px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 999px;
+  border: 1px solid transparent; white-space: nowrap;
+}
+.fb-bulb[data-state="green"] .fb-chip {
+  color: var(--fb-green); background: rgba(87,201,138,.12); border-color: rgba(87,201,138,.32);
+}
+.fb-bulb[data-state="amber"] .fb-chip {
+  color: var(--fb-amber); background: rgba(240,166,60,.12); border-color: rgba(240,166,60,.32);
+}
+.fb-bulb[data-state="grey"] .fb-chip {
+  color: var(--fb-dim); background: rgba(147,163,178,.08); border-color: rgba(147,163,178,.22);
+}
+/* Four in a row on a narrow window makes a column narrower than "WORTH
+   NOTICING" on one line. There the chip breaks in two rather than run into
+   the chip beside it. */
+@media (max-width: 760px) {
+  .fb-chip { white-space: normal; text-align: center; border-radius: 14px; }
+}
+
+.fb-evidence {
+  margin-top: 9px; font-size: 12.5px; line-height: 1.45;
+  color: var(--fb-dim); max-width: 24ch;
+}
+
+/* ---- overall meter ---- */
+.fb-meter {
+  margin: 22px auto 0; max-width: 460px; text-align: center;
+  padding-top: 22px; border-top: 1px solid var(--fb-rule);
+}
+.fb-meter-label {
+  font-size: 12px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--fb-dim);
+}
+.fb-segs {
+  display: flex; gap: 5px; justify-content: center; margin: 12px 0 10px;
+}
+.fb-seg {
+  width: 34px; height: 15px; border-radius: 3px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--fb-rule);
+}
+.fb-seg.on {
+  background: linear-gradient(180deg, var(--fb-green) 0%, var(--fb-green-deep) 100%);
+  border-color: transparent;
+  box-shadow: 0 0 10px rgba(87,201,138,.4);
+}
+.fb-meter.sparse .fb-seg.on {
+  background: linear-gradient(180deg, var(--fb-amber) 0%, var(--fb-amber-deep) 100%);
+  box-shadow: 0 0 10px rgba(240,166,60,.35);
+}
+.fb-verdict { font-size: 22px; font-weight: 600; }
+.fb-basis { font-size: 12.5px; color: var(--fb-dim); margin-top: 5px; }
+
+/* ---- questions ---- */
+.fb-questions { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--fb-rule); }
+.fb-questions > .fb-qhead {
+  font-size: 12px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--fb-dim);
+  text-align: center; margin-bottom: 4px;
+}
+.fb-qsub { text-align: center; font-size: 13px; color: var(--fb-dim); margin-bottom: 18px; }
+
+.fb-q {
+  display: grid; grid-template-columns: 34px 1fr; gap: 14px;
+  padding: 15px 18px; margin-bottom: 10px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid var(--fb-rule);
+  border-left: 3px solid var(--fb-grey);
+  border-radius: 9px;
+}
+.fb-q[data-priority="highest"] { border-left-color: var(--fb-amber); }
+.fb-q[data-priority="medium"]  { border-left-color: var(--fb-green); }
+.fb-qnum {
+  font-size: 21px; font-weight: 600; line-height: 1.1;
+  color: var(--fb-dim); opacity: .55;
+}
+.fb-qtext { font-size: 16px; line-height: 1.5; color: var(--fb-text); }
+.fb-qwhy {
+  margin-top: 6px; font-size: 12.5px; color: var(--fb-dim); font-style: italic;
+}
+
+.fb-note {
+  margin-top: 18px; font-size: 12px; color: var(--fb-dim);
+  text-align: center; line-height: 1.5;
+}
+.fb-empty {
+  text-align: center; color: var(--fb-dim); font-size: 14px; padding: 18px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-bulb[data-state="green"] .fb-halo,
+  .fb-bulb[data-state="amber"] .fb-halo { animation: none; }
+  .fb-bulb, .fb-halo, .fb-filament { transition: none; }
+  .fb-bulb { animation: none; }
+  .fb-bulb:hover { transform: none; }
+}

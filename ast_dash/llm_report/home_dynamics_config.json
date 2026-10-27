@@ -1,0 +1,49 @@
+{
+  "_comment": "Config for derive_home_dynamics.py. Every key is optional; the script runs on internal defaults without this file. device_room_map is the fallback used when an event carries no room of its own - keep it in step with common_files/rooms.json.",
+
+  "household_members": {
+    "Ilyas": {"role": "adult", "sex": "male"},
+    "Voula": {"role": "adult", "sex": "female"},
+    "Rafael": {"role": "child", "sex": "male"}
+  },
+
+  "thresholds": {
+    "min_semantic_confidence": 0.05,
+    "min_speaker_confidence": 0.60,
+    "conversation_gap_seconds": 120,
+    "copresence_gap_seconds": 300,
+    "min_baseline_days": 7,
+    "no_observation_gap_seconds": 1800,
+    "corroboration_bonus": 0.05,
+    "max_semantic_confidence": 0.95,
+    "cross_sentinel_merge": true,
+    "_semantic_min_speaker_turn_share": "Share of an exchange's turns a resident must hold before the exchange is attributed to them. Raising it buys precision at the cost of recall; see _named_speakers for the measurement.",
+    "semantic_min_speaker_turn_share": 0.15
+  },
+
+  "episode_gaps": {
+    "water_use": 300,
+    "speech_activity": 120,
+    "media_activity": 600,
+    "tv_activity": 600,
+    "object_access": 180,
+    "cooking_candidate": 600,
+    "food_activity_candidate": 600,
+    "cleaning_activity": 600,
+    "human_presence_candidate": 300,
+    "default": 300
+  },
+
+  "device_room_map": {
+    "esp32s3-1": "Bathroom",
+    "esp32s3-2": "Bedroom_couple",
+    "esp32s3-3": "WC",
+    "p4-door-1": "Livingroom"
+  },
+
+  "semantic_mappings": {
+    "_comment": "Merged over the built-in table. Add or override AudioSet labels here without touching the code.",
+    "Squeak": ["object_access"],
+    "Tap": ["object_handling_candidate"]
+  }
+}

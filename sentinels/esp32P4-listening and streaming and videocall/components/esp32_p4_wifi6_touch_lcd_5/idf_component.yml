@@ -1,0 +1,24 @@
+dependencies:
+  # Bumped from 1.2.*: esp_webrtc / av_render require ~1.5. The BSP only
+  # uses the stable esp_codec_dev_open/write/set_out_vol surface.
+  esp_codec_dev:
+    public: true
+    version: "~1.5"
+  esp_lcd_touch_gt911: ^1
+  espressif/esp_lvgl_adapter:
+    public: true
+    version: "^0.1.*"
+    pre_release: true
+  lvgl/lvgl:
+    public: true
+    version: "9.4.*"
+  idf: '>=5.4'
+  waveshare/esp_lcd_hx8394: '*'
+description: Based on ESP32-P4 chip, waveshare electronics designed a 5-inch screen, highly integrated development board
+repository: git://github.com/WaveshareCloud/Waveshare-ESP32-components.git
+tags:
+- bsp
+targets:
+- esp32p4
+url: https://www.waveshare.com/esp32-p4-wifi6-touch-lcd-5.htm
+version: 1.0.1

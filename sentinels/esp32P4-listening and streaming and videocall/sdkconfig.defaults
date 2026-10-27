@@ -1,0 +1,228 @@
+﻿# =====================================================================
+# ESP32-P4 sentinel + intercom â€” merged build configuration
+#
+# P4-audio-sentinel's sdkconfig.defaults, plus what the WebRTC stack and
+# the camera need. Where the two would disagree the larger allocation
+# wins: this image links LVGL 9, the sentinel's PSRAM ring, esp_capture,
+# esp_webrtc (DTLS/SRTP/SCTP), Opus and *two* TLS MQTT clients, and
+# internal RAM is the binding constraint.
+#
+# Symbol names for esp_video and the OV5647 were taken from the vendored
+# components' own Kconfig files, not from memory. Anything marked CHECK
+# below could not be verified here and should be confirmed once against
+# `idf.py menuconfig`.
+# =====================================================================
+
+# ---------------------------------------------------------------------
+# Target / flash / PSRAM / cache
+# From the Waveshare examples (04_wifistation, 08_lvgl_demo_v9).
+# Switch to FLASHSIZE_32MB if your board carries the 32 MiB part.
+# ---------------------------------------------------------------------
+CONFIG_IDF_TARGET="esp32p4"
+CONFIG_ESP32P4_SELECTS_REV_LESS_V3=y
+CONFIG_ESP32P4_REV_MIN_1=y
+CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_SPI_FLASH_SUPPORT_GD_CHIP=y
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_SPEED_200M=y
+CONFIG_SPIRAM_XIP_FROM_PSRAM=y
+CONFIG_SPIRAM_USE_MALLOC=y
+CONFIG_CACHE_L2_CACHE_256KB=y
+# 128-byte L2 lines plus a PSRAM Hosted mempool made MQTT TLS time out
+# (esp-tls select() / 0x8006). Keep 64-byte. Do not put 128B back until
+# MQTT stays up through a call on this board.
+CONFIG_CACHE_L2_CACHE_LINE_64B=y
+CONFIG_IDF_EXPERIMENTAL_FEATURES=y
+
+# ---------------------------------------------------------------------
+# RTOS / partitions / FAT
+#
+# The main task now runs both applications' boot sequences before the
+# scheduler settles, so it gets more stack than either build gave it.
+# ---------------------------------------------------------------------
+CONFIG_FREERTOS_HZ=1000
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=12288
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_FATFS_LFN_HEAP=y
+
+# The sentinel's capture/streamer stacks and esp_capture's threads all go
+# to PSRAM; internal RAM is reserved for DMA and TLS.
+CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM=y
+CONFIG_SPIRAM_ALLOW_STACK_EXTERNAL_MEMORY=y
+
+# Moves non-ISR FreeRTOS functions out of IRAM into flash, worth up to
+# 8 KB. Needed with LVGL 9 + esp_hosted + mbedTLS + the WebRTC stack all
+# linked together.
+CONFIG_FREERTOS_PLACE_FUNCTIONS_INTO_FLASH=y
+
+# The sentinel's capture task must not be starved by a long-running media
+# thread on the same core; a call and the sentinel never run together, but
+# the uplink and a call do.
+CONFIG_FREERTOS_USE_TRACE_FACILITY=y
+CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS=y
+
+# ---------------------------------------------------------------------
+# LVGL 9.4 â€” the sentinel's audio-bar UI
+#
+# NOT enabling CONFIG_LV_ATTRIBUTE_FAST_MEM_USE_IRAM: Waveshare's demo
+# sets it, but that demo is graphics-only. Here LVGL shares internal RAM
+# with WiFi-over-hosted, mbedTLS, MQTT and now the WebRTC stack, and
+# pushing the blend routines into IRAM on top of that overflows at link.
+# ---------------------------------------------------------------------
+CONFIG_LV_OS_FREERTOS=y
+CONFIG_LV_USE_CLIB_MALLOC=y
+CONFIG_LV_USE_CLIB_STRING=y
+CONFIG_LV_USE_CLIB_SPRINTF=y
+CONFIG_LV_DEF_REFR_PERIOD=15
+CONFIG_LV_OBJ_STYLE_CACHE=y
+CONFIG_LV_DRAW_SW_DRAW_UNIT_CNT=2
+CONFIG_LV_FONT_MONTSERRAT_16=y
+CONFIG_LV_FONT_MONTSERRAT_24=y
+CONFIG_LV_FONT_MONTSERRAT_32=y
+CONFIG_LV_FONT_MONTSERRAT_48=y
+
+# ---------------------------------------------------------------------
+# mbedTLS â€” TLS for two MQTT clients and the uplink, DTLS for the call
+#
+# DTLS and DTLS-SRTP are not optional: esp_peer's media path is DTLS, and
+# SRTP keys are exported through the DTLS-SRTP extension. Without these
+# two the sentinel half works and every call fails at key exchange.
+# ---------------------------------------------------------------------
+CONFIG_MBEDTLS_SSL_PROTO_DTLS=y
+CONFIG_MBEDTLS_SSL_DTLS_SRTP=y
+CONFIG_MBEDTLS_ECP_DP_SECP256R1_ENABLED=y
+CONFIG_MBEDTLS_KEY_EXCHANGE_ECDHE_ECDSA=y
+
+# Hardware acceleration: the P4 has it, and a DTLS handshake plus SRTP on
+# every packet is the most expensive thing in the image.
+CONFIG_MBEDTLS_HARDWARE_AES=y
+CONFIG_MBEDTLS_HARDWARE_SHA=y
+CONFIG_MBEDTLS_HARDWARE_MPI=y
+
+# Push TLS buffers to PSRAM and allocate on demand. With two TLS clients
+# open simultaneously this is what keeps internal RAM viable.
+CONFIG_MBEDTLS_EXTERNAL_MEM_ALLOC=y
+CONFIG_MBEDTLS_DYNAMIC_BUFFER=y
+CONFIG_MBEDTLS_DYNAMIC_FREE_PEER_CERT=y
+CONFIG_MBEDTLS_DYNAMIC_FREE_CONFIG_DATA=y
+# Inbound MUST be 16384 to accept full-size TLS records; outbound can stay
+# small because we control what we send.
+CONFIG_MBEDTLS_SSL_IN_CONTENT_LEN=16384
+CONFIG_MBEDTLS_SSL_OUT_CONTENT_LEN=4096
+
+# ---------------------------------------------------------------------
+# MQTT â€” two clients: the sentinel protocol and WebRTC signaling
+# ---------------------------------------------------------------------
+CONFIG_MQTT_BUFFER_SIZE=4096
+CONFIG_MQTT_OUTBOX_DATA_ON_EXTERNAL_MEMORY=y
+
+# ---------------------------------------------------------------------
+# HTTP â€” the sentinel's /ping and /play endpoints, and the uplink client
+# ---------------------------------------------------------------------
+CONFIG_HTTPD_MAX_REQ_HDR_LEN=1024
+CONFIG_ESP_TLS_INSECURE=n
+
+# ---------------------------------------------------------------------
+# Camera â€” OV5647 over MIPI-CSI
+#
+# The format below is what this board actually negotiated in the field:
+# V4L2_SRC reported "Best match 800x800" for a 640x480 request, so 800x800
+# is the source mode the ISP scales from. The 800x1280 mode exists and is
+# what the intercom's settings.h comment assumed; if you change it, the
+# uplink's VIDEO_STREAM_WIDTH/HEIGHT scaling changes with it.
+#
+# ISP is required: the sensor delivers RAW8 and everything downstream
+# wants RGB565/YUV. JPEG encode is what the uplink and the call's video
+# sink both consume.
+# ---------------------------------------------------------------------
+CONFIG_CAMERA_OV5647=y
+CONFIG_CAMERA_OV5647_AUTO_DETECT_MIPI_INTERFACE_SENSOR=y
+CONFIG_CAMERA_OV5647_MIPI_RAW8_800X800_50FPS=y
+CONFIG_CAMERA_OV5647_MIPI_DEFAULT_FMT_RAW8_800X800_50FPS=y
+CONFIG_ESP_VIDEO_ENABLE_ISP=y
+CONFIG_ESP_VIDEO_ENABLE_ISP_PIPELINE_CONTROLLER=y
+CONFIG_ESP_VIDEO_ENABLE_JPEG_ENC_VIDEO_DEVICE=y
+CONFIG_ESP_VIDEO_ENABLE_HW_JPEG_ENC_VIDEO_DEVICE=y
+CONFIG_ESP_VIDEO_ENABLE_JPEG_DEC_VIDEO_DEVICE=y
+CONFIG_ESP_VIDEO_ENABLE_HW_JPEG_DEC_VIDEO_DEVICE=y
+# HW MJPEG in esp_video_codec needs DMA descriptors in internal RAM.
+# That allocation fails on this board (DSI/CSI/I2S/SDIO already own it),
+# inbound call video is then dropped, and re-arming the capture graph
+# panics. Software MJPEG uses PSRAM instead.
+CONFIG_VIDEO_DECODER_HW_MJPEG_SUPPORT=n
+CONFIG_VIDEO_ENCODER_HW_MJPEG_SUPPORT=n
+# No H.264 anywhere in this design: the uplink is MJPEG and the call's
+# video rides the data channel as whole JPEGs.
+CONFIG_ESP_VIDEO_ENABLE_H264_VIDEO_DEVICE=n
+CONFIG_ESP_VIDEO_ENABLE_HW_H264_VIDEO_DEVICE=n
+CONFIG_ESP_VIDEO_ENABLE_DVP_VIDEO_DEVICE=n
+
+# ---------------------------------------------------------------------
+# WiFi â€” the radio lives on the ESP32-C6, reached over SDIO
+#
+# Hosted task stacks go in PSRAM so constructors do not eat internal RAM.
+# The SDIO mempool also has to live in PSRAM: at Hosted's constructor
+# there is no contiguous internal DMA slab big enough for it.
+# ---------------------------------------------------------------------
+CONFIG_ESP_WIFI_SOFTAP_SUPPORT=n
+CONFIG_ESP_HOSTED_DFLT_TASK_FROM_SPIRAM=y
+CONFIG_ESP_HOSTED_MEMPOOL_PREFER_SPIRAM=y
+
+# ---------------------------------------------------------------------
+# lwIP
+#
+# The sentinel's windows were tuned small. The call needs a deeper TCP/IP
+# mailbox than the sentinel alone did: signaling, the uplink's POSTs and
+# SCTP-over-DTLS can all be in flight at once during a handover.
+# ---------------------------------------------------------------------
+CONFIG_LWIP_TCP_SND_BUF_DEFAULT=5760
+CONFIG_LWIP_TCP_WND_DEFAULT=5760
+CONFIG_LWIP_TCP_RECVMBOX_SIZE=8
+CONFIG_LWIP_UDP_RECVMBOX_SIZE=16
+CONFIG_LWIP_TCPIP_RECVMBOX_SIZE=48
+# ICE gathers on UDP and a busy candidate exchange overruns the default.
+# 16 was enough until a call's ICE sockets overlapped a signaling rebuild
+# and both MQTT clients' DNS lookups; getaddrinfo then failed (202) and
+# Event Mode could trigger but not publish.
+CONFIG_LWIP_MAX_SOCKETS=32
+
+# Each /dev/videoN is its own VFS entry. Default 8 is used up by console,
+# UART, FAT/SD, CSI (/dev/video0), ISP (/dev/video20) â€” then JPEG encode
+# (/dev/video10) fails, esp_video_init rolls back, and the camera is gone.
+CONFIG_VFS_MAX_COUNT=16
+
+# ---------------------------------------------------------------------
+# Internal heap vs PSRAM
+#
+# JPEG *frame* buffers already allocate from PSRAM. The encoder still
+# needs two 64-byte DMA descriptors in internal DMA RAM; those cannot
+# live in PSRAM. Keep a larger internal reserve for them, and send
+# ordinary mallocs above 4 KB to PSRAM so 8â€“16 KB blobs do not chew
+# the DMA heap first.
+# ---------------------------------------------------------------------
+CONFIG_SPIRAM_MALLOC_ALWAYSINTERNAL=4096
+CONFIG_SPIRAM_MALLOC_RESERVE_INTERNAL=196608
+
+# ---------------------------------------------------------------------
+# Watchdog
+#
+# The mode handover blocks the signaling task for up to 3 s while the
+# sentinel finishes an utterance and closes the codecs. That is by design
+# (mode_arbiter.h), so the task watchdog must tolerate it.
+# ---------------------------------------------------------------------
+CONFIG_ESP_TASK_WDT_TIMEOUT_S=10
+
+# ---------------------------------------------------------------------
+# Build
+#
+# -O2, not -Os: driving a 720x1280 MIPI-DSI panel through LVGL needs the
+# throughput, and it is what Waveshare validates against. The factory
+# partition is 4 MiB in partitions.csv for exactly this reason.
+# ---------------------------------------------------------------------
+CONFIG_COMPILER_OPTIMIZATION_PERF=y
+
+# Keep the assert strings: this image has two subsystems handing hardware
+# to each other, and a bare assert address is not worth the flash saved.
+CONFIG_COMPILER_OPTIMIZATION_ASSERTIONS_ENABLE=y

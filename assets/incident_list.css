@@ -1,0 +1,235 @@
+/* The incident list under the lamps.
+ *
+ * It carries both classes -- "fb-panel inc-panel" -- so it stands on the lamp
+ * panel's dark ground and uses its variables, and the two read as one account:
+ * the lamps for how the week was, this for what happened in it. A strained
+ * kind is drawn in the Tension lamp's amber and a warm one in the Warmth
+ * lamp's green for the same reason.
+ */
+
+.inc-panel { margin-top: 18px; padding: 30px 28px 24px; }
+
+.inc-notice {
+  margin: 16px auto 0; max-width: 720px; padding: 10px 14px;
+  font-size: 13.5px; line-height: 1.5; text-align: center;
+  color: var(--fb-amber); background: rgba(240,166,60,.10);
+  border: 1px solid rgba(240,166,60,.32); border-radius: 9px;
+}
+
+/* ---- the count ---- */
+.inc-tally {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 22px;
+  margin: 18px 0 4px; font-size: 13.5px; color: var(--fb-dim);
+}
+.inc-tally b {
+  color: var(--fb-text); font-weight: 600; font-variant-numeric: tabular-nums;
+}
+
+/* ---- a day ---- */
+.inc-day {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  justify-content: space-between; gap: 4px 14px;
+  margin: 26px 0 10px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--fb-rule);
+}
+.inc-day-name { font-size: 16px; font-weight: 600; color: var(--fb-text); }
+.inc-day-read { font-size: 12px; color: var(--fb-dim); }
+
+/* ---- an incident ---- */
+.inc-row {
+  display: grid; grid-template-columns: 112px minmax(0, 1fr) auto;
+  gap: 16px; align-items: start;
+  padding: 13px 16px; margin-bottom: 8px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid var(--fb-rule);
+  border-left: 3px solid var(--fb-grey);
+  border-radius: 9px;
+  transition: opacity .2s ease;
+}
+.inc-row[data-family="strain"] { border-left-color: var(--fb-amber); }
+.inc-row[data-family="warm"]   { border-left-color: var(--fb-green); }
+/* Rejected: the list was wrong about this one, so it steps back -- but stays,
+   because a wrong claim is part of the record. */
+.inc-row[data-verdict="rejected"] { opacity: .55; }
+.inc-row[data-verdict="rejected"] .inc-what { text-decoration: line-through; }
+
+.inc-clock {
+  font-size: 15px; font-weight: 600; color: var(--fb-text);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.inc-length { margin-top: 2px; font-size: 12px; color: var(--fb-dim); }
+
+.inc-headline {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
+}
+.inc-kind {
+  font-size: 11px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; white-space: nowrap;
+  padding: 3px 10px; border-radius: 999px;
+  color: var(--fb-dim); background: rgba(147,163,178,.08);
+  border: 1px solid rgba(147,163,178,.22);
+}
+.inc-row[data-family="strain"] .inc-kind {
+  color: var(--fb-amber); background: rgba(240,166,60,.12);
+  border-color: rgba(240,166,60,.32);
+}
+.inc-row[data-family="warm"] .inc-kind {
+  color: var(--fb-green); background: rgba(87,201,138,.12);
+  border-color: rgba(87,201,138,.32);
+}
+.inc-who { font-size: 14.5px; font-weight: 600; color: var(--fb-text); }
+.inc-tension {
+  font-size: 12px; color: var(--fb-dim);
+  font-variant-numeric: tabular-nums; cursor: help;
+}
+.inc-what {
+  margin-top: 5px; font-size: 14.5px; line-height: 1.5; color: var(--fb-text);
+  overflow-wrap: anywhere;
+}
+
+/* ---- the words it rests on ---- */
+/* Under the text and the buttons both: a sentence needs the width. */
+.inc-lines { grid-column: 2 / -1; margin-top: -6px; }
+.inc-lines > summary {
+  font-size: 12.5px; color: var(--fb-dim); cursor: pointer;
+  width: fit-content; border-radius: 4px;
+}
+.inc-lines > summary:hover { color: var(--fb-text); }
+.inc-lines-box {
+  margin-top: 8px; max-height: 280px; overflow-y: auto;
+  padding: 10px 12px; font-size: 13.5px; line-height: 1.55;
+  background: rgba(0,0,0,.22);
+  border: 1px solid var(--fb-rule); border-radius: 7px;
+  scrollbar-width: thin; scrollbar-color: var(--fb-grey) transparent;
+}
+.inc-said {
+  display: grid; grid-template-columns: 62px 58px minmax(0, 1fr); gap: 10px;
+}
+.inc-said-time { color: var(--fb-dim); font-variant-numeric: tabular-nums; }
+.inc-said-who { color: var(--fb-dim); font-weight: 600; }
+.inc-said-text { color: var(--fb-text); overflow-wrap: anywhere; }
+.inc-said-more { margin-top: 6px; font-size: 12.5px; color: var(--fb-dim); }
+
+/* ---- confirm, reject ---- */
+.inc-verdict { display: flex; gap: 8px; align-items: center; }
+.inc-btn {
+  font: inherit; font-size: 12.5px; font-weight: 600; line-height: 1;
+  padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  color: var(--fb-dim); background: transparent;
+  border: 1px solid var(--fb-rule);
+  transition: color .15s ease, background .15s ease, border-color .15s ease;
+}
+.inc-btn:hover { color: var(--fb-text); border-color: var(--fb-dim); }
+.inc-btn:focus-visible,
+.inc-lines > summary:focus-visible {
+  outline: 2px solid var(--fb-text); outline-offset: 2px;
+}
+.inc-confirmed.on {
+  color: #0C1A12; background: var(--fb-green); border-color: var(--fb-green);
+}
+.inc-rejected.on {
+  color: var(--fb-text); background: var(--fb-grey); border-color: var(--fb-dim);
+}
+
+/* ---- "do you want me to prepare the list for ...?" ---- */
+/* A question put to the reader, so it is set apart from the list and comes
+   before it: the day it asks about is the one they came to judge. */
+.inc-ask {
+  margin: 18px auto 6px; max-width: 720px; padding: 18px 20px;
+  text-align: center;
+  background: rgba(255,255,255,.045);
+  border: 1px solid var(--fb-rule); border-radius: 12px;
+}
+.inc-ask-q { font-size: 17px; font-weight: 600; color: var(--fb-text); }
+.inc-ask-why {
+  margin-top: 6px; font-size: 13px; line-height: 1.5; color: var(--fb-dim);
+}
+.inc-ask-buttons {
+  margin-top: 14px; display: flex; gap: 10px; justify-content: center;
+}
+.inc-answer { min-width: 76px; }
+/* Yes is the answer that does something, so it is the filled one. */
+.inc-answer.on {
+  color: #0C1A12; background: var(--fb-green); border-color: var(--fb-green);
+}
+.inc-answer.on:hover { color: #0C1A12; filter: brightness(1.08); }
+.inc-ask-failed {
+  margin-bottom: 10px; font-size: 13px; line-height: 1.5;
+  color: var(--fb-amber); overflow-wrap: anywhere;
+}
+.inc-ask-more { margin-top: 12px; font-size: 12px; color: var(--fb-dim); }
+
+/* While a day is being read: the same card, with a slow pulse on its edge so
+   the page is seen to be waiting on something. */
+.inc-working { border-color: rgba(87,201,138,.45); animation: inc-wait 2.4s ease-in-out infinite; }
+@keyframes inc-wait {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(87,201,138,0); }
+  50%      { box-shadow: 0 0 18px 0 rgba(87,201,138,.22); }
+}
+
+.inc-declined .inc-btn { margin-left: 8px; padding: 5px 11px; font-size: 12px; }
+
+/* A narrow screen: the time above, the buttons below. */
+@media (max-width: 640px) {
+  .inc-panel { padding: 24px 16px 20px; }
+  .inc-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .inc-time { display: flex; align-items: baseline; gap: 10px; }
+  .inc-length { margin-top: 0; }
+  .inc-lines { grid-column: 1 / -1; margin-top: 0; }
+  .inc-said { grid-template-columns: 58px minmax(0, 1fr); }
+  .inc-said-text { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inc-row, .inc-btn { transition: none; }
+  .inc-working { animation: none; }
+}
+
+/* ---- the diary: "what happened?", asked before the list is shown ---- */
+.inc-diary { max-width: 820px; }
+.inc-diary-form { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.inc-diary-kinds label, .inc-diary-who label { margin: 0 10px 4px 0; font-size: 14px; color: var(--fb-text); cursor: pointer; }
+.inc-diary-kinds input, .inc-diary-who input { margin-right: 5px; }
+.inc-diary-line { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: center; font-size: 13.5px; color: var(--fb-dim); }
+.inc-diary-time, .inc-diary-text {
+  font: inherit; font-size: 14px; padding: 6px 9px; border-radius: 7px;
+  color: var(--fb-text); background: rgba(0,0,0,.25); border: 1px solid var(--fb-rule);
+}
+.inc-diary-time { width: 78px; text-align: center; }
+.inc-diary-text { width: min(100%, 420px); }
+.inc-diary-written { margin: 14px auto 0; max-width: 620px; text-align: left; }
+.inc-diary-entry {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
+  padding: 8px 12px; margin-bottom: 6px;
+  background: rgba(255,255,255,.035); border: 1px solid var(--fb-rule); border-radius: 8px;
+}
+.inc-diary-note { flex: 1; font-size: 13px; color: var(--fb-dim); }
+.inc-diary-remove { padding: 4px 10px; font-size: 11.5px; }
+
+/* The six kinds as the reader defines them, shown above the diary form. */
+.inc-defs { margin: 14px auto 0; max-width: 560px; text-align: left; }
+.inc-def { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 10px; align-items: baseline; margin-bottom: 5px; }
+.inc-def .inc-kind { justify-self: start; }
+.inc-def-text { font-size: 13.5px; color: var(--fb-text); }
+.inc-def-rule { margin-top: 8px; font-size: 12.5px; color: var(--fb-dim); }
+
+/* ---- blind labelling: stretches of the day tagged before the list is shown ---- */
+.inc-blind { max-width: 900px; }
+.inc-blind-window {
+  margin-top: 16px; padding: 14px 16px; text-align: left;
+  background: rgba(255,255,255,.03); border: 1px solid var(--fb-rule);
+  border-left: 3px solid var(--fb-amber); border-radius: 9px;
+}
+.inc-blind-window[data-answered="yes"] { border-left-color: var(--fb-green); }
+.inc-blind-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.inc-blind-open { font-size: 12px; color: var(--fb-amber); }
+.inc-blind-done { font-size: 12px; color: var(--fb-green); }
+.inc-blind-line { color: var(--fb-text); overflow-wrap: anywhere; }
+.inc-blind-players { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.inc-blind-audio { width: 100%; height: 30px; }
+.inc-blind-tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+.inc-tag.on { color: #0C1A12; background: var(--fb-green); border-color: var(--fb-green); }
+.inc-blind-close { flex-direction: column; align-items: center; }
+.inc-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.inc-blind-ask { margin-top: 12px; font-size: 13px; color: var(--fb-text); }

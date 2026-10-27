@@ -1,0 +1,148 @@
+/* Conversations through the day — standalone viewer.
+ *
+ * Painted on the Part B lamps panel's dark ground (assets/family_bulbs.css in
+ * the dashboard), so a lit cell reads as the lamp above it lit. The dashboard
+ * does not load this file; the viewer serves it from its own assets folder.
+ */
+
+:root {
+  --ct-page: #0B1016;
+  --ct-night: #131A22;
+  --ct-night-2: #1A232D;
+  --ct-rule: #27333F;
+  --ct-text: #E7EDF3;
+  --ct-dim: #93A3B2;
+  --ct-green: #57C98A;
+  --ct-amber: #F0A63C;
+}
+
+body { background: var(--ct-page); color: var(--ct-text); }
+.cd-page { max-width: 1500px; margin: 0 auto; padding: 26px 28px 40px; }
+
+.cd-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 16px; flex-wrap: wrap; padding-bottom: 16px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ct-rule);
+}
+.cd-header h1 { font-size: 30px; font-weight: 600; margin: 0; color: var(--ct-text); }
+.cd-header p { margin: 4px 0 0; color: var(--ct-dim); font-size: 15px; }
+.cd-day { font-size: 18px; color: var(--ct-text); }
+
+.cd-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+.cd-field label {
+  display: block; font-size: 11px; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--ct-dim); margin-bottom: 4px;
+}
+.cd-narrow { width: 96px; }
+.cd-wide { min-width: 260px; }
+.cd-switch { padding-bottom: 6px; }
+.cd-hint { font-size: 12.5px; color: var(--ct-dim); margin: 8px 0 12px; }
+
+.cd-status { min-height: 26px; margin: 4px 0 6px; }
+.cd-status-main { font-size: 14px; color: var(--ct-text); margin-right: 14px; }
+.cd-status-note { font-size: 12.5px; color: var(--ct-dim); }
+
+/* Dash dropdowns and the date picker ship light; bring them onto the page. */
+.cd-page .Select-control, .cd-page .Select-menu-outer, .cd-page .dash-dropdown,
+.cd-page .SingleDatePickerInput, .cd-page .DateInput, .cd-page .DateInput_input {
+  background: var(--ct-night-2) !important; color: var(--ct-text) !important;
+  border-color: var(--ct-rule) !important;
+}
+.cd-page .Select-value-label, .cd-page .Select-placeholder { color: var(--ct-text) !important; }
+
+.cd-slot { display: flex; align-items: center; gap: 8px; justify-content: flex-end; margin-bottom: 2px; }
+.cd-slot label {
+  font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--ct-dim); margin: 0;
+}
+.cd-slot > div:last-child { width: 110px; }
+
+/* ---- the panel ---- */
+.ct-panel {
+  background: radial-gradient(120% 90% at 50% -10%, var(--ct-night-2) 0%, var(--ct-night) 62%);
+  border: 1px solid var(--ct-rule); border-radius: 14px;
+  padding: 18px 22px 22px; margin-top: 10px; color: var(--ct-text);
+}
+.ct-legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 12.5px; color: var(--ct-dim); margin: 4px 4px 2px; }
+.ct-legend-item { display: inline-flex; align-items: center; }
+.ct-swatch { display: inline-block; width: 46px; height: 10px; border-radius: 3px; margin-right: 8px; }
+.ct-note { font-size: 12px; color: var(--ct-dim); margin: 6px 4px 18px; }
+.ct-muted { opacity: .7; }
+
+.ct-moments-head { font-size: 16px; font-weight: 600; margin: 4px 0 10px; color: var(--ct-text); }
+.ct-moments { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.ct-empty { color: var(--ct-dim); font-size: 13px; }
+
+.ct-card {
+  background: rgba(255,255,255,.03); border: 1px solid var(--ct-rule); border-radius: 12px;
+  padding: 12px 14px; transition: background .2s ease, border-color .2s ease;
+}
+.ct-card-head { cursor: pointer; outline: none; }
+.ct-card:not(.ct-card-open):hover, .ct-card:has(.ct-card-head:focus-visible) {
+  background: rgba(255,255,255,.06); border-color: #3A4A5A;
+}
+/* An open card takes the whole row, so its detail has room to read. */
+.ct-card-open { grid-column: 1 / -1; background: rgba(255,255,255,.045); border-color: #3A4A5A; }
+.ct-card-open .ct-card-text { -webkit-line-clamp: unset; }
+.ct-card-open .ct-detail { margin-top: 10px; padding: 10px 0 4px; border-top: 1px solid var(--ct-rule); border-bottom: none; }
+.ct-card-toggle { margin-left: auto; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--ct-dim); }
+.ct-chip-none { color: var(--ct-dim); border-color: var(--ct-rule); }
+.ct-chosen-head { display: flex; align-items: baseline; gap: 12px; margin: 4px 0 10px; }
+.ct-chosen-head .ct-moments-head { margin: 0; }
+.ct-chosen-title { color: var(--ct-dim); font-size: 13px; }
+#cd-chosen-box { margin-bottom: 18px; }
+.ct-card-time { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ct-dim); }
+.ct-dot { width: 9px; height: 9px; border-radius: 50%; }
+.ct-dot[data-kind="problem"] { background: var(--ct-amber); }
+.ct-dot[data-kind="positive"] { background: var(--ct-green); }
+.ct-card-title { font-size: 15px; font-weight: 600; margin-top: 4px; color: var(--ct-text); }
+.ct-card-room { font-size: 12px; color: var(--ct-dim); }
+.ct-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 6px; }
+.ct-chip { font-size: 11.5px; padding: 1px 8px; border-radius: 999px; border: 1px solid; }
+.ct-chip[data-kind="problem"] { color: var(--ct-amber); background: rgba(240,166,60,.12); border-color: rgba(240,166,60,.32); }
+.ct-chip[data-kind="positive"] { color: var(--ct-green); background: rgba(87,201,138,.12); border-color: rgba(87,201,138,.32); }
+.ct-card-types { font-size: 11.5px; color: var(--ct-dim); }
+.ct-card-text {
+  font-size: 12.5px; line-height: 1.4; color: #C9D4DE; margin-top: 6px;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* ---- the detail dialog ---- */
+.ct-detail { padding: 10px 0 18px; border-bottom: 1px solid rgba(127,127,127,.25); }
+.ct-detail:last-child { border-bottom: none; }
+.ct-detail-head { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; margin-bottom: 8px; }
+.ct-detail-time { font-weight: 600; font-variant-numeric: tabular-nums; }
+.ct-detail-who { font-weight: 600; }
+.ct-detail-where { font-size: 13px; opacity: .7; }
+.ct-detail-label { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; opacity: .65; margin: 12px 0 6px; }
+.ct-scores { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin: 4px 0 8px; }
+@media (max-width: 720px) { .ct-scores { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.ct-score { border-radius: 8px; padding: 6px 8px; text-align: center; font-size: 12px; background: rgba(127,127,127,.14); }
+.ct-score b { display: block; font-size: 15px; font-variant-numeric: tabular-nums; }
+.ct-score[data-lit="positive"] { background: rgba(87,201,138,.24); }
+.ct-score[data-lit="problem"] { background: rgba(240,166,60,.28); }
+.ct-evidence { margin: 6px 0; padding: 6px 12px; border-left: 3px solid rgba(127,127,127,.45); font-style: italic; font-size: 13.5px; }
+.ct-turns { font-size: 13.5px; }
+.ct-turn { display: grid; grid-template-columns: 72px 92px 1fr; gap: 8px; padding: 4px 0; border-top: 1px solid rgba(127,127,127,.18); }
+.ct-turn-time { opacity: .65; font-variant-numeric: tabular-nums; }
+.ct-turn-speaker { font-weight: 600; }
+.ct-turn-where { font-size: 12px; opacity: .55; text-align: right; }
+.ct-sound { font-style: italic; opacity: .75; }
+.ct-sound .ct-turn-speaker { font-weight: 400; }
+.ct-copy { opacity: .55; }
+@media (max-width: 720px) {
+  .ct-turn { grid-template-columns: 64px 80px 1fr; }
+  .ct-turn-where { display: none; }
+}
+.cd-silence { width: 190px; }
+
+/* ---- what was measured ---- */
+.ct-factcard { margin: 2px 0 6px; }
+.ct-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; margin: 4px 0 8px; }
+.ct-fact { background: rgba(127,127,127,.12); border-radius: 8px; padding: 7px 10px; }
+.ct-fact-name { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; opacity: .65; }
+.ct-fact-value { font-size: 15px; font-variant-numeric: tabular-nums; }
+.ct-fact-detail { font-size: 12px; opacity: .75; }
+.ct-fact-note { font-size: 13.5px; margin: 2px 0 6px; }
+.ct-quote { font-size: 13.5px; padding: 3px 0; }
+.ct-quote-time { opacity: .65; font-variant-numeric: tabular-nums; margin-right: 8px; }
+.ct-quote-who { font-weight: 600; margin-right: 6px; }

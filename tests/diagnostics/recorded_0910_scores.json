@@ -1,0 +1,975 @@
+[
+  {
+    "scenario": 40,
+    "title": "Conflict → genuine repair",
+    "group": "P8",
+    "events": 12,
+    "heard": 14,
+    "copies": 4,
+    "scripted": 7,
+    "clusters": 9,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "disagreement",
+      "apology",
+      "criticism"
+    ]
+  },
+  {
+    "scenario": 39,
+    "title": "Family resilience",
+    "group": "P1",
+    "events": 4,
+    "heard": 6,
+    "copies": 0,
+    "scripted": 6,
+    "clusters": 4,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "types": [
+      "support",
+      "neutral_conversation"
+    ]
+  },
+  {
+    "scenario": 38,
+    "title": "One child blamed",
+    "group": "P6",
+    "events": 8,
+    "heard": 10,
+    "copies": 7,
+    "scripted": 5,
+    "clusters": 7,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "types": [
+      "disagreement",
+      "criticism"
+    ]
+  },
+  {
+    "scenario": 37,
+    "title": "Emotional neglect",
+    "group": "P7",
+    "events": 7,
+    "heard": 7,
+    "copies": 1,
+    "scripted": 6,
+    "clusters": 6,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.75,
+      "tension": 0.5
+    },
+    "types": [
+      "complaint",
+      "disagreement",
+      "withdrawal"
+    ]
+  },
+  {
+    "scenario": 36,
+    "title": "Family celebration",
+    "group": "P2",
+    "events": 6,
+    "heard": 7,
+    "copies": 5,
+    "scripted": 6,
+    "clusters": 6,
+    "windows": 3,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.75,
+      "joy": 0.5,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "types": [
+      "affection",
+      "neutral_conversation",
+      "information_sharing"
+    ]
+  },
+  {
+    "scenario": 35,
+    "title": "Overprotective parent",
+    "group": "P3",
+    "events": 5,
+    "heard": 6,
+    "copies": 2,
+    "scripted": 6,
+    "clusters": 2,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.25,
+      "withdrawal": 0.0,
+      "tension": 0.25
+    },
+    "types": [
+      "neutral_conversation",
+      "information_sharing"
+    ]
+  },
+  {
+    "scenario": 34,
+    "title": "Embarrassment and apology",
+    "group": "P8",
+    "events": 9,
+    "heard": 7,
+    "copies": 4,
+    "scripted": 5,
+    "clusters": 4,
+    "windows": 3,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "criticism",
+      "repair",
+      "other"
+    ]
+  },
+  {
+    "scenario": 33,
+    "title": "Affection after conflict",
+    "group": "P8",
+    "events": 5,
+    "heard": 8,
+    "copies": 0,
+    "scripted": 6,
+    "clusters": 4,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.25,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "disagreement",
+      "support"
+    ]
+  },
+  {
+    "scenario": 32,
+    "title": "Jealousy / suspicion",
+    "group": "P6",
+    "events": 3,
+    "heard": 7,
+    "copies": 1,
+    "scripted": 5,
+    "clusters": 1,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": null,
+      "withdrawal": null,
+      "tension": 0.5
+    },
+    "types": [
+      "disagreement",
+      "criticism"
+    ]
+  },
+  {
+    "scenario": 31,
+    "title": "Financial repair",
+    "group": "P8",
+    "events": 6,
+    "heard": 8,
+    "copies": 2,
+    "scripted": 6,
+    "clusters": 6,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.25
+    },
+    "types": [
+      "information_sharing",
+      "agreement",
+      "support"
+    ]
+  },
+  {
+    "scenario": 30,
+    "title": "Conflict over money",
+    "group": "P5",
+    "events": 5,
+    "heard": 7,
+    "copies": 3,
+    "scripted": 5,
+    "clusters": 4,
+    "windows": 4,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "types": [
+      "disagreement",
+      "criticism"
+    ]
+  },
+  {
+    "scenario": 29,
+    "title": "Affection with the child",
+    "group": "P1",
+    "events": 5,
+    "heard": 6,
+    "copies": 0,
+    "scripted": 5,
+    "clusters": 5,
+    "windows": 3,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.6,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.25
+    },
+    "types": [
+      "affection",
+      "disagreement"
+    ]
+  },
+  {
+    "scenario": 28,
+    "title": "Serenity",
+    "group": "P3",
+    "events": 7,
+    "heard": 6,
+    "copies": 1,
+    "scripted": 5,
+    "clusters": 5,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.7,
+      "warmth": 0.5,
+      "joy": 0.25,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "types": [
+      "neutral_conversation"
+    ]
+  },
+  {
+    "scenario": 27,
+    "title": "Undermining the partner",
+    "group": "P5",
+    "events": 5,
+    "heard": 6,
+    "copies": 3,
+    "scripted": 5,
+    "clusters": 3,
+    "windows": 3,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": null,
+      "withdrawal": null,
+      "tension": 0.75
+    },
+    "types": [
+      "disagreement",
+      "criticism"
+    ]
+  },
+  {
+    "scenario": 26,
+    "title": "Couple unity in front of the child",
+    "group": "P3",
+    "events": 7,
+    "heard": 6,
+    "copies": 3,
+    "scripted": 6,
+    "clusters": 6,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": null,
+      "withdrawal": null,
+      "tension": 0.5
+    },
+    "types": [
+      "disagreement",
+      "coordination"
+    ]
+  },
+  {
+    "scenario": 25,
+    "title": "Achievement pressure",
+    "group": "P6",
+    "events": 7,
+    "heard": 7,
+    "copies": 0,
+    "scripted": 6,
+    "clusters": 6,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "types": [
+      "neutral_conversation",
+      "information_sharing"
+    ]
+  },
+  {
+    "scenario": 24,
+    "title": "Playful competition",
+    "group": "P2",
+    "events": 5,
+    "heard": 8,
+    "copies": 1,
+    "scripted": 5,
+    "clusters": 7,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 1.0,
+      "joy": 1.0,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "types": [
+      "humor",
+      "shared_enjoyment",
+      "affection"
+    ]
+  },
+  {
+    "scenario": 23,
+    "title": "Child dismissed",
+    "group": "P7",
+    "events": 3,
+    "heard": 3,
+    "copies": 0,
+    "scripted": 5,
+    "clusters": 3,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "types": [
+      "disagreement",
+      "criticism"
+    ]
+  },
+  {
+    "scenario": 22,
+    "title": "Child comfort",
+    "group": "P1",
+    "events": 6,
+    "heard": 6,
+    "copies": 0,
+    "scripted": 6,
+    "clusters": 5,
+    "windows": 3,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.25,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "types": [
+      "support",
+      "neutral_conversation"
+    ]
+  },
+  {
+    "scenario": 21,
+    "title": "Repair after resentment",
+    "group": "P8",
+    "events": 6,
+    "heard": 8,
+    "copies": 1,
+    "scripted": 6,
+    "clusters": 6,
+    "windows": 3,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.25
+    },
+    "types": [
+      "disagreement",
+      "information_sharing",
+      "support"
+    ]
+  },
+  {
+    "scenario": 20,
+    "title": "Household resentment",
+    "group": "P5",
+    "events": 7,
+    "heard": 5,
+    "copies": 4,
+    "scripted": 5,
+    "clusters": 3,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "types": [
+      "complaint",
+      "disagreement"
+    ]
+  },
+  {
+    "scenario": 19,
+    "title": "Passive aggression",
+    "group": "P6",
+    "events": 4,
+    "heard": 6,
+    "copies": 0,
+    "scripted": 5,
+    "clusters": 3,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "support",
+      "disagreement"
+    ]
+  },
+  {
+    "scenario": 18,
+    "title": "Mutual affection",
+    "group": "P1",
+    "events": 4,
+    "heard": 5,
+    "copies": 2,
+    "scripted": 5,
+    "clusters": 4,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.25,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "types": [
+      "support",
+      "neutral_conversation"
+    ]
+  },
+  {
+    "scenario": 17,
+    "title": "Successful parenting repair",
+    "group": "P8",
+    "events": 5,
+    "heard": 5,
+    "copies": 0,
+    "scripted": 6,
+    "clusters": 4,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.25,
+      "inclusion": 0.75,
+      "withdrawal": null,
+      "tension": 0.25
+    },
+    "types": [
+      "neutral_conversation",
+      "information_sharing",
+      "inclusion"
+    ]
+  },
+  {
+    "scenario": 16,
+    "title": "Parent-child conflict",
+    "group": "P5",
+    "events": 4,
+    "heard": 8,
+    "copies": 1,
+    "scripted": 5,
+    "clusters": 7,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "types": [
+      "criticism",
+      "disagreement"
+    ]
+  },
+  {
+    "scenario": 15,
+    "title": "Parents disagree about the child",
+    "group": "P5",
+    "events": 4,
+    "heard": 6,
+    "copies": 3,
+    "scripted": 5,
+    "clusters": 3,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "disagreement",
+      "criticism"
+    ]
+  },
+  {
+    "scenario": 14,
+    "title": "Cold atmosphere",
+    "group": "P4",
+    "events": 3,
+    "heard": 5,
+    "copies": 0,
+    "scripted": 5,
+    "clusters": 2,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "neutral_conversation",
+      "complaint"
+    ]
+  },
+  {
+    "scenario": 13,
+    "title": "Family bliss",
+    "group": "P2",
+    "events": 6,
+    "heard": 7,
+    "copies": 7,
+    "scripted": 6,
+    "clusters": 5,
+    "windows": 4,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 0.75,
+      "joy": 0.5,
+      "inclusion": 1.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "types": [
+      "shared_enjoyment"
+    ]
+  },
+  {
+    "scenario": 12,
+    "title": "Tension → repair",
+    "group": "P8",
+    "events": 9,
+    "heard": 9,
+    "copies": 7,
+    "scripted": 6,
+    "clusters": 6,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "criticism",
+      "complaint",
+      "reassurance"
+    ]
+  },
+  {
+    "scenario": 11,
+    "title": "Aftermath and repair",
+    "group": "P8",
+    "events": 5,
+    "heard": 6,
+    "copies": 3,
+    "scripted": 6,
+    "clusters": 5,
+    "windows": 4,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.25,
+      "tension": 0.5
+    },
+    "types": [
+      "criticism",
+      "apology",
+      "reassurance"
+    ]
+  },
+  {
+    "scenario": 10,
+    "title": "Raised voices",
+    "group": "P8",
+    "events": 4,
+    "heard": 4,
+    "copies": 0,
+    "scripted": 5,
+    "clusters": 2,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "disagreement",
+      "criticism",
+      "repair"
+    ]
+  },
+  {
+    "scenario": 9,
+    "title": "Emotional pressure",
+    "group": "P5",
+    "events": 4,
+    "heard": 8,
+    "copies": 2,
+    "scripted": 5,
+    "clusters": 3,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.7,
+      "warmth": 0.1,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "types": [
+      "criticism",
+      "disagreement",
+      "complaint"
+    ]
+  },
+  {
+    "scenario": 8,
+    "title": "Oppression / controlling behaviour",
+    "group": "P6",
+    "events": 4,
+    "heard": 8,
+    "copies": 6,
+    "scripted": 6,
+    "clusters": 5,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.7,
+      "warmth": 0.2,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "disagreement",
+      "complaint"
+    ]
+  },
+  {
+    "scenario": 7,
+    "title": "Depression / emotional withdrawal",
+    "group": "P7",
+    "events": 4,
+    "heard": 2,
+    "copies": 0,
+    "scripted": 6,
+    "clusters": 2,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.75,
+      "joy": null,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "types": [
+      "support",
+      "reassurance"
+    ]
+  },
+  {
+    "scenario": 6,
+    "title": "Praise and encouragement",
+    "group": "P1",
+    "events": 5,
+    "heard": 8,
+    "copies": 2,
+    "scripted": 6,
+    "clusters": 7,
+    "windows": 3,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 1.0,
+      "joy": 1.0,
+      "inclusion": null,
+      "withdrawal": null,
+      "tension": 0.0
+    },
+    "types": [
+      "affection",
+      "praise",
+      "shared_enjoyment"
+    ]
+  },
+  {
+    "scenario": 5,
+    "title": "Child rejection",
+    "group": "P7",
+    "events": 2,
+    "heard": 5,
+    "copies": 0,
+    "scripted": 5,
+    "clusters": 4,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.25
+    },
+    "types": [
+      "request",
+      "disagreement",
+      "criticism"
+    ]
+  },
+  {
+    "scenario": 4,
+    "title": "Withdrawal",
+    "group": "P7",
+    "events": 2,
+    "heard": 3,
+    "copies": 0,
+    "scripted": 5,
+    "clusters": 1,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.25,
+      "joy": null,
+      "inclusion": null,
+      "withdrawal": 0.5,
+      "tension": 0.5
+    },
+    "types": [
+      "disagreement",
+      "rejection"
+    ]
+  },
+  {
+    "scenario": 3,
+    "title": "Sarcasm / irony",
+    "group": "P6",
+    "events": 5,
+    "heard": 9,
+    "copies": 1,
+    "scripted": 5,
+    "clusters": 6,
+    "windows": 2,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 0.75,
+      "joy": 0.5,
+      "inclusion": null,
+      "withdrawal": null,
+      "tension": 0.0
+    },
+    "types": [
+      "humor",
+      "shared_enjoyment"
+    ]
+  },
+  {
+    "scenario": 2,
+    "title": "Conflict — criticism",
+    "group": "P5",
+    "events": 4,
+    "heard": 9,
+    "copies": 6,
+    "scripted": 5,
+    "clusters": 7,
+    "windows": 4,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.25,
+      "joy": null,
+      "inclusion": null,
+      "withdrawal": null,
+      "tension": 0.5
+    },
+    "types": [
+      "disagreement",
+      "complaint",
+      "request"
+    ]
+  },
+  {
+    "scenario": 1,
+    "title": "Connected family — warmth",
+    "group": "P1",
+    "events": 1,
+    "heard": 4,
+    "copies": 0,
+    "scripted": 5,
+    "clusters": 1,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 1.0,
+      "joy": 1.0,
+      "inclusion": null,
+      "withdrawal": null,
+      "tension": 0.0
+    },
+    "types": [
+      "shared_enjoyment",
+      "information_sharing"
+    ]
+  }
+]

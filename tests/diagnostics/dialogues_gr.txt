@@ -1,0 +1,557 @@
+# 40 Family-Dynamics Dialogues — Greek recording script
+
+Speakers: Ilyas = husband, Voula = wife, Rafael = child.
+
+Each turn is tagged with the emotion to perform: [happy] [sad] [angry] [neutral].
+That tag is ground truth for the emotion model and is stripped before anything
+reaches the semantic interpreter.
+
+HOW TO PERFORM
+  Under-act. Say it like it is the fourth time this week, not like a scene.
+  Do not project or over-articulate — the pipeline must hear ordinary speech.
+  Overlap and interrupt where it is natural; do not wait politely for cues.
+  Leave 2-4 seconds between turns, and 30 seconds between scenarios.
+  If a line feels wrong in your family's Greek, change it and note the change.
+
+BEFORE YOU RECORD
+  Set the room name to a dedicated value (e.g. Studio) or note the exact start
+  and end time, so these can be excluded from the daily report. Forty staged
+  arguments in the record will otherwise read as a household in crisis.
+
+DISTANCE conditions are marked per session and are the point of the exercise:
+  NEAR = normal conversational distance from the sentinel
+  FAR  = across the room, or facing away
+  NEXT = speaking from the adjoining room, door open
+
+[ADULT ONLY] marks scenarios to record without Rafael present.
+
+================================================================================
+SESSION 1 — Kitchen, NEAR
+================================================================================
+
+### 1. Connected family — warmth
+
+Ilyas [happy]: Πολύ ωραίο ήταν το φαγητό απόψε.
+Voula [neutral]: Σου άρεσε; Φοβόμουν ότι έβαλα πολύ σκόρδο.
+Rafael [happy]: Εμένα μου άρεσε! Το ξανακάνουμε αύριο;
+Ilyas [neutral]: Μάλλον η μαγείρισσα απέκτησε θαυμαστές.
+Voula [happy]: Εντάξει, το ξανακάνω. Αφού το ζητάτε.
+
+Dynamic: affection, praise, shared humor, connection.
+
+---
+
+### 2. Conflict — criticism
+
+Voula [angry]: Είπες ότι θα πάρεις τον Ραφαήλ στις πέντε.
+Ilyas [neutral]: Άργησα στη δουλειά.
+Voula [angry]: Πάντα αργείς. Όλα τα άλλα είναι πιο σημαντικά.
+Ilyas [angry]: Σου ζήτησα συγγνώμη. Τι άλλο θες να πω;
+Rafael [sad]: Μπορείτε να σταματήσετε, σας παρακαλώ;
+
+Dynamic: criticism, defensiveness, family tension.
+
+---
+
+### 3. Sarcasm / irony
+
+Ilyas [neutral]: Α, πλύθηκαν μόνα τους τα πιάτα πάλι. Καταπληκτικό!
+Voula [neutral]: Ναι, είναι πολύ αυτόνομα πιάτα.
+Ilyas [neutral]: Μπορεί να μαγειρέψουν μόνα τους κιόλας αύριο? Φαίνεται θα το χρειαστούμε!
+Voula [angry]: Βέβαια. Σε αντίθεση με κάποιους, τα πιάτα δεν γκρινιάζουν ποτέ.
+Rafael [neutral]: Μαλώνετε ή αστειεύεστε;
+
+Dynamic: mutual sarcasm, ambiguous hostility.
+
+---
+
+### 4. Withdrawal [ADULT ONLY]
+
+Voula [sad]: Μπορούμε να μιλήσουμε για το πρωί;
+Ilyas [neutral]: Όχι τώρα.
+Voula [sad]: Πέντε λεπτά μόνο.
+Ilyas [angry]: Είπα όχι τώρα!
+Voula [sad]: Εντάξει.
+
+Dynamic: bid → refusal → second bid → withdrawal.
+
+---
+
+### 5. Child rejection
+
+Rafael [neutral]: Μπαμπά, με βοηθάς λίγο με τις ασκήσεις στα μαθηματικά;
+Ilyas [angry]: Όχι τώρα, Ραφαήλ. Όλο κάτι θέλεις!
+Rafael [sad]: Μία ερώτηση μόνο.
+Ilyas [neutral]: Ρώτα τη μαμά σου.
+Rafael [sad]: Καλά.
+
+Dynamic: repeated bid, dismissal, child withdrawal.
+
+---
+
+### 6. Praise and encouragement
+
+Voula [happy]: Είδα το διαγώνισμα. Μπράβο σου πραγματικά.  Μπράβο σου και  Μπράβο σου!
+Rafael [neutral]: Ε δεν ήταν και τόσο καλός ο βαθμός μου.
+Ilyas [happy]: Πλάκα κάνεις; Διάβασες μόνος σου κάθε βράδυ άλγεβρα και αρχαία.
+Voula [happy]: Και φαίνεται! Είμαστε περήφανοι.
+Rafael [happy]: Ε καλά λοιπόν.
+Ilyas [happy]: Το επόμενο θα πάει ακόμα καλύτερα.
+
+Dynamic: praise, encouragement, parental support.
+
+---
+
+### 7. Depression / emotional withdrawal
+
+Voula [sad]: Κάθεσαι όλο το απόγευμα εδώ. Είσαι καλά;
+Ilyas [sad]: Καλά είμαι.
+Voula [sad]: Δεν φαίνεσαι καλά.
+Ilyas [neutral]: Απλώς κουράστηκα.
+Rafael [neutral]: Μπαμπά, θέλεις να πάμε να τρέξουμε;
+Ilyas [sad]: Άσε με λίγο, αγόρι μου. Δε νοιώθω καλά και δε ξέρω τι φταίει
+
+Dynamic: low mood, concern from others, gentle refusal.
+
+---
+
+### 8. Oppression / controlling behaviour [ADULT ONLY]
+
+Ilyas [angry]: Πού ήσουν; Σε πήρα δύο φορές τηλέφωνο. Δύο φορές! 
+Voula [neutral]: Στη Μαρία. Σου το είχα πει.
+Ilyas [angry]: Δεν μου το είπες. Ποτέ δε σε βρίσκω στο τηλέφωνο!
+Voula [neutral]: Σου το είπα το πρωί. Δε θυμάσαι.
+Ilyas [angry]: Να με ενημερώνεις! Δεν είναι και δύσκολο.
+Voula [sad]: Ε δεν ήξερα πως χρειαζόμουν και την άδεια σου!
+
+Dynamic: interrogation, control, compliance.
+
+---
+
+### 9. Emotional pressure [ADULT ONLY]
+
+Ilyas [angry]: Πάλι το ίδιο λάθος έκανες. Έλεος! Είναι η δέκατη φορά!
+Voula [sad]: Το είδα, θα το φτιάξω.
+Ilyas [angry]: Είσαι πιο αργή και από σαλιγκάρι. Πάντα κάτι πρέπει να φτιάξεις.
+Voula [sad]: Δεν το κάνω επίτηδες.
+Ilyas [neutral]: Ε δεν είπα και αυτό.
+
+Dynamic: repeated criticism, defensive response.
+
+---
+
+### 10. Raised voices [ADULT ONLY]
+
+Voula [angry]: Μη μου φωνάζεις μπροστά στο παιδί!
+Ilyas [angry]: Δεν φωνάζω! Μιλάω δυνατά
+Voula [angry]: Τώρα φωνάζεις και παραφωνάζεις
+Ilyas [neutral]: Καλά. Συγγνώμη.
+Voula [neutral]: Ευχαριστώ.
+
+Dynamic: escalation then de-escalation.
+
+---
+
+================================================================================
+SESSION 2 — Kitchen, FAR (across the room, or facing away)
+================================================================================
+
+### 11. Aftermath and repair [ADULT ONLY]
+
+Ilyas [angry]: Δεν έπρεπε να χτυπήσω την πόρτα έτσι. Δε ξέρω τι έχω πάθει τελευταία
+Voula [sad]: Με τρόμαξες! Νόμιζα πως θα χτυπήσεις και μένα
+Ilyas [sad]: Το ξέρω. Έχασα την ψυχραιμία μου.
+Voula [neutral]: Δεν θέλω να ξαναγίνει. θα σηκωθώ να φύγω, θα πάρω και το παιδί
+Ilyas [sad]: Δεν θα ξαναγίνει. Συγγνώμη.
+Voula [neutral]: Εντάξει.
+
+Dynamic: acknowledgement, apology, repair after conflict.
+
+---
+
+### 12. Tension → repair
+
+Voula [angry]: Πάλι δεν πήγες στην τράπεζα. Όλη μέρα χαζεύεις με τ'αθλητικά. Όλη μέρα μπροστά σε μια τηλεόραση!
+Ilyas [angry]: Δεν πρόλαβα. Είχα άλλες δουλειές!
+Voula [angry]: Τρεις βδομάδες όμως λες το ίδιο πράμα.
+Ilyas [neutral]: Έχεις δίκιο. Θα πάω αύριο, στα σίγουρα. Το υπόσχομαι.
+Voula [sad]: Εντάξει, το αφήνουμε.
+Ilyas [neutral]: Συγγνώμη που το τράβηξα τόσο.
+
+Dynamic: complaint, escalation, concession, repair.
+
+---
+
+### 13. Family bliss
+
+Rafael [happy]: Κέρδισε η ομάδα μας στο σκάκι! θ'ανέβουμε κατηγορία!
+Voula [happy]: Δεν το πιστεύω!
+Ilyas [happy]: Σου το είπα ότι θα τα καταφέρει. Άμα του αρέσει το παιχνίδι το προσπαθεί πολύ.
+Rafael [happy]: Τον είδατε το τελευταίο παιχνίδι; Ποιος θα το πίστευε ότι θα κερδίζαμε!
+Voula [happy]: Το είδαμε, το είδαμε. Όλο για αυτό μιλάει ο μπαμπάς σου
+Ilyas [happy]: Ε, το αξίζει ένα παγωτό αυτό. Μη σου πω και δύο!
+
+Dynamic: shared joy, celebration, warmth.
+
+---
+
+### 14. Cold atmosphere
+
+Voula [neutral]: Έφαγες;
+Ilyas [neutral]: Ναι.
+Voula [neutral]: Έγινε κάτι στη δουλειά;
+Ilyas [neutral]: Τίποτα το ιδιαίτερο.
+Voula [neutral]: Βαριέσαι που ζείς;
+
+Dynamic: logistics only, no warmth, no conflict.
+
+---
+
+### 15. Parents disagree about the child
+
+Voula [neutral]: Του είπα ότι μπορεί να πάει.
+Ilyas [angry]: Χωρίς να με ρωτήσεις;
+Voula [neutral]: Δεν ήσουν εδώ.
+Ilyas [angry]: Πάντα το ίδιο κάνεις.
+Voula [angry]: Και εσύ πάντα βρίσκεις κάτι να μου πας κόντρα.
+
+Dynamic: parental disagreement, no resolution.
+
+---
+
+### 16. Parent-child conflict
+
+Ilyas [angry]: Σου είπα να κλείσεις το κινητό.
+Rafael [angry]: Ένα λεπτό ακόμα!
+Ilyas [angry]: Τώρα, Ραφαήλ. Όλη μέρα κολλημένος στην οθόνη. 
+Rafael [angry]: Συνέχεια μου φωνάζεις εμένα.
+Ilyas [angry]: Επειδή πάντα εσύ δεν ακούς.
+
+Dynamic: command, resistance, escalation.
+
+---
+
+### 17. Successful parenting repair
+
+Ilyas [neutral]: Σου φώναξα πριν. Δεν έπρεπε.
+Rafael [sad]: Δεν πειράζει.
+Ilyas [neutral]: Πειράζει. Ήμουν κουρασμένος, αλλά δεν είναι δικαιολογία.
+Rafael [neutral]: Εντάξει μπαμπά.
+Ilyas [happy]: Έλα να τελειώσουμε μαζί το παιχνίδι και μετά πάμε να φάμε.
+Rafael [happy]: Ναι!
+
+Dynamic: parent apologises, child accepts, reconnection.
+
+---
+
+================================================================================
+SESSION 3 — Living room, NEAR
+================================================================================
+
+### 18. Mutual affection [ADULT ONLY]
+
+Voula [neutral]: Κάτσε λίγο, μη σηκώνεσαι.
+Ilyas [neutral]: Να σου φέρω καφέ;
+Voula [happy]: Όχι, κάτσε. Καλά είμαστε έτσι.
+Ilyas [happy]: Μήπως είμαστε ευτυχισμένοι και δεν το ξέρουμε;
+Voula [happy]: Νομίζω ναι. Μόνο όταν χαλάσουν όλα το καταλαβαίνει κάποιος αυτό και είναι κρίμα.
+
+Dynamic: affection, ease, mutual attention.
+
+---
+
+### 19. Passive aggression [ADULT ONLY]
+
+Voula [neutral]: Δεν πειράζει, θα το κάνω εγώ. Όπως πάντα.
+Ilyas [neutral]: Αν θες το κάνω και εγώ.
+Voula [neutral]: Όχι, όχι. Μην ενοχλείσαι.
+Ilyas [neutral]: Είπα ότι θα το κάνω.
+Voula [sad]: Καλά. Άσ' το τώρα, αν ήθελες θα το είχες ήδη κάνει.
+
+Dynamic: indirect hostility, refused help, resentment.
+
+---
+
+### 20. Household resentment [ADULT ONLY]
+
+Voula [angry]: Όλη μέρα δουλεύω και έρχομαι σε αυτό το αχούρι.
+Ilyas [neutral]: Και εγώ δούλευα!
+Voula [angry]: Ναι, αλλά εγώ έχω και το σπίτι. Δύο δουλειές και καμιά δεν αναγνωρίζεται
+Ilyas [neutral]: Δεν σου ζήτησα να μαζέψεις.
+Voula [angry]: Και ποιος θα το κάνει; Παντως όχι εσύ ούτε το παιδί έτσι δεν είναι;
+
+Dynamic: unequal load, grievance, no resolution.
+
+---
+
+### 21. Repair after resentment [ADULT ONLY]
+
+Ilyas [neutral]: Σκέφτηκα αυτό που είπες χθες σχετικά με τις δουλειές στο σπίτι.
+Voula [neutral]: Ναι;
+Ilyas [sad]: Έχεις δίκιο. Δεν βοηθάω αρκετά.
+Voula [neutral]: Δεν θέλω να μαλώνουμε γι' αυτό. Δεν είναι τίποτα. Συνήθεια.
+Ilyas [neutral]: Ούτε εγώ. Θα το μοιραστούμε.
+Voula [happy]: Εντάξει. Ευχαριστώ.
+
+Dynamic: reflection, acknowledgement, agreement, repair.
+
+---
+
+### 22. Child comfort
+
+Rafael [sad]: Δεν με πήραν στην ομάδα. Επειδή χάσαμε πιστεύουν πως φταίω εγώ
+Voula [sad]: Έλα εδώ.
+Rafael [sad]: Όλοι οι άλλοι μπήκαν. Με είπαν ηλίθιο
+Voula [neutral]: Το ξέρω ότι πονάει. Δεν σημαίνει όμως ότι δεν είσαι καλός.
+Ilyas [neutral]: Δε γίνεται να κερδίζουμε πάντα. Και του χρόνου έχει πάλι.
+Rafael [neutral]: Καλά.
+
+Dynamic: distress, comfort, reassurance.
+
+---
+
+### 23. Child dismissed
+
+Rafael [sad]: Με πείραξε αυτό που είπες.
+Ilyas [neutral]: Έλα τώρα, υπερβολές. Σιγά που προσβλήθηκες
+Rafael [sad]: Δεν είναι υπερβολές! Δε με αφήνεις να κάνω αυτό που θέλω
+Ilyas [neutral]: Μεγάλωσε λίγο.
+Rafael [sad]: Καλά άσ' το, δε μπορούμε να συνεννοηθούμε.
+
+Dynamic: child expresses hurt, parent dismisses it.
+
+---
+
+### 24. Playful competition
+
+Rafael [happy]: Σε κέρδισα πάλι!
+Ilyas [happy]: Δεν το δέχομαι! Έκλεψες.
+Rafael [happy]: Δεν έκλεψα!
+Voula [neutral]: Και οι δύο κλέβετε.
+Ilyas [happy]: θέλω Ρεβάνς λέμε. Δεύτερο παιχνίδι, εδώ και τώρα
+
+Dynamic: play, teasing, shared enjoyment.
+
+---
+
+### 25. Achievement pressure
+
+Ilyas [neutral]: Για έλα εδώ! Πόσο πήρες στα μαθηματικά;
+Rafael [neutral]: Δεκαοκτώ.
+Ilyas [neutral]: Και οι άλλοι; Τα έχουμε ξαναπεί, έχω όνειρα για σένα
+Rafael [sad]: Κάποιοι πήραν είκοσι.
+Ilyas [neutral]: Άρα γινόταν και καλύτερα. Όπως έχουμε πει, υπάρχει το άριστα και το τίποτα
+Rafael [sad]: Έχεις δίκιο.
+
+Dynamic: conditional approval, comparison, pressure.
+
+---
+
+### 26. Couple unity in front of the child
+
+Rafael [neutral]: Η μαμά είπε ότι μπορώ.
+Ilyas [neutral]: Εμ, το συζητήσαμε με τη μαμά σου.
+Voula [neutral]: Και συμφωνήσαμε στο ίδιο πράγμα.
+Rafael [neutral]: Δηλαδή όχι;
+Ilyas [neutral]: Δηλαδή το αναβάλουμε για αύριο. Δεν είναι τίποτα για μια μέρα
+Voula [happy]: Ε καλά λοιπόν αύριο.
+
+Dynamic: parental alignment, calm boundary.
+
+---
+
+================================================================================
+SESSION 4 — Living room, NEXT ROOM (door open, speaking from the hall)
+================================================================================
+
+### 27. Undermining the partner
+
+Voula [neutral]: Του είπα να μη φάει τώρα.
+Ilyas [neutral]: Άσ' τον, και τι έγινε;
+Voula [angry]: Μπροστά του το κάνεις πάλι. Με υπονομεύεις. Άλλο συμφωνήσαμε και άλλο του λες
+Ilyas [neutral]: Υπερβάλλεις με αυτήν την ανοησία.
+Voula [angry]: Δεν υπερβάλλω.
+
+Dynamic: authority undermined, conflict in front of child.
+
+---
+
+### 28. Serenity
+
+Voula [neutral]: Ησυχία απόψε.
+Ilyas [neutral]: Ωραία είναι έτσι. Δεν ακούγεται τίποτα
+Rafael [neutral]: Διαβάζω εδώ.
+Voula [happy]: Μείνε όσο θες. Παράδεισος είναι αυτό το σπίτι
+Ilyas [neutral]: Έχει δροσιά.
+
+Dynamic: calm, low activation, comfortable coexistence.
+
+---
+
+### 29. Affection with the child
+
+Voula [happy]: Έλα να σε αγκαλιάσω πριν κοιμηθείς.
+Rafael [happy]: Μαμά, μεγάλωσα, έλεος με τις αγκαλιές και τα φιλιά
+Voula [happy]: Και λοιπόν τι έγινε που μεγάλωσες; Για μένα θα είσαι πάντα παιδί
+Rafael [happy]: Καλά, έλα, αλλά σου ξαναλέω μεγάλωσα
+Ilyas [happy]: Και σ'εμένα τίποτα;
+
+Dynamic: affection, playful resistance, warmth.
+
+---
+
+### 30. Conflict over money [ADULT ONLY]
+
+Voula [angry]: Πάλι βγήκες έξω και ήπιες πολύ. Δεν τα έχουμε τα χρήματα! Το κατάλαβες;
+Ilyas [neutral]: Το χρειαζόμουν. Δε ξέρεις τι περνάω στη δουλειά. Έχω και τη μάνα μου
+Voula [angry]: Όλοι έχουμε ανάγκες αλλά δε ξοδεύουμε χωρίς να σκεφτόμαστε τους άλλους. Δεν βγαίνουμε έτσι.
+Ilyas [angry]: Μη μου μιλάς σαν να είμαι παιδί!
+Voula [angry]: Τότε μη φέρεσαι σαν παιδί!! Είμαστε άφραγγοι το κατάλαβες;
+
+Dynamic: financial conflict, escalation.
+
+---
+
+### 31. Financial repair [ADULT ONLY]
+
+Ilyas [neutral]: Κοίταξα τα έξοδα.
+Voula [neutral]: Ωχ. Και;
+Ilyas [neutral]: Έχεις δίκιο, ξέφυγε η κατάσταση.
+Voula [neutral]: Δεν θέλω να σε ελέγχω αλλά είμαστε μαζί σε αυτό
+Ilyas [neutral]: Το ξέρω. Ας τα βλέπουμε μαζί κάθε μήνα.
+Voula [happy]: Τώρα μιλάς σωστά.
+
+Dynamic: acknowledgement, joint plan, resolution.
+
+---
+
+### 32. Jealousy / suspicion [ADULT ONLY]
+
+Ilyas [neutral]: Με ποιον μιλάς τόση ώρα στο τηλέφωνο;
+Voula [neutral]: Με την αδερφή μου μιλάω.
+Ilyas [neutral]: Μία ώρα; Για να δω την κλήση!
+Voula [angry]: Τι εννοείς να δεις;
+Ilyas [neutral]: Τίποτα. Δυσκολεύομαι να το πιστέψω και ρώτησα.
+
+Dynamic: suspicion, defensiveness, unresolved.
+
+---
+
+================================================================================
+SESSION 5 — Bedroom and hall, mixed NEAR and FAR
+================================================================================
+
+### 33. Affection after conflict [ADULT ONLY]
+
+Voula [neutral]: Ακόμα θυμωμένος είσαι;
+Ilyas [neutral]: Όχι. Μου πέρασε
+Voula [neutral]: Σίγουρα; Δε θέλω να είμαστε έτσι.
+Ilyas [sad]: Απλώς κουράστηκα να μαλώνουμε. Όλο γκρίνια έχουμε
+Voula [sad]: Και εγώ κουράστηκα.
+Ilyas [happy]: Έλα εδώ βρε!
+
+Dynamic: cooling down, mutual fatigue, reconnection.
+
+---
+
+### 34. Embarrassment and apology
+
+Ilyas [angry]: Γιατί το είπες αυτό μπροστά τους; Μα ηλίθιος είσαι. Δεν τα λένε αυτά μπροστά σε ξένους
+Rafael [sad]: Δεν το σκέφτηκα. Δεν ήξερα ότι ήταν μυστικό
+Ilyas [neutral]: Με έφερες σε δύσκολη θέση. Υποτίθεται πως δεν το ήξερε κανένας
+Rafael [sad]: Συγγνώμη. Τα έκανα θάλασσα
+Ilyas [neutral]: Εντάξει. Πέρασε. Όλοι κάνουμε λάθη
+
+Dynamic: reproach, apology, acceptance.
+
+---
+
+### 35. Overprotective parent
+
+Voula [neutral]: Πού θα πάτε τέτοια ώρα;
+Rafael [neutral]: Στην πλατεία. Είναι και οι φίλοι μου εκεί
+Voula [sad]: Μόνοι σας;
+Rafael [angry]: Μαμά, δεν είμαι πλέον μικρός. Τι φοβάσαι; μη με κλέψουν
+Ilyas [neutral]: Άσ' τον να πάει.
+Voula [sad]: Στις οκτώ να είσαι πίσω. Μ'ακούς. Εδώ!
+
+Dynamic: anxiety, negotiation, partial concession.
+
+---
+
+### 36. Family celebration
+
+Voula [happy]: Να ζήσεις Ραφαήλ και Χρόνια πολλά! 
+Rafael [happy]: Το έκανες το κέικ με σταφίδες!
+Ilyas [happy]: Όλη μέρα το έφτιαχνε εδώ που τα λέμε.
+Voula [happy]: Τίποτα δεν είναι αρκετό για το παιδί.
+Rafael [happy]: Είναι τέλειο!
+Ilyas [happy]: Άντε, σβήσε τα κεριά. Μεγάλος να γίνεις με άσπρα μαλλιά!
+
+Dynamic: celebration, shared joy, appreciation.
+
+---
+
+### 37. Emotional neglect [ADULT ONLY]
+
+Voula [sad]: Θέλω να σου πω κάτι που με απασχολεί.
+Ilyas [neutral]: Άντε, πες.
+Voula [sad]: Νιώθω ότι δεν με ακούς τελευταία.
+Ilyas [neutral]: Σε ακούω τώρα, δεν σε ακούω; Τι κάνω τώρα δηλαδή;
+Voula [sad]: Δεν εννοώ αυτό.
+Ilyas [neutral]: μήπως να το αφήσουμε για άλλη φορά; Έχω δουλειά
+
+Dynamic: bid for attention, minimised, unmet.
+
+---
+
+### 38. One child blamed [ADULT ONLY — record with an empty chair]
+
+Voula [angry]: Πάλι αυτός τα έκανε όλα.
+Ilyas [angry]: Ε ναι, ποιος άλλος θα φταίει; Πάντα αυτός φταίει.
+Voula [angry]: Γιατί πάντα αυτός το κάνει.
+Ilyas [neutral]: Δεν είναι και πάντα. Αλλά έχεις δίκιο
+Voula [angry]: Ε σχεδόν πάντα αυτός είναι που κάνει τη ζημιά.
+
+Dynamic: blame concentrated on one family member.
+
+---
+
+### 39. Family resilience
+
+Ilyas [sad]: Δύσκολος μήνας για όλη την οικογένεια αυτός ο μήνας.
+Voula [sad]: Ναι. Έχεις δίκιο
+Rafael [neutral]: Θα περάσει λες;
+Ilyas [happy]: Θα περάσει.
+Voula [happy]: Τα έχουμε ξαναπεράσει και χειρότερα.
+Rafael [happy]: Ευτυχώς που είμαστε μαζί και είμαστε καλά.
+
+Dynamic: shared difficulty, mutual reassurance, cohesion.
+
+---
+
+### 40. Conflict → genuine repair
+
+Voula [angry]: Δεν με υπολογίζεις καθόλου.
+Ilyas [angry]: Μα τι λες τώρα; Δε νομίζεις ότι υπερβάλεις
+Voula [angry]: Αυτό που άκουσες. Μας έχεις όλους γραμμένους
+Rafael [sad]: Πάλι θα τσακωθείτε;
+Ilyas [sad]: Έχει δίκιο το παιδί. Σταματάμε.
+Voula [sad]: Εντάξει Ραφαήλ. Συγγνώμη που φώναξα.
+Ilyas [neutral]: Και εγώ. Ας το συζητήσουμε αργότερα ήρεμα.
+
+Dynamic: escalation, child intervenes, mutual repair.
+
+================================================================================
+DISTANCE STRESS SET — repeat these four AFTER the main session
+================================================================================
+Record scenarios 2, 13, 19 and 40 a SECOND time under these conditions, to
+exercise the SNR floor and the de-duplication:
+
+  2  again from the NEXT room, door half closed
+  13 again with the television on in the background
+  19 again spoken quietly, almost muttered
+  40 again with two sentinels in earshot, to force a duplicate pair
+
+Tag these takes clearly in the manifest — they are the same script under worse
+acoustics, which is exactly the comparison worth having.

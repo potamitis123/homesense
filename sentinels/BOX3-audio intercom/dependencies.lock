@@ -1,0 +1,234 @@
+dependencies:
+  espressif/aht30:
+    component_hash: f245a3c679496faec20c23df20eef2a974167a9e7b32630758bb375734ef901c
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.2'
+    - name: espressif/sensor_hub
+      registry_url: https://components.espressif.com
+      require: public
+      version: ^0.1.4
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 1.0.0~1
+  espressif/button:
+    component_hash: ad64de1d1b8aa139564810a8519b2f1ac275a560a512479ee94c1b6983469d4b
+    dependencies:
+    - name: espressif/cmake_utilities
+      registry_url: https://components.espressif.com
+      require: private
+      version: '*'
+    - name: idf
+      require: private
+      version: '>=4.0'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 4.2.0
+  espressif/cmake_utilities:
+    component_hash: 351350613ceafba240b761b4ea991e0f231ac7a9f59a9ee901f751bddc0bb18f
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=4.1'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 0.5.3
+  espressif/esp-box-3:
+    component_hash: 7809a2e7940bc384410fe096c49787a5a508ebe196b865077297b3a218db6c0c
+    dependencies:
+    - name: espressif/aht30
+      registry_url: https://components.espressif.com
+      require: private
+      version: ^1.0.0
+    - name: espressif/button
+      registry_url: https://components.espressif.com
+      require: public
+      version: ^4
+    - name: espressif/esp_codec_dev
+      registry_url: https://components.espressif.com
+      require: public
+      version: ~1.5
+    - name: espressif/esp_lcd_ili9341
+      registry_url: https://components.espressif.com
+      require: private
+      version: ^2.0.1
+    - name: espressif/esp_lcd_touch_gt911
+      registry_url: https://components.espressif.com
+      require: private
+      version: ^1
+    - name: espressif/esp_lcd_touch_tt21100
+      registry_url: https://components.espressif.com
+      require: private
+      version: ^1
+    - name: espressif/esp_lvgl_port
+      registry_url: https://components.espressif.com
+      require: public
+      version: ^2
+    - name: espressif/icm42670
+      registry_url: https://components.espressif.com
+      require: public
+      version: ^2.0.2
+    - name: idf
+      require: private
+      version: '>=5.3'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    targets:
+    - esp32s3
+    version: 3.1.0
+  espressif/esp_audio_codec:
+    component_hash: 694d210da7a148dfb43b1b08581404b7093ec33c5e566a8cf721397b44e791c7
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=4.4'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 2.6.1
+  espressif/esp_codec_dev:
+    component_hash: df70f10af8d7b922add7b9d07372c9c97ab356e58d72b7a892050227c2d44348
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=4.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 1.5.11
+  espressif/esp_lcd_ili9341:
+    component_hash: 0baab584e0e490511d6bdbae6aa045130424d732ecdaad6cd1d3bd3c0abe2c30
+    dependencies:
+    - name: espressif/cmake_utilities
+      registry_url: https://components.espressif.com
+      require: private
+      version: 0.*
+    - name: idf
+      require: private
+      version: '>=4.4'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 2.0.2
+  espressif/esp_lcd_touch:
+    component_hash: 3f85a7d95af876f1a6ecca8eb90a81614890d0f03a038390804e5a77e2caf862
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=4.4.2'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 1.2.1
+  espressif/esp_lcd_touch_gt911:
+    component_hash: 07f678e4202d79bbad917805dcec4134ff08344177720f32ec4898267ad9e394
+    dependencies:
+    - name: espressif/esp_lcd_touch
+      registry_url: https://components.espressif.com
+      require: public
+      version: ^1.2.0
+    - name: idf
+      require: private
+      version: '>=5.2'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 1.2.0~3
+  espressif/esp_lcd_touch_tt21100:
+    component_hash: 09684e9e88e0a5dd697fc48dca6fc253083a97c6b7d501500fabd270cc4af7bb
+    dependencies:
+    - name: espressif/esp_lcd_touch
+      registry_url: https://components.espressif.com
+      require: public
+      version: ^1.2.0
+    - name: idf
+      require: private
+      version: '>=5.2'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 1.2.0~2
+  espressif/esp_lvgl_port:
+    component_hash: fb6c1fdfe70d4ca39a035d63ca394a35f17ec84ce16ff98ecb13a54155d75da4
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.2'
+    - name: lvgl/lvgl
+      registry_url: https://components.espressif.com
+      require: public
+      version: '>=8,<10'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 2.8.0~1
+  espressif/i2c_bus:
+    component_hash: 483112c1619c54c38d0b734fb25f1678733267858a77b7af2f48cc7db6dbbd84
+    dependencies:
+    - name: espressif/cmake_utilities
+      registry_url: https://components.espressif.com
+      require: private
+      version: '*'
+    - name: idf
+      require: private
+      version: '>=4.0'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 1.5.2
+  espressif/icm42670:
+    component_hash: 5031adc17fea07a394e4b907a281522b8e05caf331cac1d5ee964a0de7bab906
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.2'
+    - name: espressif/sensor_hub
+      registry_url: https://components.espressif.com
+      require: public
+      version: ^0.1.4
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 2.1.0~1
+  espressif/sensor_hub:
+    component_hash: ea30db551c34aee2862482abf8b3164dd3855ecb4b4659b1e6878455c9cb9e22
+    dependencies:
+    - name: espressif/cmake_utilities
+      registry_url: https://components.espressif.com
+      require: private
+      version: 0.*
+    - name: espressif/i2c_bus
+      registry_url: https://components.espressif.com
+      require: public
+      version: 1.*
+    - name: idf
+      require: private
+      version: '>=4.4'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 0.1.5
+  idf:
+    source:
+      type: idf
+    version: 5.5.3
+  lvgl/lvgl:
+    component_hash: 184e532558c1c45fefed631f3e235423d22582aafb4630f3e8885c35281a49ae
+    dependencies: []
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 9.5.0
+direct_dependencies:
+- espressif/esp-box-3
+- espressif/esp_audio_codec
+- espressif/esp_codec_dev
+- idf
+manifest_hash: 98dafcd99f3bb9068814c9320d7e882e831551113610bd3b25ca897e74f2891e
+target: esp32s3
+version: 2.0.0

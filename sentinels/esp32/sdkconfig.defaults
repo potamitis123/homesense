@@ -1,0 +1,9 @@
+# ESP32-S3-WROOM-1 N16R8: 16MB Quad flash + 8MB Octal PSRAM (ESP32-S3R8 chip).
+# Note: all WROOM-1 "R8" variants use Octal SPI PSRAM, never Quad -- only the
+# smaller R2 (2MB) variants use Quad PSRAM.
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_TYPE_AUTO=y
+CONFIG_SPIRAM_SPEED_80M=y
+
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y

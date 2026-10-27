@@ -1,0 +1,205 @@
+# =====================================================================
+#  SECRETS - never commit
+# =====================================================================
+common_files/parameters.json
+common_files/openai_keys.local.txt
+set_openai_env.bat
+certs/
+p4_webrtc_firmware/certs/
+mobile_api/security/credentials.json
+*.key
+*.pem
+*.p12
+*.crt
+*.csr
+.env
+.env.*
+*.local.txt
+*.prekey.bak
+*.json.bak
+
+# Firmware config carrying the broker password.
+# The committed .example copies document the shape; real values stay local.
+audiosense_mqtt.h
+sentinel/audiosense_mqtt.h
+sentinel/mainP4/main/mqtt_config.h
+p4_webrtc_firmware/settings.txt
+
+# Vendored ESP-IDF components: 6390 files and 481 MB of third-party source
+# that idf.py fetches from idf_component.yml. Nothing here is ours to keep.
+p4_webrtc_firmware/components_all/
+
+# =====================================================================
+#  Media & data - code only
+# =====================================================================
+# assets/ holds ~3 GB of recordings and spectrograms, but also the app's
+# own CSS/JS source. Exclude the contents, then re-admit the source files.
+# (Subdirectories -- audio_mp3, audios, specrogram_images ... -- stay out.)
+assets/*
+!assets/*.css
+!assets/*.js
+# The LLM prompts are source as well: the pipeline's reading depends on them.
+!assets/LLM_prompt*.txt
+
+ast_audio_db/
+temp_speech_segments/
+temp_scripts/
+audio_examples/
+test_sounds/
+# The residents' voice recordings and the model built from them stay out
+# of the repo; the script that builds it is source and belongs in.
+# Written as speakers/* rather than speakers/ because git will not
+# descend into an excluded directory, so a negation inside one is dead.
+speakers/*
+!speakers/*.py
+*.wav
+*.mp3
+*.png
+*.jpg
+*.jpeg
+*.db
+*.csv
+*.pth
+*.apk
+*.dll
+*.zip
+
+# =====================================================================
+#  Logs & runtime state
+# =====================================================================
+logs_ast_app/
+logs_mobile_api/
+ast_dash/logs_ast_app/
+live/
+callback_cache/
+ast_dash/callback_cache/
+graphify-out/
+*.log
+*_status.json
+dash_err.txt
+dash_log.txt
+
+# =====================================================================
+#  Python
+# =====================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.understand-anything/
+venv/
+.venv/
+env/
+*.egg-info/
+
+# =====================================================================
+#  Node / editors / OS
+# =====================================================================
+node_modules/
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# =====================================================================
+#  Explicitly keep - real source inputs
+# =====================================================================
+!ontology.json
+!requirements.txt
+!package.json
+
+# Claude Code local overrides (machine-specific)
+.claude/settings.local.json
+
+# Generated dynamics analyses (the pipeline writes these on every report)
+home_dynamics.json
+ast_dash/llm_report/reports/*.json
+
+# =====================================================================
+#  Credentials the new board directories brought in
+# =====================================================================
+# Every sentinel build ships a settings.txt holding the WiFi password, the
+# MQTT user and, on the P4, an API key. p4_webrtc_firmware/settings.txt was
+# already listed above; exclude the name wherever a new board directory
+# appears, because the next board will carry one too.
+settings.txt
+
+# Backups of common_files/parameters.json, which is itself excluded above.
+# The *.json.bak rule does not catch a dated suffix, and these hold the
+# broker password and the OpenAI key.
+parameters.json.bak*
+
+# =====================================================================
+#  Bulk that is not source
+# =====================================================================
+# Word lock and recovery files.
+~$*
+~WRL*.tmp
+
+# Database snapshots taken before a migration, and vendored model weights.
+ast_backup/
+*.onnx
+*.sqlite
+*.db.*
+
+# Derived records of the household's own days, and the recorded runs of the
+# experiments. The code that produces them is tracked; their output is not.
+graphrag/store/
+tests/diagnostics/annotation_store/
+tests/diagnostics/run_*/
+voice_companion/data/
+
+# Manuscripts, generated documents and rendered video.
+reports/
+*.docx
+*.mp4
+
+# Per-machine agent configuration.
+.claude/
+
+# Screenshots that document the project. The blanket *.png rule above exists
+# to keep spectrograms and recordings out, not the README's own images.
+!docs/images/*.png
+
+# Recorded video. video/ was tracked before *.mp4 was excluded, and an ignore
+# rule does not untrack what is already in; removed from the index, kept on disk.
+video/
+
+# Facts about the residents, written by them for the model that reads the
+# transcripts: jobs, ages, names of friends and colleagues. Personal, not code.
+common_files/household_memory.txt
+
+# What the residents answered about the incidents the system listed: each line
+# names a quarrel or a complaint, who was in it and when. Personal, not code.
+common_files/incident_judgements.jsonl
+# What the residents wrote had happened, before seeing each day's list.
+common_files/incident_diary.jsonl
+# The residents' blind tags of stretches of each day.
+common_files/incident_blind_labels.jsonl
+
+# =====================================================================
+#  Sentinel firmware: sentinels/ is the final code. The folders below
+#  are the earlier versions, removed from the repository and kept out.
+# =====================================================================
+/sentinel/
+/p4_webrtc_firmware/
+/esp32P4/
+/P4-audio-sentinel/
+/main.c
+# The firmware needs these to build, and in sentinels/ they hold only
+# placeholders ("your_mqtt_password"): re-admitted past the rules above.
+!sentinels/**/main/audiosense_mqtt.h
+!sentinels/**/partitions.csv
+
+# =====================================================================
+#  Kept out of the public repository: household data and study data.
+# =====================================================================
+reports/
+tests/diagnostics/dynamics_pilot/
+audio_events.json
+Voice_commands/state.json
+programs.txt
+tests/diagnostics/emotion_model_comparison_cache.json
+tests/diagnostics/graphrag_retrieval/slice.*.items.json
+video/

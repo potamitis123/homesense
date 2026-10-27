@@ -1,0 +1,75 @@
+[
+  {
+    "scenario": 8,
+    "title": "Oppression / controlling behaviour",
+    "group": "P6",
+    "events": 2,
+    "heard": 5,
+    "scripted": 6,
+    "clusters": 1,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "disagreement",
+      "information_sharing",
+      "complaint"
+    ]
+  },
+  {
+    "scenario": 9,
+    "title": "Emotional pressure",
+    "group": "P5",
+    "events": 2,
+    "heard": 7,
+    "scripted": 5,
+    "clusters": 1,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "types": [
+      "criticism",
+      "disagreement"
+    ]
+  },
+  {
+    "scenario": 10,
+    "title": "Raised voices",
+    "group": "P8",
+    "events": 3,
+    "heard": 9,
+    "scripted": 5,
+    "clusters": 1,
+    "windows": 1,
+    "distance": "NEAR",
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.25,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "types": [
+      "criticism",
+      "disagreement",
+      "complaint",
+      "humor",
+      "repair"
+    ]
+  }
+]

@@ -1,0 +1,8 @@
+esp-webrtc-solution
+ref:    main
+commit: e088f30fc10ff1a32fdaf32a56599ffa81b73a58
+copied: 2026-07-31 13:30:38
+
+Vendored verbatim by setup.ps1. Do not edit these components in place; if a
+change is unavoidable, record it here so the next refresh does not silently
+drop it.

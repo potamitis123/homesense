@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>*,*::before,*::after{box-sizing:border-box}img,svg{max-width:100%}</style><title>Home Dynamics Pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap">
+
+<style>
+:root{
+  --ground:#F5F7F9;
+  --surface:#FFFFFF;
+  --surface-sunk:#EDF1F5;
+  --ink:#15202B;
+  --ink-soft:#3E4C5A;
+  --slate:#63737F;
+  --rule:#DBE2E9;
+  --rule-strong:#C2CEDA;
+  --accent:#1F6C8C;
+  --accent-soft:#E2EFF5;
+  --amber:#9C6516;
+  --amber-soft:#F7EEDE;
+  --rose:#9E3B4E;
+  --rose-soft:#F8E7EA;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --serif:"IBM Plex Serif",Georgia,serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E141A;
+    --surface:#151D25;
+    --surface-sunk:#111921;
+    --ink:#E3EAF1;
+    --ink-soft:#BAC7D4;
+    --slate:#8B9AA8;
+    --rule:#243040;
+    --rule-strong:#33455A;
+    --accent:#63AECE;
+    --accent-soft:#16303D;
+    --amber:#D6A056;
+    --amber-soft:#33280F;
+    --rose:#D98A99;
+    --rose-soft:#361D23;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E141A;
+  --surface:#151D25;
+  --surface-sunk:#111921;
+  --ink:#E3EAF1;
+  --ink-soft:#BAC7D4;
+  --slate:#8B9AA8;
+  --rule:#243040;
+  --rule-strong:#33455A;
+  --accent:#63AECE;
+  --accent-soft:#16303D;
+  --amber:#D6A056;
+  --amber-soft:#33280F;
+  --rose:#D98A99;
+  --rose-soft:#361D23;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:16.5px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px 96px}
+
+/* ---- masthead ---- */
+header.top{
+  border-bottom:1px solid var(--rule);
+  padding:56px 0 30px;
+  margin-bottom:8px;
+}
+.eyebrow{
+  font-family:var(--sans);
+  font-size:11.5px;
+  font-weight:600;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+h1{
+  font-family:var(--sans);
+  font-weight:700;
+  font-size:clamp(30px,4.4vw,46px);
+  line-height:1.1;
+  letter-spacing:-.021em;
+  margin:12px 0 0;
+  text-wrap:balance;
+}
+.standfirst{
+  margin:16px 0 0;
+  max-width:64ch;
+  font-size:18px;
+  color:var(--ink-soft);
+}
+.chain{
+  margin-top:26px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  align-items:center;
+  font-family:var(--mono);
+  font-size:12.5px;
+}
+.chain span{
+  padding:4px 9px;
+  border:1px solid var(--rule-strong);
+  border-radius:2px;
+  background:var(--surface);
+  color:var(--ink-soft);
+}
+.chain span.on{border-color:var(--accent);color:var(--accent);font-weight:500}
+.chain span.new{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+.chain i{color:var(--slate);font-style:normal}
+
+figure{margin:24px 0;padding:0}
+.fig{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  color:var(--ink);
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  padding:10px;
+}
+figcaption{
+  margin-top:10px;
+  font-size:13.5px;
+  color:var(--slate);
+  max-width:70ch;
+  line-height:1.5;
+}
+
+h2{
+  font-family:var(--sans);
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--slate);
+  margin:0 0 18px;
+}
+h3{
+  font-family:var(--sans);
+  font-weight:600;
+  font-size:19px;
+  letter-spacing:-.01em;
+  margin:32px 0 10px;
+  text-wrap:balance;
+}
+p{margin:0 0 14px;max-width:70ch}
+a{color:var(--accent)}
+
+/* ---- the scenario table ---- */
+section.block{padding:44px 0;border-bottom:1px solid var(--rule)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{
+  border-collapse:collapse;
+  width:100%;
+  min-width:660px;
+  font-family:var(--mono);
+  font-size:12.5px;
+  font-variant-numeric:tabular-nums;
+}
+th{
+  text-align:left;
+  font-family:var(--sans);
+  font-weight:600;
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--slate);
+  padding:0 12px 8px 0;
+  border-bottom:1px solid var(--rule-strong);
+  white-space:nowrap;
+}
+td{
+  padding:7px 12px 7px 0;
+  border-bottom:1px solid var(--rule);
+  vertical-align:top;
+  color:var(--ink-soft);
+}
+td.id{color:var(--accent);font-weight:500}
+td.note{font-family:var(--sans);font-size:12px;color:var(--slate)}
+
+/* ---- level layout ---- */
+.level{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:34px;
+  padding:46px 0;
+  border-bottom:1px solid var(--rule);
+}
+.level:last-of-type{border-bottom:none}
+.rail{position:relative}
+.rail .num{
+  font-family:var(--mono);
+  font-size:38px;
+  font-weight:600;
+  line-height:1;
+  color:var(--accent);
+  letter-spacing:-.03em;
+}
+.rail .nm{
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:600;
+  margin-top:6px;
+  line-height:1.3;
+}
+.rail .sub{
+  font-family:var(--sans);
+  font-size:12px;
+  color:var(--slate);
+  margin-top:4px;
+  line-height:1.4;
+}
+.job{
+  font-family:var(--sans);
+  font-size:15.5px;
+  font-weight:500;
+  color:var(--ink);
+  border-left:2px solid var(--accent);
+  padding-left:14px;
+  margin:0 0 20px;
+  max-width:64ch;
+}
+
+/* ---- rules list ---- */
+ol.rules,ul.plain{margin:0 0 20px;padding-left:0;list-style:none}
+ol.rules li{
+  display:grid;
+  grid-template-columns:22px 1fr;
+  gap:10px;
+  padding:9px 0;
+  border-bottom:1px solid var(--rule);
+  max-width:74ch;
+}
+ol.rules li:last-child{border-bottom:none}
+ol.rules .k{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--slate);
+  padding-top:3px;
+}
+ol.rules .v{font-size:15.5px;color:var(--ink-soft)}
+ol.rules .v b{color:var(--ink);font-weight:600}
+code{
+  font-family:var(--mono);
+  font-size:.87em;
+  background:var(--surface-sunk);
+  border:1px solid var(--rule);
+  border-radius:2px;
+  padding:1px 5px;
+  color:var(--ink);
+  white-space:nowrap;
+}
+
+/* ---- transform cards ---- */
+.xform{
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  margin:20px 0;
+  overflow:hidden;
+}
+.xform .cap{
+  font-family:var(--sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--slate);
+  padding:10px 14px;
+  border-bottom:1px solid var(--rule);
+  background:var(--surface-sunk);
+}
+.xform pre{
+  margin:0;
+  padding:14px;
+  font-family:var(--mono);
+  font-size:12.5px;
+  line-height:1.62;
+  overflow-x:auto;
+  color:var(--ink-soft);
+  white-space:pre;
+}
+.xform pre b{color:var(--accent);font-weight:500}
+.xform pre u{color:var(--amber);text-decoration:none}
+.xform pre s{color:var(--rose);text-decoration:none}
+.xform pre em{color:var(--slate);font-style:normal}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.split>div{min-width:0}
+.split>div:first-child{border-right:1px solid var(--rule)}
+
+/* ---- callouts ---- */
+.note{
+  border-left:2px solid var(--amber);
+  background:var(--amber-soft);
+  padding:13px 16px;
+  margin:20px 0;
+  font-size:15px;
+  border-radius:0 3px 3px 0;
+  max-width:72ch;
+}
+.note .lbl{
+  font-family:var(--sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--amber);
+  display:block;
+  margin-bottom:5px;
+}
+.warn{border-left-color:var(--rose);background:var(--rose-soft)}
+.warn .lbl{color:var(--rose)}
+.note p:last-child{margin-bottom:0}
+
+/* ---- feature chips ---- */
+.feats{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 4px}
+.feats span{
+  font-family:var(--mono);
+  font-size:11.5px;
+  padding:3px 8px;
+  border-radius:2px;
+  background:var(--accent-soft);
+  color:var(--accent);
+  border:1px solid transparent;
+}
+
+footer{
+  padding:38px 0 0;
+  font-family:var(--sans);
+  font-size:13px;
+  color:var(--slate);
+  max-width:72ch;
+}
+
+@media (max-width:760px){
+  .level{grid-template-columns:1fr;gap:16px}
+  .rail{display:flex;align-items:baseline;gap:12px}
+  .rail .num{font-size:26px}
+  .rail .sub{display:none}
+  .split{grid-template-columns:1fr}
+  .split>div:first-child{border-right:none;border-bottom:1px solid var(--rule)}
+  .wrap{padding:0 18px 64px}
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">Home Sentinel · derive_home_dynamics.py</div>
+  <h1>Home Dynamics Pipeline</h1>
+  <p class="standfirst">Five levels turn raw AudioSet rows into statements about people. Here is one mock evening pushed through all of them, with the real output of each stage.</p>
+  <div class="chain">
+    <span>RAW</span><i>→</i>
+    <span class="on">L0 observations</span><i>→</i>
+    <span class="on">L1 semantic events</span><i>→</i>
+    <span class="on new">L1.5 semantic interaction</span><i>→</i>
+    <span class="on">L2 activity episodes</span><i>→</i>
+    <span class="on">L3 person &amp; social</span><i>→</i>
+    <span class="on">L4 daily dynamics</span>
+  </div>
+</header>
+
+<section class="block">
+  <h2>How the levels connect</h2>
+  <p>The shape that matters is not the list but the branch. L1.5 does not sit in the main line — it takes its turns from L0 and rejoins at L3, alongside the activity path rather than inside it. And one arrow carries the whole system's weakness: everything above L2 is joined on a speaker's name.</p>
+
+  <figure>
+    <svg viewBox="0 0 700 500" role="img" class="fig"
+         aria-label="The pipeline: RAW feeds L0, which feeds both the L1-L2 activity line and, as a branch, L1.5 semantic interaction. Both rejoin at L3, which feeds L4. Levels 0 to 2 are keyed on sound; levels 3 and 4 are keyed on a person, and the arrow between them joins on the speaker name, which 42 percent of speech lacks.">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+        </marker>
+        <marker id="ar-a" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+        </marker>
+        <marker id="ar-r" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--rose)"/>
+        </marker>
+      </defs>
+
+      <!-- sound / person bands -->
+      <rect x="8" y="14" width="684" height="286" rx="6" fill="currentColor"
+            opacity="0.035"/>
+      <rect x="8" y="316" width="684" height="172" rx="6" fill="currentColor"
+            opacity="0.075"/>
+      <text x="20" y="34" font-size="11" fill="currentColor" opacity="0.6"
+            letter-spacing="1.5">KEYED ON SOUND</text>
+      <text x="20" y="336" font-size="11" fill="currentColor" opacity="0.6"
+            letter-spacing="1.5">KEYED ON A PERSON</text>
+
+      <!-- main spine -->
+      <g fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="60" y="46" width="180" height="38" rx="4"/>
+        <rect x="60" y="120" width="180" height="38" rx="4"/>
+        <rect x="60" y="194" width="180" height="38" rx="4"/>
+        <rect x="60" y="252" width="180" height="38" rx="4"/>
+        <rect x="60" y="356" width="180" height="38" rx="4"/>
+        <rect x="60" y="430" width="180" height="38" rx="4"/>
+      </g>
+      <g font-size="13" fill="currentColor" text-anchor="middle">
+        <text x="150" y="70">RAW rows</text>
+        <text x="150" y="144">L0 observations</text>
+        <text x="150" y="218">L1 semantic events</text>
+        <text x="150" y="276">L2 activity episodes</text>
+        <text x="150" y="380">L3 person &amp; social</text>
+        <text x="150" y="454">L4 daily dynamics</text>
+      </g>
+
+      <!-- L1.5 branch box, the one element carrying the accent -->
+      <rect x="420" y="176" width="220" height="56" rx="4" fill="none"
+            stroke="var(--accent)" stroke-width="2"/>
+      <text x="530" y="199" font-size="13" fill="var(--accent)"
+            text-anchor="middle" font-weight="600">L1.5 semantic interaction</text>
+      <text x="530" y="217" font-size="11" fill="var(--accent)"
+            text-anchor="middle" opacity="0.85">what the speech meant</text>
+
+      <!-- spine arrows -->
+      <g stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)">
+        <line x1="150" y1="84" x2="150" y2="116"/>
+        <line x1="150" y1="158" x2="150" y2="190"/>
+        <line x1="150" y1="232" x2="150" y2="248"/>
+        <line x1="150" y1="394" x2="150" y2="426"/>
+      </g>
+      <line x1="150" y1="290" x2="150" y2="352" stroke="var(--rose)"
+            stroke-width="2" marker-end="url(#ar-r)"/>
+
+      <!-- branch out of L0 and back into L3 -->
+      <polyline points="240,139 330,139 330,204 416,204" fill="none"
+                stroke="var(--accent)" stroke-width="2" marker-end="url(#ar-a)"/>
+      <polyline points="530,232 530,375 244,375" fill="none"
+                stroke="var(--accent)" stroke-width="2" marker-end="url(#ar-a)"/>
+
+      <!-- arrow labels -->
+      <g font-size="11" fill="currentColor" opacity="0.72">
+        <text x="162" y="104">parse, never interpret</text>
+        <text x="162" y="178">map labels · diarise · emotion</text>
+        <text x="162" y="245">group by room + type</text>
+        <text x="162" y="414">aggregate per day and pair</text>
+      </g>
+      <g font-size="11" fill="var(--accent)">
+        <text x="248" y="132">cluster turns into exchanges</text>
+        <text x="380" y="368">six relational dimensions</text>
+      </g>
+      <g font-size="11" fill="var(--rose)">
+        <text x="162" y="312" font-weight="600">join on speaker name</text>
+        <text x="162" y="328">42% of speech carries none</text>
+      </g>
+    </svg>
+    <figcaption>L1.5 is a branch, not a link in the chain: it reads turns from L0 and rejoins at L3. The red arrow is the join every person-level claim depends on.</figcaption>
+  </figure>
+</section>
+
+<section class="block">
+  <h2>The mock evening</h2>
+  <p>Eleven rows, chosen so that between them they exercise every branch in the pipeline: a nullish label, a room that must be resolved from the device, two speakers in one recording, an unmapped AudioSet class, an unattributable voice, a composite activity rule, a long observation gap, and a second day so the longitudinal comparison has something to reach for.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>ID</th><th>Time</th><th>Room</th><th>Labels</th><th>Transcript</th><th>Emotion</th><th>What it is here to test</th></tr></thead>
+    <tbody>
+      <tr><td class="id">101</td><td>19:00:00</td><td>Kitchen</td><td>Frying · Dishes · None</td><td>—</td><td>None</td><td class="note">nullish label discarded</td></tr>
+      <tr><td class="id">102</td><td>19:02:30</td><td>Kitchen</td><td>Speech · Conversation · Inside small room</td><td>Ilyas, then Voula</td><td>HAP (0.71)</td><td class="note">two speakers, one row</td></tr>
+      <tr><td class="id">103</td><td>19:04:00</td><td>Kitchen</td><td>Speech · Silence</td><td>Voula</td><td>NEU (0.55)</td><td class="note">inside the 120 s turn gap</td></tr>
+      <tr><td class="id">104</td><td>19:06:00</td><td>Kitchen</td><td>Chopping · Cupboard</td><td>—</td><td>—</td><td class="note">folds into the cooking episode</td></tr>
+      <tr><td class="id">105</td><td>20:15:00</td><td>Living</td><td>Television · Music</td><td>—</td><td>—</td><td class="note">seeds a media episode</td></tr>
+      <tr><td class="id">106</td><td>20:16:00</td><td>Living</td><td>Speech · Laughter</td><td>Rafael</td><td>HAP (0.80)</td><td class="note">viewer near the TV</td></tr>
+      <tr><td class="id">107</td><td>20:17:30</td><td>Living</td><td>Speech</td><td>Voula</td><td>NEU (0.61)</td><td class="note">second viewer → co-presence</td></tr>
+      <tr><td class="id">108</td><td>20:19:00</td><td>Living</td><td>Zither · Speech</td><td>Unknown</td><td>—</td><td class="note">unmapped label + unattributed voice</td></tr>
+      <tr><td class="id">109</td><td>21:40:00</td><td><em>(none)</em></td><td>Water tap · Toilet flush · Breathing</td><td>—</td><td>—</td><td class="note">room from device map, composite rule</td></tr>
+      <tr><td class="id">110</td><td>22:59:00</td><td>Bedroom</td><td>Snoring</td><td>—</td><td>—</td><td class="note">after a 79-minute gap</td></tr>
+      <tr><td class="id">201</td><td>Aug 31, 19:05</td><td>Kitchen</td><td>Speech</td><td>Ilyas</td><td>NEU (0.60)</td><td class="note">a second day</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ===================== L0 ===================== -->
+<div class="level">
+  <div class="rail">
+    <div class="num">L0</div>
+    <div class="nm">Canonical observations</div>
+    <div class="sub">11 rows in, 11 out</div>
+  </div>
+  <div>
+    <p class="job">Normalise the export. Nothing is interpreted here — every field is either copied, parsed, or recorded as missing.</p>
+
+    <ol class="rules">
+      <li><span class="k">1</span><span class="v"><b>Timestamps</b> parsed from any of three formats, emitted as ISO. Unparseable rows are kept but sorted last.</span></li>
+      <li><span class="k">2</span><span class="v"><b>Labels</b> read from slots 1–3 with their probabilities. A nullish value — <code>""</code>, <code>none</code>, <code>nan</code>, <code>unknown</code> — is dropped into <code>raw_labels_discarded</code> rather than deleted, so the discard is auditable.</span></li>
+      <li><span class="k">3</span><span class="v"><b>Room</b> resolved in order: the event's own field, then <code>device_room_map</code>, then unknown. Which one won is recorded in <code>room_source</code>.</span></li>
+      <li><span class="k">4</span><span class="v"><b>Diarisation</b> is parsed out of the transcription string, because the pipeline writes speaker identity into the text rather than a column. Markers are matched anywhere, and each turn's words run to the next marker.</span></li>
+      <li><span class="k">5</span><span class="v"><b>Two speech flags</b>, deliberately separate: <code>has_speech</code> means a transcription exists at all; <code>has_words</code> means the recogniser produced words. A clip can be the first without the second.</span></li>
+      <li><span class="k">6</span><span class="v"><b>Emotion</b> parsed from <code>"HAP (0.71)"</code> into a label and a confidence.</span></li>
+    </ol>
+
+    <div class="xform">
+      <div class="cap">Event 102 — two speakers in one recording</div>
+      <pre>room='Kitchen' <em>(source: event)</em>
+labels kept   : [('Speech', 0.71), ('Conversation', 0.52), ('Inside, small room', 0.33)]
+has_speech=<b>True</b>  has_words=<b>True</b>  speakers=<b>['Ilyas', 'Voula']</b>
+  turn 0.0–4.2s  'Ilyas': 'Θα φάμε στις οκτώ.'
+  turn 4.5–9.1s  'Voula': 'Ναι, τελειώνω εδώ.'
+emotion       : {'label': 'happy', 'confidence': 0.71}</pre>
+    </div>
+
+    <div class="split xform">
+      <div>
+        <div class="cap">Event 101 — the discard is recorded</div>
+        <pre>labels kept     : [('Frying (food)', 0.82),
+                   ('Dishes, pots, and pans', 0.41)]
+labels discarded: <s>['None']</s></pre>
+      </div>
+      <div>
+        <div class="cap">Event 109 — room recovered from the device</div>
+        <pre>room=<b>'Bathroom'</b>
+<em>(source: device_map)</em>
+
+<em>the event itself carried no room</em></pre>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <span class="lbl">The consequential one</span>
+      <p>Event 108's transcript says <code>Unknown:</code>. But <code>unknown</code> is in the nullish set, so the turn is kept with <code>speaker=None</code> and the observation ends with <code>speakers=[]</code>. It is still speech — <code>has_speech=True</code> — but it now carries no person. Follow this row down: it is the shape of 42% of real speech clips.</p>
+    </div>
+
+    <div class="feats"><span>timestamp parse</span><span>label slots 1–3</span><span>nullish discard</span><span>room resolution</span><span>room_source</span><span>diarisation turns</span><span>has_speech / has_words</span><span>speaker set</span><span>emotion parse</span><span>chronological sort</span></div>
+  </div>
+</div>
+
+<!-- ===================== L1 ===================== -->
+<div class="level">
+  <div class="rail">
+    <div class="num">L1</div>
+    <div class="nm">Semantic events</div>
+    <div class="sub">11 observations → 40 events</div>
+  </div>
+  <div>
+    <p class="job">Translate each observation into meaning, through three independent extractors. Nothing above this level knows which modality produced what — this is where a future camera or door sensor would join.</p>
+
+    <ol class="rules">
+      <li><span class="k">A</span><span class="v"><b>Audio labels.</b> Each AudioSet label maps to zero or more semantic types through a table that is data, not logic. Several labels hitting one type combine: the strongest wins, plus a small corroboration bonus, capped at 0.95. An unmapped label becomes <code>unknown_activity</code> and carries its own uncertainty note. A label mapped to the <em>empty list</em> is deliberately ignored.</span></li>
+      <li><span class="k">B</span><span class="v"><b>Diarisation.</b> Independent of the labels, because the AudioSet head often scores Speech low on recordings that plainly contain words. Emits <code>speech_activity</code> at 0.90 with words or 0.70 without, one <code>identified_speaker</code> per named speaker, and <code>conversation_candidate</code> when two or more named speakers share a recording.</span></li>
+      <li><span class="k">C</span><span class="v"><b>Emotion.</b> Passed up as <code>emotion_evidence</code> carrying the model's own confidence — evidence, never a conclusion.</span></li>
+    </ol>
+
+    <div class="xform">
+      <div class="cap">Event 102 — one row becomes seven semantic events</div>
+      <pre>conversation_candidate     conf=0.52   <em>via audio_labels</em>
+speech_activity            conf=<u>0.76</u>   <em>via audio_labels</em>   ← Speech 0.71 + corroboration
+speech_activity            conf=0.90   <em>via diarization</em>
+identified_speaker         conf=0.80   <em>via diarization</em>   person=<b>Ilyas</b>
+identified_speaker         conf=0.80   <em>via diarization</em>   person=<b>Voula</b>
+conversation_candidate     conf=0.75   <em>via diarization</em>
+emotion_evidence           conf=0.71   <em>via emotion_model</em>
+
+<em>"Inside, small room" mapped to [] and produced nothing — ambience, by design.</em></pre>
+    </div>
+
+    <div class="split xform">
+      <div>
+        <div class="cap">Event 108 — unmapped label surfaces</div>
+        <pre>speech_activity   conf=0.30
+<u>unknown_activity  conf=0.44</u>
+  <em>(unmapped label: Zither)</em>
+speech_activity   conf=0.90 <em>diarization</em>
+
+<s>no identified_speaker</s></pre>
+      </div>
+      <div>
+        <div class="cap">Event 109 — one row, four types</div>
+        <pre>bathroom_use_candidate    0.50
+faucet_use                0.70
+human_presence_candidate  0.21
+water_use                 0.70</pre>
+      </div>
+    </div>
+
+    <p>Note what event 108 does and does not produce. It reaches L1 as speech — twice over — but with no <code>identified_speaker</code>, because L0 found no name. The speech is visible; the speaker is not.</p>
+
+    <div class="feats"><span>semantic mapping table</span><span>confidence combination</span><span>corroboration bonus</span><span>0.95 cap</span><span>unmapped → unknown_activity</span><span>[] = ignored</span><span>diarisation independent of labels</span><span>identified_speaker</span><span>conversation_candidate</span><span>emotion_evidence</span></div>
+  </div>
+</div>
+
+<!-- ===================== L1.5 ===================== -->
+<div class="level">
+  <div class="rail">
+    <div class="num" style="color:var(--accent)">L1.5</div>
+    <div class="nm">Semantic interaction</div>
+    <div class="sub">576 exchanges in 5 days</div>
+  </div>
+  <div>
+    <p class="job">Read what a spoken exchange <em>meant</em> between people. This is the one interpretive stage — it needs a language model, so the model is passed in and the rest of the pipeline never depends on it.</p>
+
+    <p>L1 cannot make this distinction, and neither can anything above it. "I love you" and "you idiot" are both <code>speech_activity</code> plus <code>conversation_candidate</code> plus two <code>identified_speaker</code>s. They arrive at L3 as the same record, and the difference is gone before L4 ever sees it.</p>
+
+    <figure>
+      <svg viewBox="0 0 700 340" role="img" class="fig"
+           aria-label="Without L1.5, an affectionate exchange and a hostile one both become the same L3 record: one reciprocal conversation with a turn balance. With L1.5, the same two exchanges diverge into different relational dimensions: warmth 0.94 against warmth 0.02, tension 0.02 against tension 0.97, while connection stays high for both.">
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <line x1="350" y1="10" x2="350" y2="330" stroke="currentColor"
+              stroke-width="1" opacity="0.25" stroke-dasharray="4 4"/>
+        <text x="20" y="24" font-size="12" fill="currentColor" opacity="0.7"
+              letter-spacing="1.2" font-weight="600">WITHOUT L1.5</text>
+        <text x="372" y="24" font-size="12" fill="var(--accent)"
+              letter-spacing="1.2" font-weight="600">WITH L1.5</text>
+
+        <!-- LEFT: both converge -->
+        <g fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="20" y="44" width="140" height="34" rx="4"/>
+          <rect x="20" y="104" width="140" height="34" rx="4"/>
+          <rect x="196" y="74" width="130" height="34" rx="4"/>
+          <rect x="176" y="176" width="150" height="96" rx="4"/>
+        </g>
+        <g font-size="12" fill="currentColor">
+          <text x="90" y="65" text-anchor="middle">"I love you"</text>
+          <text x="90" y="125" text-anchor="middle">"You idiot"</text>
+          <text x="261" y="95" text-anchor="middle">L3 record</text>
+        </g>
+        <g stroke="currentColor" stroke-width="1.5" marker-end="url(#ar2)">
+          <polyline points="160,61 178,61 178,88 192,88" fill="none"/>
+          <polyline points="160,121 178,121 178,94 192,94" fill="none"/>
+          <line x1="261" y1="108" x2="261" y2="172"/>
+        </g>
+        <g font-size="11.5" fill="currentColor" font-family="ui-monospace,monospace">
+          <text x="188" y="198">conversation ×1</text>
+          <text x="188" y="216">turn_balance 0.5</text>
+          <text x="188" y="234">emotion: neutral</text>
+        </g>
+        <text x="251" y="262" font-size="11.5" fill="var(--rose)"
+              text-anchor="middle" font-weight="600">identical</text>
+        <text x="251" y="300" font-size="11" fill="currentColor" opacity="0.7"
+              text-anchor="middle">the difference is already lost</text>
+
+        <!-- RIGHT: they diverge -->
+        <g fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="372" y="44" width="128" height="34" rx="4"/>
+          <rect x="372" y="104" width="128" height="34" rx="4"/>
+        </g>
+        <g font-size="12" fill="currentColor">
+          <text x="436" y="65" text-anchor="middle">"I love you"</text>
+          <text x="436" y="125" text-anchor="middle">"You idiot"</text>
+        </g>
+        <g fill="none" stroke="var(--accent)" stroke-width="1.5">
+          <rect x="536" y="40" width="146" height="106" rx="4"/>
+          <rect x="536" y="176" width="146" height="106" rx="4"/>
+        </g>
+        <g stroke="var(--accent)" stroke-width="1.5">
+          <line x1="500" y1="61" x2="532" y2="70" marker-end="url(#ar2)"/>
+          <polyline points="500,121 518,121 518,210 532,210" fill="none"
+                    marker-end="url(#ar2)"/>
+        </g>
+        <g font-size="11.5" font-family="ui-monospace,monospace">
+          <text x="548" y="62" fill="currentColor">connection 0.86</text>
+          <text x="548" y="82" fill="var(--accent)" font-weight="600">warmth     0.94</text>
+          <text x="548" y="102" fill="currentColor">joy        0.61</text>
+          <text x="548" y="122" fill="currentColor">tension    0.02</text>
+
+          <text x="548" y="198" fill="currentColor">connection 0.83</text>
+          <text x="548" y="218" fill="currentColor">warmth     0.02</text>
+          <text x="548" y="238" fill="currentColor">joy        0.01</text>
+          <text x="548" y="258" fill="var(--rose)" font-weight="600">tension    0.97</text>
+        </g>
+        <text x="609" y="308" font-size="11" fill="currentColor" opacity="0.75"
+              text-anchor="middle">connection stays high for both —</text>
+        <text x="609" y="324" font-size="11" fill="currentColor" opacity="0.75"
+              text-anchor="middle">an argument is a strong interaction</text>
+      </svg>
+      <figcaption>The same two exchanges, before and after. Note what does <em>not</em> change: connection is high on both sides of the argument. Engagement and relational quality are separate axes, which is the whole reason the level exists.</figcaption>
+    </figure>
+
+    <ol class="rules">
+      <li><span class="k">1</span><span class="v"><b>Cluster</b> turns into exchanges — same room, within 120 s — using the same function L3 uses, so both levels agree on what an exchange is.</span></li>
+      <li><span class="k">2</span><span class="v"><b>Gate on intelligibility.</b> Eight words for one stretch of speech, or four across a genuine two-voice back-and-forth, because a reply is evidence in itself. Below that nothing is sent and nothing is spent.</span></li>
+      <li><span class="k">3</span><span class="v"><b>Interpret the exchange</b>, with neighbouring turns as read-only context. One call per exchange, cached by content hash.</span></li>
+      <li><span class="k">4</span><span class="v"><b>Validate the reply.</b> Speakers come from diarisation only — an invented name cannot enter. Unknown interaction types collapse to <code>other</code>. Scores offered alongside an abstention are discarded.</span></li>
+      <li><span class="k">5</span><span class="v"><b>Abstain honestly.</b> <code>null</code> means no evidence; <code>0.0</code> means evidence of absence. On uninterpretable speech every dimension is null, never zero.</span></li>
+    </ol>
+
+    <div class="note">
+      <span class="lbl">Why repair is kept separately</span>
+      <p>An apology after an argument does not cancel the argument. The episode keeps the tension peak, the repair that followed, and the ordered sequence between them — so "conflict load" and "repair rate" stay separately measurable instead of averaging into one lukewarm number.</p>
+    </div>
+
+    <div class="feats"><span>shared turn clustering</span><span>intelligibility gate</span><span>exchange-level, not sentence-level</span><span>closed vocabulary</span><span>six dimensions</span><span>null ≠ zero</span><span>speakers from diarisation only</span><span>content-hash cache</span><span>tension → repair sequence</span><span>degrades to not_attempted</span></div>
+  </div>
+</div>
+
+<!-- ===================== L2 ===================== -->
+<div class="level">
+  <div class="rail">
+    <div class="num">L2</div>
+    <div class="nm">Activity episodes</div>
+    <div class="sub">40 events → 12 episodes</div>
+  </div>
+  <div>
+    <p class="job">Merge semantic events that are close in time, room and meaning, so that "breathing, then water, then a flush" becomes one thing that happened rather than three readings.</p>
+
+    <ol class="rules">
+      <li><span class="k">1</span><span class="v"><b>Group by (room, semantic type)</b> and split whenever the gap exceeds that type's allowance — 120 s for speech, 300 s for water, 600 s for cooking and media.</span></li>
+      <li><span class="k">2</span><span class="v"><b>Supporting types never define an episode.</b> <code>identified_speaker</code>, <code>emotion_evidence</code>, <code>human_presence_candidate</code>, <code>movement_candidate</code> and friends describe <em>how</em> something was observed, so they fold into whichever episode they overlap but never start one.</span></li>
+      <li><span class="k">3</span><span class="v"><b>Composite rules relabel and nudge.</b> When the types present satisfy a rule — and, for some rules, the room matches — the episode is renamed and its confidence boosted. First match wins.</span></li>
+    </ol>
+
+    <div class="xform">
+      <div class="cap">Events 101 + 104 merge across six minutes, then get relabelled</div>
+      <pre>act_20260830_0001  <b>food_preparation_candidate</b>  room=Kitchen
+  19:00:00 → 19:06:00   (360s)  conf=<u>0.92</u>   <em>← cooking 0.82 + composite boost 0.10</em>
+  semantic types : ['cooking_candidate', 'emotion_evidence',
+                    'food_activity_candidate', 'identified_speaker']
+  from events    : [101, 104, 102, 103]
+
+<em>The rule: requires cooking_candidate or food_activity_candidate,
+supported by object_access — which event 104's cupboard supplied.</em></pre>
+    </div>
+
+    <div class="split xform">
+      <div>
+        <div class="cap">Event 109 — two rules, two episodes</div>
+        <pre><b>bathroom_use_candidate</b>  conf=0.65
+  <em>flush + water + presence</em>
+
+<b>personal_care_candidate</b> conf=0.925
+  <em>water + faucet, room ∈ {Bathroom, WC}</em></pre>
+      </div>
+      <div>
+        <div class="cap">Living room — media hits the cap</div>
+        <pre><b>media_use</b>  conf=<u>0.95</u>
+  <em>Television 0.88 + Music 0.40,
+  then the media_use composite —
+  clamped at max_semantic_confidence</em></pre>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="lbl">Where the rooms come from</span>
+      <p>The bathroom episodes exist because L0 resolved event 109's missing room through the device map. Had that lookup failed, both episodes would have been <code>room=None</code> — and co-presence at L3 explicitly refuses to use a roomless episode as evidence.</p>
+    </div>
+
+    <div class="feats"><span>(room, type) grouping</span><span>per-type gap allowance</span><span>supporting types fold in</span><span>composite rules</span><span>room-conditional rules</span><span>confidence boost</span><span>0.95 clamp</span><span>duplicate episode merge</span></div>
+  </div>
+</div>
+
+<!-- ===================== L3 ===================== -->
+<div class="level">
+  <div class="rail">
+    <div class="num">L3</div>
+    <div class="nm">Person &amp; social episodes</div>
+    <div class="sub">→ 15 episodes</div>
+  </div>
+  <div>
+    <p class="job">The boundary of the whole system. Below here everything is keyed on <em>sound</em>; from here up, everything is keyed on <em>a person</em>. Six episode types are produced, all of them joined on the speaker name.</p>
+
+    <ol class="rules">
+      <li><span class="k">1</span><span class="v"><b>person_presence_evidence</b> — one per observation per named speaker. Confidence 0.80 for a configured household member, 0.50 for a stranger. Always carries "presence at this moment only; continuous presence not implied".</span></li>
+      <li><span class="k">2</span><span class="v"><b>speech_episode</b> — turns clustered while consecutive turns are within 120 s <em>and</em> in the same room. Records turn count, per-speaker turn counts, speaker changes, transcript excerpts and an emotion summary.</span></li>
+      <li><span class="k">3</span><span class="v"><b>reciprocal_conversation_candidate</b> — fires only when <em>two or more known speakers</em> are in one cluster. Adds turn balance, response gaps, and a confidence that rises 0.05 per speaker change.</span></li>
+      <li><span class="k">4</span><span class="v"><b>single_person_speech_episode</b> — exactly one known speaker, tagged "does not imply the person was alone".</span></li>
+      <li><span class="k">5</span><span class="v"><b>same_room_copresence_candidate</b> — two different members with presence evidence in the same room within 300 s, merged into windows so a run of alternating speech yields one episode, not one per pair of rows.</span></li>
+      <li><span class="k">6</span><span class="v"><b>shared_media_candidate</b> — an L2 media episode with two or more people nearby. With one person it becomes <code>media_use_with_unidentified_viewers</code>; with none, plain <code>media_use</code>.</span></li>
+    </ol>
+
+    <div class="xform">
+      <div class="cap">The kitchen exchange — events 102 and 103 become a conversation</div>
+      <pre>soc_20260830_0007  <b>reciprocal_conversation_candidate</b>  Kitchen  conf=0.65
+  19:02:30 → 19:04:03.8   participants=<b>['Ilyas', 'Voula']</b>
+    estimated_turns      : {"Ilyas": 1, "Voula": 2}
+    turn_balance         : <u>0.5</u>          <em>← quieter party spoke half as often</em>
+    speaker_changes      : 1
+    response_gaps_seconds: [0.3]
+    emotion_summary      : {"dominant": "happy",
+                            "distribution": {"happy": 0.721, "neutral": 0.279}}
+  ! turn counts derive from diarisation segments, not continuous voice-activity timing</pre>
+    </div>
+
+    <div class="split xform">
+      <div>
+        <div class="cap">Living room — co-presence, then shared media</div>
+        <pre><b>same_room_copresence_candidate</b>
+  Rafael + Voula, span 90s
+
+<b>shared_media_candidate</b>
+  participants=['Rafael','Voula']
+  <em>the TV episode, now with an audience</em></pre>
+      </div>
+      <div>
+        <div class="cap">Day two — Ilyas alone</div>
+        <pre><b>single_person_speech_episode</b>
+  participants=['Ilyas']
+  turn_count: 1
+  ! does not imply the person
+    was alone</pre>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <span class="lbl">Event 108, concluded</span>
+      <p>Its turn <em>did</em> join the living-room speech cluster — <code>turn_count: 3</code> counts it, and its <code>'...'</code> appears in the excerpts. But it contributed <strong>no presence episode, no participant, and nothing to any pair</strong>, because it had no name to join on. It inflates the appearance of activity while adding nothing a person-level conclusion can be built from.</p>
+      <p>That is the exact mechanism by which the measured 42% Unknown rate becomes missing relationships rather than visible gaps. And because <code>reciprocal_conversation_candidate</code> requires <em>two</em> known speakers, a real exchange with one end unattributed does not degrade — it vanishes.</p>
+    </div>
+
+    <div class="feats"><span>presence per speaker</span><span>known vs stranger confidence</span><span>120 s turn clustering</span><span>same-room constraint</span><span>turn balance</span><span>response gaps</span><span>speaker changes</span><span>co-presence windows</span><span>roomless = not evidence</span><span>shared media tiering</span><span>per-episode uncertainty</span></div>
+  </div>
+</div>
+
+<!-- ===================== L4 ===================== -->
+<div class="level">
+  <div class="rail">
+    <div class="num">L4</div>
+    <div class="nm">Daily dynamics</div>
+    <div class="sub">→ 2 day records</div>
+  </div>
+  <div>
+    <p class="job">Aggregate one day at a time, per person and per pair, and state the limits of the evidence alongside it. This is the object the LLM actually reads.</p>
+
+    <ol class="rules">
+      <li><span class="k">1</span><span class="v"><b>household_activity</b> — episode counts by activity and by room.</span></li>
+      <li><span class="k">2</span><span class="v"><b>individual_patterns</b> — per member: speech episodes, presence evidence, rooms recognised in, an emotion distribution, and a breakdown of social participation. Only people the day actually evidences appear.</span></li>
+      <li><span class="k">3</span><span class="v"><b>pair_dynamics</b> — per pair: conversations, co-presence, shared activities, a mean turn balance, a joint emotion summary, and an <code>evidence_strength</code> of "moderate" at three or more shared episodes, otherwise "limited".</span></li>
+      <li><span class="k">4</span><span class="v"><b>no_observation_intervals</b> — every gap over 30 minutes, carried up with the standing note that this is absence of evidence, not evidence of silence.</span></li>
+      <li><span class="k">5</span><span class="v"><b>data_quality and uncertainties</b> — how many events had no room, how much speech went unattributed, whether coverage is known. Shipped as part of the payload, not as a footnote.</span></li>
+      <li><span class="k">6</span><span class="v"><b>baseline_comparison</b> — against prior days, and refuses to compare below seven days of history.</span></li>
+    </ol>
+
+    <div class="xform">
+      <div class="cap">Aug 30 — what one evening became</div>
+      <pre>individual_patterns.<b>Voula</b>
+  speech_episode_count   : 2
+  presence_evidence_count: 3
+  recognized_rooms       : {"Kitchen": 2, "Living": 1}
+  emotion_summary        : {"dominant": "neutral",
+                            "distribution": {"neutral": 0.62, "happy": 0.38}}
+  social_participation   : {"reciprocal_conversation_candidate": 2,
+                            "same_room_copresence_candidate": 2,
+                            "shared_media_candidate": 1}
+
+pair_dynamics.<b>Ilyas__Voula</b>
+  conversation_episode_count : 1
+  copresence_candidate_count : 1
+  interaction_event_count    : 3
+  turn_balance_summary       : {"mean": 0.5, "samples": 1}
+  evidence_strength          : "moderate"
+
+<u>data_quality</u>
+  speech_event_count              : 5
+  identified_speaker_event_count  : 4
+  <b>unidentified_speech_event_count : 1</b>      <em>← event 108, counted honestly</em>
+  no_observation_interval_count   : 4
+  overall_evidence_quality        : "limited"
+
+<u>baseline_comparison</u>
+  status: "insufficient_history"   days_available: 0   days_required: 7</pre>
+    </div>
+
+    <div class="note">
+      <span class="lbl">What the design gets right</span>
+      <p>Event 108 is not swept away. It appears at L4 as <code>unidentified_speech_event_count: 1</code>, and the four observation gaps are reported as gaps rather than as a quiet house. The pipeline tells the model what it could not see — which is precisely what stops missing evidence being read as evidence of absence.</p>
+    </div>
+
+    <div class="feats"><span>per-day slicing</span><span>activity counts</span><span>rooms with activity</span><span>per-person patterns</span><span>emotion distribution</span><span>social participation</span><span>pair dynamics</span><span>turn balance mean</span><span>evidence_strength</span><span>group dynamics</span><span>observation gaps</span><span>data_quality</span><span>uncertainties</span><span>baseline comparison</span></div>
+  </div>
+</div>
+
+<section class="block" style="border-bottom:none">
+  <h2>Reading it against the evaluation</h2>
+  <p>Levels 0 through 2 are keyed on sound, and the components feeding them measured well: sound labelling is correct at rank one on 82.4% of clips, and the speech gate drops no speech at all. Levels 3 and 4 are keyed on a person, and the component feeding <em>them</em> — speaker identity — measured 51.1%.</p>
+  <p>Event 108 is that gap in miniature. The pipeline handles it correctly at every step and still cannot produce a person from it, because there is no name to join on. Everything the daily report says about individuals and pairs is built on a join key that is currently right about half the time, and the failure is silent: a conversation with one end unattributed does not arrive marked uncertain, it does not arrive at all.</p>
+  <p>The one design decision that changes this is the speaker abstain. With it, unattributed speech becomes <code>unidentified_speech_event_count</code> — visible, countable, and correctly excluded from pair dynamics. Without it, every clip gets a name, and those same clips arrive at L4 as participants in conversations that may not have happened.</p>
+</section>
+
+<footer>
+  Produced by running the mock rows above through <code>ast_dash/llm_report/derive_home_dynamics.py</code> unmodified. Every figure quoted is that run's actual output, not an illustration.
+</footer>
+
+</div>
+
+</body>
+</html>

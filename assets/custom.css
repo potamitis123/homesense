@@ -1,0 +1,49 @@
+/* Custom CSS for Audio Surveillance Dashboard */
+
+/* -------------------------------------------------------------------------
+   1. Tab Highlighting (Navigation)
+   ------------------------------------------------------------------------- */
+/* Default state for nav links (matching previous inline styles generally) */
+.nav-pills .nav-link {
+    color: white !important;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+/* Hover state */
+.nav-pills .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Active/Selected state - This is the "highlight" requested */
+.nav-pills .nav-link.active {
+    background-color: white !important;
+    color: #0d6efd !important; /* Bootstrap primary blue */
+    border-color: white;
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* -------------------------------------------------------------------------
+   2. Table Row Highlighting (AG Grid)
+   ------------------------------------------------------------------------- */
+/* Customize the selected row background color */
+.ag-theme-alpine .ag-row-selected {
+    background-color: rgba(13, 110, 253, 0.3) !important; /* Semi-transparent blue */
+    border: none !important; /* Remove border to prevent dislocation */
+}
+
+/* Ensure text remains readable */
+.ag-theme-alpine .ag-row-selected .ag-cell {
+    font-weight: 500;
+}
+
+/* Hover effect for rows */
+.ag-theme-alpine .ag-row:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}

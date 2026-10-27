@@ -1,0 +1,43 @@
+# takes.txt of 2026-09-10 with the six windows that could not match anything
+# repaired from the clip timestamps in ast_audio.db. Every other line is as
+# written. A repaired end stops one second before the next take begins.
+40    2026-09-10 20:44:17   2026-09-10 20:45:15   Entrance   NEAR   # end was 13:53:15; last clip of the session starts 20:45:08
+39    2026-09-10 20:43:45   2026-09-10 20:44:10   Entrance   NEAR
+38   2026-09-10 20:43:16   2026-09-10 20:43:44   Entrance   NEAR    # end was 20:43:13, before the start
+37   2026-09-10 20:42:39   2026-09-10 20:43:03   Entrance   NEAR
+36   2026-09-10 20:42:03   2026-09-10 20:42:26   Entrance   NEAR
+35   2026-09-10 20:41:30   2026-09-10 20:41:50   Entrance   NEAR
+34   2026-09-10 20:40:47   2026-09-10 20:41:21   Entrance   NEAR
+33   2026-09-10 20:40:16   2026-09-10 20:40:41   Entrance   NEAR
+32   2026-09-10 20:39:49   2026-09-10 20:40:01   Entrance   NEAR
+31   2026-09-10 20:39:23   2026-09-10 20:39:43   Entrance   NEAR
+30   2026-09-10 20:38:45   2026-09-10 20:39:14   Entrance   NEAR
+29   2026-09-10 20:38:20   2026-09-10 20:38:37   Entrance   NEAR
+28   2026-09-10 20:37:58   2026-09-10 20:38:14   Entrance   NEAR
+27   2026-09-10 20:37:30   2026-09-10 20:37:45   Entrance   NEAR
+26   2026-09-10 20:36:58   2026-09-10 20:37:21   Entrance   NEAR
+25   2026-09-10 20:36:21   2026-09-10 20:36:48   Entrance   NEAR
+24   2026-09-10 20:35:58   2026-09-10 20:36:09   Entrance   NEAR
+23   2026-09-10 20:35:18   2026-09-10 20:35:29   Entrance   NEAR
+22   2026-09-10 20:34:46   2026-09-10 20:35:08   Entrance   NEAR
+21   2026-09-10 20:34:21   2026-09-10 20:34:42   Entrance   NEAR
+20   2026-09-10 20:33:49   2026-09-10 20:34:10   Entrance   NEAR
+19   2026-09-10 20:33:23   2026-09-10 20:33:48   Entrance   NEAR    # start = end in takes.txt
+18   2026-09-10 20:32:59   2026-09-10 20:33:12   Entrance   NEAR
+17   2026-09-10 20:32:31   2026-09-10 20:32:53   Entrance   NEAR
+16   2026-09-10 20:32:07   2026-09-10 20:32:19   Entrance   NEAR
+15   2026-09-10 20:31:45   2026-09-10 20:31:55   Entrance   NEAR
+14   2026-09-10 20:31:20   2026-09-10 20:31:35   Entrance   NEAR
+13   2026-09-10 20:30:51   2026-09-10 20:31:11   Entrance   NEAR
+12   2026-09-10 20:30:11   2026-09-10 20:30:41   Entrance   NEAR
+11   2026-09-10 20:29:43   2026-09-10 20:30:04   Entrance   NEAR
+10   2026-09-10 20:29:20   2026-09-10 20:29:35   Entrance   NEAR
+9   2026-09-10 20:28:57   2026-09-10 20:29:16   Entrance   NEAR
+8   2026-09-10 20:28:30   2026-09-10 20:28:46   Entrance   NEAR
+7   2026-09-10 20:27:37   2026-09-10 20:28:18   Entrance   NEAR
+6   2026-09-10 20:27:09   2026-09-10 20:27:31   Entrance   NEAR
+5   2026-09-10 20:26:33   2026-09-10 20:26:36   Entrance   NEAR
+4   2026-09-10 20:26:18   2026-09-10 20:26:32   Entrance   NEAR    # start = end in takes.txt
+3   2026-09-10 20:25:46   2026-09-10 20:26:08   Entrance   NEAR    # start was 20:52:46 - digits swapped
+2   2026-09-10 20:25:25   2026-09-10 20:25:37   Entrance   NEAR
+1   2026-09-10 20:25:02   2026-09-10 20:25:24   Entrance   NEAR    # start = end in takes.txt

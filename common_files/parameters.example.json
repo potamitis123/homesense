@@ -1,0 +1,114 @@
+{
+  "communication": {
+    "mode": "Home Server",
+    "api_port": 8000,
+    "local_storage_path": "assets/audios"
+  },
+  "mqtt": {
+    "broker_host": "localhost",
+    "broker_port": 1883,
+    "keepalive": 60,
+    "username": "hlias",
+    "password": "",
+    "save_sound_path": "assets/audios",
+    "ca_certfile": "",
+    "certfile": "",
+    "keyfile": ""
+  },
+  "audio": {
+    "sample_rate": 16000,
+    "chunk_size": 3200,
+    "buffer_max_size": 50,
+    "record_seconds": 10,
+    "ast_model_name": "bookbot/distil-ast-audioset"
+  },
+  "audio_transport": {
+    "ptt_mode": "streaming",
+    "fallback_to_mqtt_play": true
+  },
+  "mobile_api": {
+    "host": "0.0.0.0",
+    "port": 8001,
+    "https": true,
+    "device_capabilities": {
+      "box3-2": {
+        "duplex": true,
+        "video": false
+      },
+      "p4-sentinel-1": {
+        "duplex": true,
+        "video": true
+      },
+      "p4-door-1": {
+        "duplex": true,
+        "video": true
+      }
+    },
+    "access_token_minutes": 30,
+    "refresh_token_days": 30,
+    "audio_session_timeout_minutes": 5,
+    "login_rate_limit_per_minute": 5
+  },
+  "sqlite": {
+    "db_name": "ast_audio_db/ast_audio.db"
+  },
+  "vad": {
+    "enabled": true,
+    "silence_duration_ms": 500,
+    "speech_pad_ms": 100,
+    "min_speech_duration_ms": 2000,
+    "threshold": 0.1
+  },
+  "asr": {
+    "enabled": true
+  },
+  "emotion": {
+    "enabled": true
+  },
+  "diarization": {
+    "enabled": true,
+    "hf_token": "",
+    "model": "pyannote/speaker-diarization-3.1"
+  },
+  "clap": {
+    "enabled": true,
+    "search_threshold": 0.25
+  },
+  "webrtc": {
+    "signal_topic_prefix": "videocall",
+    "stun_url": "stun:stun.l.google.com:19302",
+    "turn_url": "",
+    "turn_user": "",
+    "turn_password": "",
+    "video_width": 720,
+    "video_height": 1280,
+    "video_fps": 12,
+    "jpeg_quality": 0.4
+  },
+  "video_stream": {
+    "ingest_enabled": true,
+    "ingest_host": "0.0.0.0",
+    "ingest_port": 8060,
+    "ingest_tls": true,
+    "max_frame_bytes": 1048576,
+    "stale_after_seconds": 15,
+    "viewer_idle_timeout_seconds": 120
+  },
+  "brevo": {
+    "BREVO_SMTP_HOST": "smtp-relay.brevo.com",
+    "BREVO_SMTP_PORT": 587,
+    "BREVO_SMTP_USER": "",
+    "BREVO_SMTP_KEY": "",
+    "FROM_EMAIL": "",
+    "ALERT_TO": ""
+  },
+  "https": {
+    "https": true,
+    "ca_certfile": "certs/certs/hlias.crt",
+    "ca_keyfile": "certs/certs/hlias.key",
+    "host": "0.0.0.0"
+  },
+  "openai": {
+    "api_key": ""
+  }
+}

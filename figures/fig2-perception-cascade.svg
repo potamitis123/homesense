@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="476" viewBox="0 0 1280 476" aria-label="A fifteen second clip is classified by an audio spectrogram transformer; if speech is among the top three labels it passes a voice activity gate and fans out to transcription with speaker identification, emotion, and a semantic embedding, all converging on one database row. A recognised spoken command mutes the whole house for an hour."><rect x="0" y="-20" width="1280" height="516" fill="#FFFFFF"/>
+        <defs>
+          <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#56707A"/>
+          </marker>
+          <marker id="a2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#A05A00"/>
+          </marker>
+        </defs>
+
+        <rect fill="#FFFFFF" stroke="#C2D1D6" stroke-width="1.25" x="20" y="182" width="120" height="64"/>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="36" y="210">15 s clip</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="36" y="230">16 kHz mono</text>
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M140,214 H166" marker-end="url(#a2)"/>
+
+        <rect fill="#FFFFFF" stroke="#C2D1D6" stroke-width="1.25" x="170" y="174" width="180" height="80"/>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="188" y="202">Sound classifier</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="188" y="222">distil-ast-audioset</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="188" y="240">top-3 labels, rejects dropped</text>
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M350,214 H378" marker-end="url(#a2)"/>
+
+        <polygon fill="#DCEDEF" stroke="#0D6E79" stroke-width="1.25" points="440,158 500,214 440,270 380,214"/>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="440" y="210" text-anchor="middle">speech</text>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="440" y="228" text-anchor="middle">in top 3?</text>
+
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M440,270 V306" marker-end="url(#a2)"/>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="10.5" fill="#56707A" letter-spacing="0.42" x="450" y="292">no</text>
+        <rect fill="#FFFFFF" stroke="#C2D1D6" stroke-width="1.25" x="350" y="310" width="180" height="56"/>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="368" y="336">Sound event only</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="368" y="354">no transcript, no emotion</text>
+
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M500,214 H556" marker-end="url(#a2)"/>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="10.5" fill="#56707A" letter-spacing="0.42" x="508" y="204">yes</text>
+
+        <rect fill="#FFFFFF" stroke="#C2D1D6" stroke-width="1.25" x="560" y="184" width="160" height="60"/>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="576" y="210">Silero VAD</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="576" y="230">keeps speech only</text>
+
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M720,214 H745 V108 H786" marker-end="url(#a2)"/>
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M720,214 H786" marker-end="url(#a2)"/>
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M720,214 H745 V294 H786" marker-end="url(#a2)"/>
+
+        <rect fill="#DCEDEF" stroke="#0D6E79" stroke-width="1.25" x="790" y="70" width="250" height="76"/>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="806" y="96">Words &amp; voices</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="806" y="116">Whisper → pyannote</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="806" y="134">→ ECAPA speaker match</text>
+
+        <rect fill="#DCEDEF" stroke="#0D6E79" stroke-width="1.25" x="790" y="176" width="250" height="64"/>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="806" y="202">Feeling</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="806" y="222">wav2vec2 arousal / valence</text>
+
+        <rect fill="#DCEDEF" stroke="#0D6E79" stroke-width="1.25" x="790" y="262" width="250" height="64"/>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="806" y="288">Meaning</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="806" y="308">CLAP 512-d · semantic search</text>
+
+        <path fill="none" stroke="#A05A00" stroke-width="1.5" d="M790,130 H768 V400 H786" marker-end="url(#a2a)"/>
+        <rect fill="#F6E8D3" stroke="#A05A00" stroke-width="1.25" x="790" y="372" width="250" height="56"/>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="806" y="396">Spoken command</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="806" y="416">«κόκκορα, σταμάτα»</text>
+
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M1040,108 H1086" marker-end="url(#a2)"/>
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M1040,208 H1086" marker-end="url(#a2)"/>
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M1040,294 H1086" marker-end="url(#a2)"/>
+        <path fill="none" stroke="#56707A" stroke-width="1.5" d="M530,338 H1086" marker-end="url(#a2)"/>
+
+        <rect fill="#E2E9EB" stroke="#C2D1D6" stroke-width="1.25" x="1090" y="70" width="170" height="290"/>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="1106" y="100">One row in</text>
+        <text font-family="Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#10222A" x="1106" y="118">ast_table</text>
+        <line stroke="#C2D1D6" stroke-width="1" x1="1090" y1="134" x2="1260" y2="134"/>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="1106" y="158">3 sound labels</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="1106" y="178">3 confidences</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="1106" y="198">transcript</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="1106" y="218">speaker names</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="1106" y="238">emotion + score</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="1106" y="258">CLAP vector</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="1106" y="278">room · device</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="1106" y="298">rms · timestamp</text>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="11" fill="#56707A" x="1106" y="318">mp3 + spectrogram</text>
+
+        <path fill="none" stroke="#A05A00" stroke-width="1.5" stroke-dasharray="5 4" d="M915,428 V450 H80 V252" marker-end="url(#a2a)"/>
+        <text font-family="'IBM Plex Mono', Consolas, 'Courier New', monospace" font-size="10.5" fill="#A05A00" letter-spacing="0.42" x="500" y="443">the house stops recording for one hour</text>
+      </svg>

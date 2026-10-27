@@ -1,0 +1,1025 @@
+/* =====================================================================
+   Sentinel - dark theme + Audio Events grid styling
+   ---------------------------------------------------------------------
+   Loaded after custom.css (Dash serves assets alphabetically), so rules
+   here intentionally win where the two overlap.
+
+   Pure presentation: no Dash component, id or callback is involved.
+   Deleting this file returns the dashboard to its previous appearance.
+   ===================================================================== */
+
+:root {
+    --sx-bg:        #0a0e1a;
+    --sx-panel:     #111726;
+    --sx-panel-alt: #0e1420;
+    --sx-raised:    #161e30;
+    --sx-border:    rgba(255, 255, 255, 0.07);
+    --sx-border-str:rgba(255, 255, 255, 0.13);
+    --sx-text:      #e8eef9;
+    --sx-text-dim:  #c3cee1;   /* ~10:1 on --sx-panel */
+    --sx-muted:     #9aa8c0;   /* was #7d8ba4 -- only 4.4:1, too dim for labels */
+    --sx-accent:    #7c5cff;
+    --sx-accent-dim:rgba(124, 92, 255, 0.16);
+
+    --sx-high:      #ef4444;
+    --sx-med:       #f0b429;
+    --sx-low:       #a855f7;
+    --sx-none:      #55627a;
+
+    --sx-radius:    12px;
+}
+
+/* ---------------------------------------------------------------
+   1. Page shell
+   --------------------------------------------------------------- */
+
+/* Bootstrap colours most text through its own tokens rather than by
+   inheriting from body, so overriding these fixes .form-label,
+   .form-check-label, table text and friends in one place. Without this
+   they stay at #212529 -- a 1.16:1 contrast ratio on the dark page. */
+:root {
+    --bs-body-color:         #e8eef9;
+    --bs-body-color-rgb:     232, 238, 249;
+    --bs-body-bg:            #0a0e1a;
+    --bs-body-bg-rgb:        10, 14, 26;
+    --bs-emphasis-color:     #ffffff;
+    --bs-heading-color:      #e8eef9;
+    --bs-secondary-color:    rgba(232, 238, 249, 0.72);
+    --bs-tertiary-color:     rgba(232, 238, 249, 0.52);
+    --bs-border-color:       rgba(255, 255, 255, 0.13);
+}
+
+body {
+    background-color: var(--sx-bg) !important;
+    color: var(--sx-text);
+}
+
+/* Labels and helper text render at --bs-body-color / --bs-secondary-color;
+   restate them so no page has to opt in. */
+.form-label,
+.form-check-label,
+.col-form-label,
+label {
+    color: var(--sx-text) !important;
+}
+
+.form-text,
+small.text-secondary,
+.text-secondary {
+    color: var(--sx-text-dim) !important;
+}
+
+.text-dark,
+.text-body {
+    color: var(--sx-text) !important;
+}
+
+/* Navbar: the mockup's near-black header rather than Bootstrap blue. */
+.navbar.bg-primary,
+nav.navbar {
+    background-color: var(--sx-panel-alt) !important;
+    border-bottom: 1px solid var(--sx-border);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) !important;
+}
+
+/* custom.css turns the active pill solid white; on dark that reads as a
+   hole punched in the header. Restate it as a tinted accent chip. */
+.nav-pills .nav-link {
+    color: var(--sx-text-dim) !important;
+    border-color: var(--sx-border-str) !important;
+}
+.nav-pills .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: #fff !important;
+}
+.nav-pills .nav-link.active {
+    background-color: rgba(124, 92, 255, 0.26) !important;
+    color: #ffffff !important;
+    border-color: rgba(124, 92, 255, 0.75) !important;
+    box-shadow: none !important;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------------
+   2. Cards
+   --------------------------------------------------------------- */
+
+.card {
+    background-color: var(--sx-panel) !important;
+    border: 1px solid var(--sx-border) !important;
+    border-radius: var(--sx-radius) !important;
+}
+
+.card-header {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--sx-border) !important;
+    color: var(--sx-text) !important;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    padding: 0.85rem 1.1rem;
+}
+
+/* Both light and dark header variants used across the page. */
+.card-header.bg-light,
+.card-header.bg-dark {
+    background-color: transparent !important;
+    color: var(--sx-text) !important;
+}
+
+.card-body { padding: 1.1rem; }
+
+.shadow-sm { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important; }
+
+h2, h5, .text-primary { color: var(--sx-text) !important; }
+.text-muted { color: var(--sx-muted) !important; }
+.font-weight-bold { font-weight: 600; }
+
+/* ---------------------------------------------------------------
+   3. Form controls
+   --------------------------------------------------------------- */
+
+.form-control,
+.form-select,
+input.form-control,
+textarea.form-control {
+    background-color: var(--sx-panel-alt) !important;
+    border: 1px solid var(--sx-border-str) !important;
+    color: var(--sx-text) !important;
+}
+.form-control::placeholder { color: var(--sx-muted) !important; }
+.form-control:focus {
+    border-color: var(--sx-accent) !important;
+    box-shadow: 0 0 0 2px var(--sx-accent-dim) !important;
+}
+
+/* These two textareas carry inline light backgrounds set in Python.
+   Inline styles outrank plain rules, hence !important. */
+#llm-verdict-output {
+    background-color: rgba(239, 68, 68, 0.07) !important;
+    border-color: rgba(239, 68, 68, 0.28) !important;
+    color: var(--sx-text) !important;
+}
+#speech-analysis-output textarea {
+    background-color: var(--sx-panel-alt) !important;
+    color: var(--sx-text) !important;
+}
+
+/* Dropdowns. Dash 4 renders these as a <button class="dash-dropdown">
+   with a hard-coded white background, so lifting the text colour alone
+   turns them into white-on-white. Both the Dash 4 markup and the older
+   react-select (.Select-*) markup are covered. */
+.dash-dropdown,
+button.dash-dropdown,
+.dash-dropdown-wrapper .dash-dropdown,
+.Select-control,
+.Select--single > .Select-control {
+    background-color: var(--sx-panel-alt) !important;
+    border: 1px solid var(--sx-border-str) !important;
+    color: var(--sx-text) !important;
+}
+
+.dash-dropdown-value,
+.dash-dropdown-value-item,
+.dash-dropdown-trigger,
+.Select-value-label,
+.Select-placeholder {
+    color: var(--sx-text) !important;
+}
+
+.dash-dropdown-clear,
+.Select-arrow-zone,
+.Select-clear-zone { color: var(--sx-muted) !important; }
+
+/* Popup list */
+.dash-dropdown-menu,
+[class*="dash-dropdown"][role="listbox"],
+.Select-menu-outer,
+.Select-menu {
+    background-color: var(--sx-raised) !important;
+    border: 1px solid var(--sx-border-str) !important;
+    color: var(--sx-text) !important;
+}
+
+.dash-dropdown-option,
+.Select-option {
+    background-color: transparent !important;
+    color: var(--sx-text) !important;
+}
+.dash-dropdown-option:hover,
+.Select-option.is-focused {
+    background-color: var(--sx-accent-dim) !important;
+    color: #fff !important;
+}
+
+/* Native selects too */
+select, select.form-select, select option {
+    background-color: var(--sx-panel-alt) !important;
+    color: var(--sx-text) !important;
+}
+
+/* Dash 4 number inputs and their +/- steppers (used inside the calendar's
+   year field) also ship a white surface. */
+.dash-input-element,
+.dash-input-wrapper,
+.dash-input-container,
+[class*="dash-range-slider-input"],
+.dash-input-stepper {
+    background-color: var(--sx-panel-alt) !important;
+    color: var(--sx-text) !important;
+    border-color: var(--sx-border-str) !important;
+}
+.dash-input-stepper:hover { background-color: var(--sx-raised) !important; }
+.dash-datepicker-month-nav { color: var(--sx-text-dim) !important; }
+
+/* Date pickers. Dash 4 uses .dash-datepicker*; older versions ship the
+   react-dates .DateInput* markup. Both default to a white surface. */
+.dash-datepicker,
+.dash-datepicker-input-wrapper,
+.dash-datepicker-input,
+.dash-datepicker input {
+    background-color: var(--sx-panel-alt) !important;
+    color: var(--sx-text) !important;
+    border-color: var(--sx-border-str) !important;
+}
+.dash-datepicker { border: 1px solid var(--sx-border-str) !important; }
+
+/* Calendar popup */
+.dash-datepicker-calendar,
+.dash-datepicker-popup,
+.dash-datepicker-dropdown {
+    background-color: var(--sx-raised) !important;
+    color: var(--sx-text) !important;
+    border: 1px solid var(--sx-border-str) !important;
+}
+.dash-datepicker-day,
+.dash-datepicker-weekday,
+.dash-datepicker-month,
+.dash-datepicker-year { color: var(--sx-text) !important; }
+.dash-datepicker-day:hover { background-color: var(--sx-accent-dim) !important; }
+.dash-datepicker-day-selected,
+.dash-datepicker-day--selected {
+    background-color: var(--sx-accent) !important;
+    color: #fff !important;
+}
+.dash-datepicker-day-disabled,
+.dash-datepicker-day--outside { color: var(--sx-muted) !important; opacity: 0.55; }
+
+/* DatePickerRange (statistics.py, audio_details.py) renders a different DOM
+ * than DatePickerSingle above -- confirmed live, not guessed: opening the
+ * range calendar shows -calendar-date-inside / -calendar-month-header, none
+ * of which the -day/-weekday/-month rules above ever matched. Plain day
+ * numbers default to rgba(0,9,38,0.9), a near-black navy, sitting on the
+ * dark popup from the generic .dash-datepicker-calendar rule further up --
+ * text and background both dark, which is the "black on black" symptom.
+ * "Today" and the selected date already render fine on their own (a themed
+ * purple and white-on-accent respectively) and are left alone; only the
+ * plain, unstyled day and the month/year header needed a colour. */
+.dash-datepicker-calendar-month-header { color: var(--sx-text) !important; }
+
+.dash-datepicker-calendar-date-inside { color: var(--sx-text) !important; }
+.dash-datepicker-calendar-date-inside.dash-datepicker-calendar-date-highlighted:not(.dash-datepicker-calendar-date-selected) {
+    color: #c9a0ff !important;   /* keep "today" visually distinct */
+}
+.dash-datepicker-calendar-date-inside.dash-datepicker-calendar-date-selected {
+    color: #ffffff !important;
+    background-color: var(--sx-accent) !important;
+}
+/* Adjacent-month days: unverified against a live "-outside" row (none was on
+ * screen when this was checked), inferred from the -inside/-outside pairing
+ * the sibling DatePickerSingle component already uses above. */
+.dash-datepicker-calendar-date-outside { color: var(--sx-muted) !important; opacity: 0.5; }
+
+.DateInput, .DateInput_input, .DateRangePickerInput, .SingleDatePickerInput {
+    background-color: var(--sx-panel-alt) !important;
+    color: var(--sx-text) !important;
+}
+.DateRangePickerInput, .SingleDatePickerInput { border: 1px solid var(--sx-border-str) !important; }
+.DateInput_input { border-bottom: none !important; }
+.DateRangePickerInput_arrow svg { fill: var(--sx-muted) !important; }
+.CalendarDay__default {
+    background: var(--sx-raised) !important;
+    color: var(--sx-text) !important;
+    border-color: var(--sx-border) !important;
+}
+.CalendarMonth, .CalendarMonthGrid, .DayPicker, .DayPicker_transitionContainer {
+    background: var(--sx-raised) !important;
+}
+.CalendarMonth_caption, .DayPicker_weekHeader { color: var(--sx-text) !important; }
+
+/* Slider track/handle.
+   Dash 4 renders marks as .dash-slider-mark, not the rc-slider class name
+   used by older versions -- the default is a near-black navy that scores
+   1.07:1 here. Both are covered so this survives either version. */
+.rc-slider-rail,
+.dash-slider .rc-slider-rail { background-color: rgba(255,255,255,0.12) !important; }
+.rc-slider-track { background-color: var(--sx-accent) !important; }
+.rc-slider-handle {
+    border-color: var(--sx-accent) !important;
+    background-color: #fff !important;
+}
+.rc-slider-dot {
+    background-color: var(--sx-panel-alt) !important;
+    border-color: rgba(255,255,255,0.25) !important;
+}
+.rc-slider-dot-active { border-color: var(--sx-accent) !important; }
+
+.rc-slider-mark-text,
+.dash-slider-mark,
+.rc-slider-mark span,
+.rc-slider-mark-text-active,
+.dash-slider-mark-active {
+    color: var(--sx-text-dim) !important;
+    opacity: 1 !important;
+    font-size: 11.5px;
+}
+.rc-slider-mark-text-active,
+.dash-slider-mark-active { color: #ffffff !important; font-weight: 600; }
+
+/* Value bubble shown on drag */
+.rc-slider-tooltip-inner {
+    background-color: var(--sx-raised) !important;
+    color: var(--sx-text) !important;
+    border: 1px solid var(--sx-border-str);
+}
+
+/* ---------------------------------------------------------------
+   4. AG Grid - dark surface, soft separators, room to breathe
+   --------------------------------------------------------------- */
+
+.ag-theme-alpine-dark,
+.ag-theme-alpine {
+    --ag-background-color:            var(--sx-panel);
+    --ag-odd-row-background-color:    var(--sx-panel);
+    --ag-header-background-color:     var(--sx-panel-alt);
+    --ag-foreground-color:            var(--sx-text);
+    --ag-header-foreground-color:     var(--sx-muted);
+    --ag-border-color:                transparent;
+    --ag-row-border-color:            var(--sx-border);
+    --ag-secondary-border-color:      var(--sx-border);
+    --ag-row-hover-color:             rgba(124, 92, 255, 0.09);
+    --ag-selected-row-background-color: rgba(124, 92, 255, 0.16);
+    --ag-font-size:                   13px;
+    --ag-grid-size:                   5px;
+    --ag-borders:                     none;
+    --ag-input-focus-border-color:    var(--sx-accent);
+}
+
+/* No vertical rules -- the mockup separates rows only. */
+.ag-theme-alpine-dark .ag-cell,
+.ag-theme-alpine .ag-cell {
+    border-right: none !important;
+    display: flex;
+    align-items: center;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    line-height: 1.35;
+}
+
+.ag-theme-alpine-dark .ag-header,
+.ag-theme-alpine .ag-header {
+    border-bottom: 1px solid var(--sx-border) !important;
+}
+
+.ag-theme-alpine-dark .ag-header-cell-text,
+.ag-theme-alpine .ag-header-cell-text {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--sx-muted);
+}
+
+.ag-theme-alpine-dark .ag-row,
+.ag-theme-alpine .ag-row {
+    border-bottom: 1px solid var(--sx-border) !important;
+    background-color: transparent !important;
+}
+
+/* Restated from custom.css, which sets a blue tint + dark hover. */
+.ag-theme-alpine-dark .ag-row-selected,
+.ag-theme-alpine .ag-row-selected {
+    background-color: rgba(124, 92, 255, 0.16) !important;
+    border: none !important;
+    border-bottom: 1px solid var(--sx-border) !important;
+}
+.ag-theme-alpine-dark .ag-row:hover,
+.ag-theme-alpine .ag-row:hover {
+    background-color: rgba(124, 92, 255, 0.09) !important;
+}
+
+.ag-theme-alpine-dark .ag-paging-panel,
+.ag-theme-alpine .ag-paging-panel {
+    border-top: 1px solid var(--sx-border) !important;
+    color: var(--sx-muted);
+}
+
+.ag-theme-alpine-dark .ag-checkbox-input-wrapper.ag-checked::after,
+.ag-theme-alpine .ag-checkbox-input-wrapper.ag-checked::after {
+    color: var(--sx-accent) !important;
+}
+
+/* ---------------------------------------------------------------
+   Select-all, squared up with the rows below it
+   ---------------------------------------------------------------
+   AG Grid pads a header cell and a data cell independently, and adds
+   its own widget spacing to .ag-header-select-all and
+   .ag-selection-checkbox separately, so the tick at the top of the
+   column sat a few pixels off the ticks underneath it.
+
+   Rather than trade one padding against the other, both are centred
+   inside the column. It is a fixed 44px (checkbox_col, pinned left),
+   so centring is exact at any zoom and cannot drift again if AG Grid
+   changes either default.
+   --------------------------------------------------------------- */
+
+.ag-theme-alpine-dark .ag-header-cell[col-id="checkbox_col"],
+.ag-theme-alpine .ag-header-cell[col-id="checkbox_col"],
+.ag-theme-alpine-dark .ag-cell[col-id="checkbox_col"],
+.ag-theme-alpine .ag-cell[col-id="checkbox_col"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.ag-theme-alpine-dark .ag-cell[col-id="checkbox_col"] .ag-cell-wrapper,
+.ag-theme-alpine .ag-cell[col-id="checkbox_col"] .ag-cell-wrapper {
+    width: 100%;
+    justify-content: center;
+}
+
+/* The header has the same problem in a different shape. .ag-header-select-all
+   is a SIBLING of .ag-header-cell-comp-wrapper, not a child of it, so the
+   cell is a two-item flex row: the 16px tick, then a wrapper that is empty
+   here -- this column has no header text, no sort and no filter -- yet still
+   claims the remaining 28px and pushes the tick to the left edge. Removing
+   the empty half lets the cell centre the only thing in it. */
+.ag-theme-alpine-dark .ag-header-cell[col-id="checkbox_col"] .ag-header-cell-comp-wrapper,
+.ag-theme-alpine .ag-header-cell[col-id="checkbox_col"] .ag-header-cell-comp-wrapper {
+    display: none !important;
+}
+.ag-theme-alpine-dark .ag-header-cell[col-id="checkbox_col"],
+.ag-theme-alpine .ag-header-cell[col-id="checkbox_col"] {
+    justify-content: center !important;
+}
+
+/* The tick sat hard against the left edge because AG Grid gives
+   .ag-cell-value `flex: 1 1 auto`, and in a checkbox-only cell that
+   element is empty but still expands and pushes the tick aside.
+   Centring the wrapper alone did nothing while it was there. */
+.ag-theme-alpine-dark .ag-cell[col-id="checkbox_col"] .ag-cell-value,
+.ag-theme-alpine .ag-cell[col-id="checkbox_col"] .ag-cell-value {
+    display: none !important;
+}
+
+/* The widget spacing AG Grid puts to the right of each tick is what
+   pushed them off-centre; auto margins replace it on both. */
+.ag-theme-alpine-dark .ag-header-cell[col-id="checkbox_col"] .ag-header-select-all,
+.ag-theme-alpine .ag-header-cell[col-id="checkbox_col"] .ag-header-select-all,
+.ag-theme-alpine-dark .ag-cell[col-id="checkbox_col"] .ag-selection-checkbox,
+.ag-theme-alpine .ag-cell[col-id="checkbox_col"] .ag-selection-checkbox {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Menus / filter popups need the dark surface too. */
+.ag-theme-alpine-dark .ag-menu,
+.ag-theme-alpine .ag-menu,
+.ag-theme-alpine-dark .ag-filter,
+.ag-theme-alpine .ag-filter {
+    background-color: var(--sx-raised) !important;
+    color: var(--sx-text) !important;
+    border: 1px solid var(--sx-border-str) !important;
+}
+
+/* ---------------------------------------------------------------
+   5. Cell renderers (see sentinel_grid_renderers.js)
+   --------------------------------------------------------------- */
+
+.sx-cell {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.sx-muted { color: var(--sx-muted) !important; }
+
+/* Band colours, shared by badges / bars / accents */
+.sx-band-high { --sx-band: var(--sx-high); }
+.sx-band-med  { --sx-band: var(--sx-med); }
+.sx-band-low  { --sx-band: var(--sx-low); }
+.sx-band-none { --sx-band: var(--sx-none); }
+
+/* Band colours are tuned for fills/borders; as *text* the red and purple
+   are too dark on this background, so the label variants are lightened. */
+.sx-band-text-high { color: #ff8080; }
+.sx-band-text-med  { color: #f5c451; }
+.sx-band-text-low  { color: #c9a0ff; }
+.sx-band-text-none { color: var(--sx-muted); }
+
+/* --- time --- */
+.sx-time { gap: 12px; }
+.sx-time-accent {
+    flex: 0 0 3px;
+    width: 3px;
+    height: 42px;
+    border-radius: 2px;
+    background: var(--sx-band, var(--sx-none));
+}
+.sx-time-clock {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--sx-text);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.2px;
+}
+.sx-time-meta { font-size: 11px; color: var(--sx-muted); margin-top: 2px; }
+
+/* --- device --- */
+.sx-device-icon {
+    flex: 0 0 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.12);
+    color: #f78a8a;
+    font-size: 13px;
+}
+.sx-device-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--sx-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sx-device-meta { font-size: 11px; color: var(--sx-muted); margin-top: 1px; }
+
+/* --- transcription --- */
+.sx-transcript { gap: 12px; }
+
+.sx-play {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--sx-border-str);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--sx-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    padding-left: 2px;              /* optically centre the triangle */
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+.sx-play:hover {
+    background: var(--sx-accent-dim);
+    border-color: rgba(124, 92, 255, 0.6);
+    color: #fff;
+}
+
+.sx-transcript-body { min-width: 0; flex: 1 1 auto; }
+
+.sx-transcript-text {
+    font-size: 13.5px;
+    color: var(--sx-text);
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;          /* wrap naturally, cap at two lines */
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+}
+
+.sx-speaker { color: #c4b5ff; font-weight: 600; }
+
+.sx-emotion { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
+.sx-emotion-emoji { font-size: 12px; line-height: 1; }
+.sx-emotion-label { font-size: 11px; color: var(--sx-muted); }
+/* Capture quality sits on the same line as the emotion, in the same muted
+   weight: it is context for the transcript, never competing with it. */
+.sx-meta-sep { font-size: 11px; color: var(--sx-border); }
+.sx-snr { font-size: 11px; color: var(--sx-muted); font-variant-numeric: tabular-nums; }
+
+/* --- detections --- */
+.sx-detections { gap: 7px; flex-wrap: nowrap; }
+
+.sx-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+    padding: 6px 10px;
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--sx-band, var(--sx-none)) 13%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sx-band, var(--sx-none)) 42%, transparent);
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.sx-badge-rank {
+    flex: 0 0 auto;
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #0a0e1a;
+    background: var(--sx-band, var(--sx-none));
+}
+
+.sx-badge-label {
+    color: var(--sx-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.sx-badge-prob {
+    flex: 0 0 auto;
+    color: var(--sx-text-dim);
+    font-variant-numeric: tabular-nums;
+    font-size: 11.5px;
+}
+
+/* --- confidence --- */
+.sx-conf { flex-direction: column; align-items: flex-start; justify-content: center; gap: 5px; }
+
+.sx-conf-track {
+    width: 100%;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.09);
+    overflow: hidden;
+}
+.sx-conf-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--sx-band, var(--sx-none));
+}
+.sx-conf-meta { display: flex; align-items: baseline; gap: 7px; }
+.sx-conf-value {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--sx-text);
+    font-variant-numeric: tabular-nums;
+}
+.sx-conf-band { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ---------------------------------------------------------------
+   6. Legend + buttons
+   --------------------------------------------------------------- */
+
+/* --- Sentinels panel ---------------------------------------- */
+
+.sx-sentinel {
+    background-color: var(--sx-raised) !important;
+    border: 1px solid var(--sx-border) !important;
+    box-shadow: none !important;
+}
+
+/* A round swatch reads its colour far better than a "●" glyph. */
+.sx-sentinel-dot {
+    flex: 0 0 12px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 12px;
+    margin-left: 2px;
+    display: inline-block;
+}
+
+.sx-sentinel-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sx-sentinel-meta {
+    font-size: 10.5px;
+    color: var(--sx-muted);
+    margin-top: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* --- Video library file browser ----------------------------- */
+
+.sx-filelist {
+    max-height: 230px;
+    overflow-y: auto;
+    border: 1px solid var(--sx-border);
+    border-radius: 8px;
+    background: var(--sx-panel-alt);
+    padding: 4px;
+}
+
+.sx-filelist .sx-file-row {
+    display: flex !important;
+    align-items: center;
+    width: 100%;
+    padding: 7px 10px !important;
+    border-radius: 6px;
+    color: var(--sx-text) !important;
+    text-decoration: none !important;
+    font-size: 13px;
+    border: 1px solid transparent !important;
+}
+.sx-filelist .sx-file-row:hover {
+    background: var(--sx-accent-dim) !important;
+    color: #fff !important;
+}
+.sx-filelist .sx-file-row:disabled,
+.sx-filelist .sx-file-row.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.sx-file-selected {
+    background: var(--sx-accent-dim) !important;
+    border-color: rgba(124, 92, 255, 0.6) !important;
+}
+
+.sx-lib-status { color: #c9a0ff; min-height: 1.2em; }
+
+.sx-file-folder { color: #f5c451; }
+.sx-file-video  { color: #7fb2ff; }
+.sx-file-name   { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sx-file-size   { color: var(--sx-muted); font-size: 11px; padding-left: 10px; }
+.sx-file-warn   { color: var(--sx-med); font-size: 10.5px; padding-left: 8px; }
+
+/* --- CLAP search stack -------------------------------------- */
+
+.sx-clap-stack .btn { width: 100%; }
+.sx-clap-stack .rc-slider { margin-top: 6px; }
+
+.sx-legend { display: flex; align-items: center; gap: 16px; }
+.sx-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--sx-muted); }
+.sx-legend-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--sx-band, var(--sx-none)); }
+
+.btn { border-radius: 9px; font-size: 13px; }
+
+.list-group-item {
+    background-color: var(--sx-raised) !important;
+    color: var(--sx-text) !important;
+    border-color: var(--sx-border) !important;
+}
+
+/* ---------------------------------------------------------------
+   6b. Plotly figures
+   ---------------------------------------------------------------
+   Figures are built in Python without a font colour, so Plotly falls
+   back to #2a3f5f -- 1.81:1 on this background. Axis ticks, axis and
+   plot titles, the legend and colour bars are lifted here.
+
+   Deliberately NOT touched: .annotation-text and slice/bar text. Those
+   sit on top of coloured marks and several pages already pick black or
+   white per cell for contrast (see date_sounds.py). Overriding them
+   would make heatmap value labels unreadable.
+   --------------------------------------------------------------- */
+
+.js-plotly-plot .xtick text,
+.js-plotly-plot .ytick text,
+.js-plotly-plot .ztick text,
+.js-plotly-plot .angularaxistick text,
+.js-plotly-plot g.xtick > text,
+.js-plotly-plot g.ytick > text {
+    fill: var(--sx-text-dim) !important;
+}
+
+.js-plotly-plot .gtitle,
+.js-plotly-plot .xtitle,
+.js-plotly-plot .ytitle,
+.js-plotly-plot .ztitle,
+.js-plotly-plot .g-gtitle text,
+.js-plotly-plot .g-xtitle text,
+.js-plotly-plot .g-ytitle text {
+    fill: var(--sx-text) !important;
+}
+
+.js-plotly-plot .legend text,
+.js-plotly-plot .legendtext,
+.js-plotly-plot .legendtitletext {
+    fill: var(--sx-text-dim) !important;
+}
+
+.js-plotly-plot .colorbar text,
+.js-plotly-plot .cbaxis text,
+.js-plotly-plot .cbtitle text {
+    fill: var(--sx-text-dim) !important;
+}
+
+/* Grid + zero lines: soft, not the default light-theme grey */
+.js-plotly-plot .gridlayer path,
+.js-plotly-plot .xgrid,
+.js-plotly-plot .ygrid {
+    stroke: rgba(255, 255, 255, 0.07) !important;
+}
+.js-plotly-plot .zerolinelayer path {
+    stroke: rgba(255, 255, 255, 0.16) !important;
+}
+
+/* Hover tooltips and the mode bar */
+.js-plotly-plot .hoverlayer .hovertext rect { fill: var(--sx-raised) !important; }
+.js-plotly-plot .hoverlayer .hovertext text { fill: var(--sx-text) !important; }
+.js-plotly-plot .modebar-btn path { fill: var(--sx-muted) !important; }
+.js-plotly-plot .modebar-btn:hover path { fill: var(--sx-text) !important; }
+.js-plotly-plot .modebar { background: transparent !important; }
+
+/* Spectrogram panel keeps a transparent plot surface */
+#spectrogram-graph .main-svg { background: transparent !important; }
+
+/* ---------------------------------------------------------------
+   7. Responsive - tablet
+   --------------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+    .sx-badge-label { max-width: 92px; }
+    .sx-time-clock  { font-size: 14px; }
+}
+
+@media (max-width: 992px) {
+    .card-body { padding: 0.85rem; }
+    .sx-detections { gap: 5px; }
+    .sx-badge { padding: 5px 8px; font-size: 11.5px; }
+    .sx-transcript-text { -webkit-line-clamp: 3; }
+}
+
+/* ---------------------------------------------------------------
+   Filter & Search - each row as its own panel
+   ---------------------------------------------------------------
+   The controls fall into groups that have nothing to do with each
+   other: talk/refresh/view, rooms, the result count, CLAP. Run
+   together they read as one long strip of buttons. Giving each its
+   own slightly raised, rounded surface makes the grouping visible
+   without adding a heading to every row.
+
+   Presentation only: no id, no callback, no component here.
+   --------------------------------------------------------------- */
+
+.sx-filter-group {
+    background: var(--sx-raised);
+    border: 1px solid var(--sx-border);
+    border-radius: var(--sx-radius);
+    padding: 14px 16px;
+    /* dbc .row uses negative side margins for its gutters; without this the
+       group's background would bleed past the card's padding on both sides. */
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* A label that names the group, sitting level with its controls. */
+.sx-group-label {
+    font-weight: 600;
+    color: var(--sx-text-dim);
+    padding-right: 14px;
+    margin-right: 4px;
+    border-right: 1px solid var(--sx-border-str);
+}
+
+.sx-count-icon { color: var(--sx-accent); }
+
+/* The result count reads as a statement, so it gets a tinted surface of its
+   own rather than the neutral one the control rows use. */
+.sx-count-banner {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg,
+                rgba(34, 197, 94, 0.14), rgba(34, 197, 94, 0.05));
+    border-color: rgba(34, 197, 94, 0.30);
+    color: var(--sx-text);
+    font-size: 15px;
+}
+.sx-count-banner .sx-count-icon { color: #4ade80; font-size: 18px; }
+
+/* Room chips: the icon rides with the label inside each chip. */
+#room-filter .btn { display: inline-flex; align-items: center; }
+
+/* CLAP row: the two halves are separate controls, so give the divider some
+   air rather than letting the slider and the button touch. */
+.sx-clap-row > [class*="col-"] { padding-left: 14px; padding-right: 14px; }
+
+/* ---------------------------------------------------------------
+   Room chips: wrap rather than clip
+   ---------------------------------------------------------------
+   Holding every chip on one line worked while there were five rooms.
+   At seven the strip runs past the panel and the last chip is cut
+   through the middle, and since the household adds rooms as it adds
+   sentinels this can only get worse: no amount of tightening fits an
+   unbounded list into a fixed width.
+
+   So the chips wrap, and the spacing between them is stated here
+   rather than inherited from btn-group -- which packs its children
+   flush and then rounds only the first and last, a rule that falls
+   apart the moment the group spans two lines.
+   --------------------------------------------------------------- */
+
+#room-filter {
+    flex-wrap: wrap !important;
+    /* Tighter than the default button spacing, so two lines are needed
+       only once there are genuinely many rooms. */
+    gap: 5px;
+    max-width: 100%;
+}
+
+#room-filter .btn {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    /* Margins cleared so `gap` is the single source of spacing, and the
+       radius restated so every chip stays a pill on every row instead of
+       only at the two ends of the group. */
+    margin: 0;
+    border-radius: 9px;
+    /* btn-group children grow to share the line. Left alone, the two chips
+       that land on a second row stretch to half the panel each and stop
+       looking like the ones above them. */
+    flex: 0 0 auto;
+}
+.sx-room-icon { margin-right: 5px; opacity: 0.85; }
+.sx-filter-group .btn-group { max-width: 100%; }
+
+/* The chips are their own column, sized to content, so a full line of them
+   pushed "Clear" onto the next row -- the very thing the old nowrap rule
+   existed to prevent. Letting that column shrink moves the wrapping inside
+   it, where it belongs, and keeps the row's three parts on one line.
+
+   Both halves are needed. A Bootstrap .row wraps its columns before it
+   shrinks them, so on its own the shrinkable column is never asked to give
+   anything up and "Clear" still drops. Holding the ROW to one line is what
+   forces the chips to wrap inside their own column instead. Scoped by :has
+   so the other filter rows, which have no chips to reflow, keep wrapping
+   normally. */
+.sx-filter-group:has(#room-filter) { flex-wrap: nowrap; }
+
+.sx-filter-group > [class*="col"]:has(> #room-filter) {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* ---------------------------------------------------------------
+   Slider tooltip
+   ---------------------------------------------------------------
+   rc-slider ships a light tooltip: white text on a white bubble, so
+   the value was invisible on this theme the moment the handle was
+   touched.
+   --------------------------------------------------------------- */
+
+.rc-slider-tooltip-inner {
+    background-color: var(--sx-raised) !important;
+    border: 1px solid var(--sx-border-str) !important;
+    color: var(--sx-text) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+    font-weight: 600;
+}
+.rc-slider-tooltip-arrow {
+    border-top-color: var(--sx-raised) !important;
+    border-bottom-color: var(--sx-raised) !important;
+}
+
+/* The label above the slider picked up a selection-like highlight from
+   Bootstrap's .form-label background on this theme. */
+.sx-clap-stack label { background: transparent !important; }
+
+/* ---------------------------------------------------------------
+   Go to time, above the events grid
+   ---------------------------------------------------------------
+   The field, Go and Back to latest on the left with what the jump
+   found; the time span of the page on screen at the right.
+   --------------------------------------------------------------- */
+
+.sx-jump-bar { gap: 10px; flex-wrap: wrap; }
+
+/* color-scheme turns the browser's own calendar and clock light-on-dark;
+   left alone the picker icon is a black glyph on a dark field. */
+.sx-jump-input {
+    width: auto;
+    max-width: 230px;
+    color-scheme: dark;
+}
+
+.sx-jump-note { color: var(--sx-text-dim); font-size: 13px; }
+.sx-page-span { color: var(--sx-muted); font-size: 13px; white-space: nowrap; }
+
+/* The row a jump landed on. Placed after the row, hover and selection rules
+   above, and one class more specific than them, so it holds in every state. */
+.ag-theme-alpine-dark .ag-row.sx-row-jumped,
+.ag-theme-alpine .ag-row.sx-row-jumped {
+    background-color: rgba(124, 92, 255, 0.24) !important;
+    box-shadow: inset 3px 0 0 var(--sx-accent);
+}

@@ -1,0 +1,994 @@
+[
+  {
+    "n": 1,
+    "title": "Connected family — warmth",
+    "dynamic": "affection, praise, shared humor, connection.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "information_sharing",
+      "agreement"
+    ],
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 0.75,
+      "joy": 0.5,
+      "inclusion": 1.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "Participants discussed a meal positively and expressed a desire to repeat it.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 2,
+    "title": "Conflict — criticism",
+    "dynamic": "criticism, defensiveness, family tension.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "criticism",
+      "request"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "evidence": "Voula criticizes Ilyas for being late, leading to a tense exchange.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 3,
+    "title": "Sarcasm / irony",
+    "dynamic": "mutual sarcasm, ambiguous hostility.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "humor",
+      "neutral_conversation"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.5,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "Ilyas and Voula engage in playful banter about the dishes being autonomous.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 4,
+    "title": "Withdrawal",
+    "dynamic": "bid → refusal → second bid → withdrawal.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "request",
+      "rejection"
+    ],
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.5,
+      "tension": 0.75
+    },
+    "evidence": "Voula attempts to initiate a conversation but is met with repeated rejections from Ilyas.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 5,
+    "title": "Child rejection",
+    "dynamic": "repeated bid, dismissal, child withdrawal.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "request",
+      "criticism",
+      "rejection"
+    ],
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.5,
+      "tension": 0.5
+    },
+    "evidence": "Rafael asks for help with exercises, but Ilyas rebuffs him with criticism.",
+    "participants": [
+      "Ilyas",
+      "Rafael"
+    ]
+  },
+  {
+    "n": 6,
+    "title": "Praise and encouragement",
+    "dynamic": "praise, encouragement, parental support.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "praise",
+      "support",
+      "reassurance"
+    ],
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 0.75,
+      "joy": 0.0,
+      "inclusion": 1.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "The family members engage positively by acknowledging Rafael's efforts in studying and expressing pride.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 7,
+    "title": "Depression / emotional withdrawal",
+    "dynamic": "low mood, concern from others, gentle refusal.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "support",
+      "other",
+      "request"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.25
+    },
+    "evidence": "Voula expresses concern for Ilyas's well-being, and Rafael offers to sit with him.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 8,
+    "title": "Oppression / controlling behaviour",
+    "dynamic": "interrogation, control, compliance.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "criticism"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Ilyas and Voula engaged in a disagreement about communication regarding whereabouts.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 9,
+    "title": "Emotional pressure",
+    "dynamic": "repeated criticism, defensive response.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "criticism",
+      "disagreement"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "evidence": "Ilyas criticizes Voula for repeated mistakes, leading to defensive responses.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 10,
+    "title": "Raised voices",
+    "dynamic": "escalation then de-escalation.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "criticism",
+      "complaint",
+      "repair"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "evidence": "A discussion escalates into criticism but ends with an apology.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 11,
+    "title": "Aftermath and repair",
+    "dynamic": "acknowledgement, apology, repair after conflict.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "criticism",
+      "apology",
+      "reassurance"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Ilyas acknowledges his mistake and apologizes while Voula expresses concern about it happening again.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 12,
+    "title": "Tension → repair",
+    "dynamic": "complaint, escalation, concession, repair.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "request",
+      "apology"
+    ],
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Ilyas and Voula engage in a discussion about a task that Ilyas has postponed multiple times.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 13,
+    "title": "Family bliss",
+    "dynamic": "shared joy, celebration, warmth.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "shared_enjoyment",
+      "information_sharing"
+    ],
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 1.0,
+      "joy": 1.0,
+      "inclusion": 1.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "The exchange displays enthusiasm and shared excitement about winning in tennis, with mutual acknowledgment and invitation to celebrate with ice cream.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 14,
+    "title": "Cold atmosphere",
+    "dynamic": "logistics only, no warmth, no conflict.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "neutral_conversation",
+      "complaint"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "They engaged in a conversation about eating, with one person expressing discontent.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 15,
+    "title": "Parents disagree about the child",
+    "dynamic": "parental disagreement, no resolution.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "criticism"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "evidence": "Ilyas and Voula engaged in a disagreement about communication regarding a decision.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 16,
+    "title": "Parent-child conflict",
+    "dynamic": "command, resistance, escalation.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "criticism"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Ilyas criticizes Rafael for excessive screen time, leading to an argument.",
+    "participants": [
+      "Ilyas",
+      "Rafael"
+    ]
+  },
+  {
+    "n": 17,
+    "title": "Successful parenting repair",
+    "dynamic": "parent apologises, child accepts, reconnection.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "neutral_conversation",
+      "coordination"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.25,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.25
+    },
+    "evidence": "Ilyas expresses regret for calling Rafael earlier, and they coordinate to finish a game together.",
+    "participants": [
+      "Ilyas",
+      "Rafael"
+    ]
+  },
+  {
+    "n": 18,
+    "title": "Mutual affection",
+    "dynamic": "affection, ease, mutual attention.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "support",
+      "information_sharing",
+      "neutral_conversation"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.25,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "The exchange shows Ilyas offering to bring coffee and Voula expressing contentment with their current situation.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 19,
+    "title": "Passive aggression",
+    "dynamic": "indirect hostility, refused help, resentment.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "criticism"
+    ],
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Voula dismisses Ilyas's offer to help, suggesting tension and disagreement over responsibility.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 20,
+    "title": "Household resentment",
+    "dynamic": "unequal load, grievance, no resolution.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "complaint"
+    ],
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Voula expresses frustration about the state of the room, leading to a disagreement with Ilyas about responsibilities.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 21,
+    "title": "Repair after resentment",
+    "dynamic": "reflection, acknowledgement, agreement, repair.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "information_sharing",
+      "agreement",
+      "support",
+      "gratitude"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": null,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.25
+    },
+    "evidence": "The exchange involved an acknowledgment of shortcomings and a desire to cooperate without conflict.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 22,
+    "title": "Child comfort",
+    "dynamic": "distress, comfort, reassurance.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "support",
+      "reassurance",
+      "information_sharing"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.25
+    },
+    "evidence": "Rafael expresses feelings of exclusion, and Voula provides support and reassurance.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 23,
+    "title": "Child dismissed",
+    "dynamic": "child expresses hurt, parent dismisses it.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "criticism"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.25,
+      "tension": 0.75
+    },
+    "evidence": "Rafael expressed that he was upset by Ilyas's remark, leading to a disagreement.",
+    "participants": [
+      "Ilyas",
+      "Rafael"
+    ]
+  },
+  {
+    "n": 24,
+    "title": "Playful competition",
+    "dynamic": "play, teasing, shared enjoyment.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "humor",
+      "shared_enjoyment"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.5,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "The exchange involved playful banter and light disagreement about cheating in a game.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 25,
+    "title": "Achievement pressure",
+    "dynamic": "conditional approval, comparison, pressure.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "information_sharing",
+      "neutral_conversation"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "The exchange consisted of a conversation about scores, showing engagement without emotional warmth or tension.",
+    "participants": [
+      "Ilyas",
+      "Rafael"
+    ]
+  },
+  {
+    "n": 26,
+    "title": "Couple unity in front of the child",
+    "dynamic": "parental alignment, calm boundary.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "information_sharing",
+      "agreement"
+    ],
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 1.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "The speakers share and confirm plans with clear agreement about timing.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 27,
+    "title": "Undermining the partner",
+    "dynamic": "authority undermined, conflict in front of child.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "criticism"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Voula and Ilyas engaged in a disagreement over a child's eating habits.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 28,
+    "title": "Serenity",
+    "dynamic": "calm, low activation, comfortable coexistence.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "neutral_conversation",
+      "inclusion"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.75,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "The speakers are engaged in a calm conversation about staying in the room.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 29,
+    "title": "Affection with the child",
+    "dynamic": "affection, playful resistance, warmth.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "affection",
+      "inclusion"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.75,
+      "joy": 0.0,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "Voula invites Rafael for a hug, indicating affection, and Ilyas joins in, showing connection.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 30,
+    "title": "Conflict over money",
+    "dynamic": "financial conflict, escalation.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "criticism",
+      "disagreement"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.75
+    },
+    "evidence": "The exchange involves criticism and disagreement about spending money.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 31,
+    "title": "Financial repair",
+    "dynamic": "acknowledgement, joint plan, resolution.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "information_sharing",
+      "agreement"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "Ilyas and Voula are discussing expenses and agreeing on a plan to review them together.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 32,
+    "title": "Jealousy / suspicion",
+    "dynamic": "suspicion, defensiveness, unresolved.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "neutral_conversation",
+      "information_sharing"
+    ],
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "Ilyas and Voula engage in a back-and-forth conversation about who took long.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 33,
+    "title": "Affection after conflict",
+    "dynamic": "cooling down, mutual fatigue, reconnection.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "support",
+      "reassurance"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.25,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Ilyas and Voula acknowledge their mutual fatigue with fighting.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 34,
+    "title": "Embarrassment and apology",
+    "dynamic": "reproach, apology, acceptance.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "criticism",
+      "apology",
+      "repair"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Ilyas criticizes Rafael for making him feel uncomfortable, and Rafael apologizes, indicating tension and a need for repair.",
+    "participants": [
+      "Ilyas",
+      "Rafael"
+    ]
+  },
+  {
+    "n": 35,
+    "title": "Overprotective parent",
+    "dynamic": "anxiety, negotiation, partial concession.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "information_sharing",
+      "request"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "Voula shows concern about Rafael going out by asking if he is going alone.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 36,
+    "title": "Family celebration",
+    "dynamic": "celebration, shared joy, appreciation.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "affection",
+      "gratitude",
+      "shared_enjoyment"
+    ],
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 1.0,
+      "joy": 0.75,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "The exchange centers around a celebratory tone with positive remarks about a cake, indicating engagement and enjoyment.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 37,
+    "title": "Emotional neglect",
+    "dynamic": "bid for attention, minimised, unmet.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "complaint",
+      "request"
+    ],
+    "dimensions": {
+      "connection": 0.5,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Voula expresses concern about feeling unheard, while Ilyas responds defensively.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 38,
+    "title": "One child blamed",
+    "dynamic": "blame concentrated on one family member.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "criticism"
+    ],
+    "dimensions": {
+      "connection": 1.0,
+      "warmth": 0.0,
+      "joy": 0.0,
+      "inclusion": null,
+      "withdrawal": null,
+      "tension": 0.75
+    },
+    "evidence": "Both speakers engage in a disagreement about responsibility, with Voula blaming and Ilyas defending.",
+    "participants": [
+      "Ilyas",
+      "Voula"
+    ]
+  },
+  {
+    "n": 39,
+    "title": "Family resilience",
+    "dynamic": "shared difficulty, mutual reassurance, cohesion.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "neutral_conversation",
+      "support"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.5,
+      "joy": 0.0,
+      "inclusion": 0.5,
+      "withdrawal": 0.0,
+      "tension": 0.0
+    },
+    "evidence": "The participants engaged in a conversation about a difficult month, expressing reassurance towards each other.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  },
+  {
+    "n": 40,
+    "title": "Conflict → genuine repair",
+    "dynamic": "escalation, child intervenes, mutual repair.",
+    "status": "interpretable",
+    "confidence": 1.0,
+    "types": [
+      "disagreement",
+      "criticism",
+      "repair"
+    ],
+    "dimensions": {
+      "connection": 0.75,
+      "warmth": 0.25,
+      "joy": 0.0,
+      "inclusion": 0.0,
+      "withdrawal": 0.0,
+      "tension": 0.5
+    },
+    "evidence": "Voula expresses feeling unconsidered, Ilyas acknowledges the issue with agreement, and they apologize and suggest to discuss calmly.",
+    "participants": [
+      "Ilyas",
+      "Rafael",
+      "Voula"
+    ]
+  }
+]

@@ -1,0 +1,48 @@
+## IDF Component Manager Manifest File
+## Target: Waveshare ESP32-P4-WIFI6-Touch-LCD-5 AudioSense Intercom
+
+dependencies:
+  # ---------- Board support ----------
+  # The BSP itself is NOT pulled from the registry: it is vendored into
+  # ../components by vendor_bsp.ps1, together with the esp_lcd_hx8394
+  # MIPI-DSI panel driver it depends on. The BSP's own idf_component.yml
+  # pulls esp_lv_adapter, the touch driver and es8311 from the registry.
+
+  # ---------- WiFi via the on-board ESP32-C6 ----------
+  # The P4 has no radio. esp_wifi_remote keeps the esp_wifi_* API surface
+  # so the application's WiFi code compiles unchanged; esp_hosted is the
+  # SDIO transport to the C6.
+  espressif/esp_wifi_remote:
+    version: "0.14.*"
+  espressif/esp_hosted:
+    version: "1.4.*"
+
+  # ---------- Audio ----------
+  # Driven directly through esp_codec_dev, exactly as on the S3 build.
+  # Left unpinned so the solver can agree with the version the BSP wants.
+  esp_codec_dev:
+    version: ">=1.1.0"
+    public: true
+
+  # Opus encoder for Live Audio Mode. This is the esp-adf-libs audio
+  # codec library packaged as a managed component; the encoder itself
+  # ships as a prebuilt libesp_audio_codec.a per target, so the direct
+  # esp_opus_enc_* API used by live_audio.c needs no Kconfig option
+  # enabled. Full ESP-ADF is deliberately not used: it is a separate SDK
+  # rather than a component, its audio_board layer does not cover the
+  # Waveshare P4, and its own audio_pipeline.h / audio_pipeline_init()
+  # would collide by name with this project's pipeline.
+  espressif/esp_audio_codec:
+    version: ">=2.5.0"
+
+  # ---------- Graphics ----------
+  lvgl/lvgl:
+    version: "9.4.*"
+    public: true
+
+  # ---------- Built-in IDF components (no entry needed) ----------
+  # esp_mqtt, mbedtls, esp_http_client, esp_http_server,
+  # nvs_flash, esp_netif, esp_event, esp_sntp
+
+  idf:
+    version: ">=5.4.0"

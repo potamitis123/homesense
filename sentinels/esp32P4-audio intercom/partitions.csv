@@ -1,0 +1,8 @@
+# Name,   Type, SubType, Offset,  Size,    Flags
+# factory is 4 MiB (not 3 MiB as on the S3 build): the P4 image carries LVGL 9,
+# the MIPI-DSI panel driver and the esp_hosted WiFi transport, and is built with
+# -O2 rather than -Os.
+nvs,      data, nvs,     0x9000,  0x6000,
+phy_init, data, phy,     0xf000,  0x1000,
+factory,  app,  factory, 0x10000, 0x400000,
+storage,  data, fat,     0x410000,0xBF0000,

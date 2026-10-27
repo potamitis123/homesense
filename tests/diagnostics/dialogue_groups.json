@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "source": "dialogues_gr.txt",
+  "note": [
+    "Groups the 40 scripted dialogues by their expected RELATIONAL signature,",
+    "not by topic, because the signature is what L1.5 can be scored against.",
+    "",
+    "The `expect` bands are advisory and were calibrated on clean text, where",
+    "warm scenarios reached warmth 0.70+. Recorded through the sentinels the",
+    "same scripts compress hard -- real household exchanges measured warmth",
+    "0.08-0.47 -- so absolute bands will not transfer. The `orderings` and",
+    "`contrasts` below are the assertions that survive that compression,",
+    "because they compare scenarios against each other rather than against a",
+    "fixed threshold. Score those first and treat the bands as description."
+  ],
+  "dimensions": ["connection", "warmth", "joy", "inclusion", "withdrawal", "tension"],
+  "bands": {
+    "high": [0.55, 1.0],
+    "mid": [0.25, 0.55],
+    "low": [0.0, 0.25],
+    "note": "Text-calibrated. See note above before asserting on these."
+  },
+  "groups": {
+    "P1": {
+      "name": "Warmth & support",
+      "scenarios": [1, 6, 18, 22, 29, 39],
+      "expect": {"warmth": "high", "connection": "high", "tension": "low"},
+      "note": "Affection, praise, comfort, cohesion under difficulty."
+    },
+    "P2": {
+      "name": "Joy & play",
+      "scenarios": [13, 24, 36],
+      "expect": {"joy": "high", "warmth": "high", "tension": "low"},
+      "note": "The only group that should light the Joy lamp. Real recordings produced zero laughter labels in five days, so this group is the only source of joy evidence the system will ever see."
+    },
+    "P3": {
+      "name": "Calm & agreed boundary",
+      "scenarios": [26, 28, 35],
+      "expect": {"tension": "low", "warmth": "mid", "inclusion": "mid"},
+      "note": "Low activation but genuinely connected. Its whole purpose is to be told apart from P4."
+    },
+    "P4": {
+      "name": "Cold / logistics-only",
+      "scenarios": [14],
+      "expect": {"warmth": "low", "tension": "low", "joy": "low", "connection": "mid"},
+      "note": "Deliberately a single scenario, and not a statistic. It exists as the counterexample to P3: the prompt states 'calm != healthy connection', and #28 against #14 is the test of exactly that. Report it, never average it."
+    },
+    "P5": {
+      "name": "Open conflict",
+      "scenarios": [2, 9, 15, 16, 20, 27, 30],
+      "expect": {"tension": "high", "warmth": "low", "connection": "high"},
+      "note": "Hostility stated in words. Connection must stay HIGH here -- an argument is a strong interaction, and a drop would mean engagement and relational quality have been confused."
+    },
+    "P6": {
+      "name": "Covert hostility & control",
+      "scenarios": [3, 8, 19, 25, 32, 38],
+      "expect": {"tension": "mid", "warmth": "low", "connection": "high"},
+      "note": "Hostility carried without hostile words: sarcasm, interrogation, passive aggression, conditional approval, blame. The hardest group, and the one that already failed on clean text (#3 read as humour)."
+    },
+    "P7": {
+      "name": "Withdrawal & neglect",
+      "scenarios": [4, 5, 7, 23, 37],
+      "expect": {"withdrawal": "high", "warmth": "low"},
+      "note": "The least reliable dimension: only 2 of these 5 scored withdrawal above 0.4 on clean text, and the interpreter typed 'rejection' while scoring the dimension 0.0. TYPE_DIMENSION_FLOOR was added for exactly this."
+    },
+    "P8": {
+      "name": "Repair after conflict",
+      "scenarios": [10, 11, 12, 17, 21, 31, 33, 34, 40],
+      "expect": {"tension": "mid", "warmth": "mid", "connection": "high"},
+      "note": "Scored on SHAPE, not on the mean: a tension peak followed by a repair move. #10 sits here despite being titled 'Raised voices' because its script ends in an apology accepted, which is structurally a repair. Real recordings contain almost no repair sequences, so this group is the only way to exercise that path."
+    }
+  },
+  "orderings": [
+    {"dimension": "tension", "greater": "P5", "less": "P1",
+     "note": "open conflict must out-score warmth on tension"},
+    {"dimension": "tension", "greater": "P5", "less": "P3",
+     "note": "conflict must out-score calm"},
+    {"dimension": "tension", "greater": "P6", "less": "P1",
+     "note": "covert hostility must still register as tension"},
+    {"dimension": "warmth", "greater": "P1", "less": "P5",
+     "note": "warmth must separate support from conflict"},
+    {"dimension": "warmth", "greater": "P1", "less": "P6",
+     "note": "sarcasm and control must not read as warm"},
+    {"dimension": "warmth", "greater": "P8", "less": "P5",
+     "note": "repaired conflict must end warmer than unrepaired"},
+    {"dimension": "joy", "greater": "P2", "less": "P5",
+     "note": "play must separate from conflict on joy"},
+    {"dimension": "withdrawal", "greater": "P7", "less": "P1",
+     "note": "withdrawal must separate from support"},
+    {"dimension": "withdrawal", "greater": "P7", "less": "P2",
+     "note": "withdrawal must separate from play"},
+    {"dimension": "connection", "greater": "P5", "less": "P4",
+     "note": "an argument is more engaged than logistics-only exchange"}
+  ],
+  "contrasts": [
+    {"a": 16, "b": 17, "name": "parent-child conflict -> repair",
+     "expect": {"warmth": "<", "tension": ">"}},
+    {"a": 20, "b": 21, "name": "resentment -> repair",
+     "expect": {"warmth": "<", "tension": ">="}},
+    {"a": 30, "b": 31, "name": "money conflict -> repair",
+     "expect": {"warmth": "<", "tension": ">="}},
+    {"a": 2, "b": 40, "name": "criticism -> genuine repair",
+     "expect": {"warmth": "<", "tension": ">="}},
+    {"a": 14, "b": 28, "name": "cold vs calm (same low activation)",
+     "expect": {"warmth": "<"}},
+    {"a": 3, "b": 1, "name": "sarcasm vs genuine warmth (both use kind words)",
+     "expect": {"warmth": "<"}},
+    {"a": 16, "b": 24, "name": "conflict vs play (both high arousal)",
+     "expect": {"tension": ">"}},
+    {"a": 37, "b": 22, "name": "neglected bid vs comforted child",
+     "expect": {"warmth": "<", "withdrawal": ">"}}
+  ],
+  "repair_expected": [10, 11, 12, 17, 21, 31, 33, 34, 40],
+  "adult_only": [4, 8, 9, 10, 11, 18, 19, 20, 21, 30, 31, 32, 33, 37, 38]
+}

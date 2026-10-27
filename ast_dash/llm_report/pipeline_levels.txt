@@ -1,0 +1,482 @@
+================================================================================
+HOME DYNAMICS PIPELINE — WHAT EACH LEVEL DOES
+A mock evening pushed through derive_home_dynamics.py, Levels 0 to 4
+================================================================================
+
+    RAW  ->  L0 canonical observations
+         ->  L1 semantic events        (audio labels, diarisation, emotion)
+         ->  L2 activity episodes      (grouped by activity and room)
+         ->  L3 person / social episodes
+         ->  L4 daily and longitudinal dynamics
+
+Every figure in this document is the actual output of running the eleven mock
+rows below through ast_dash/llm_report/derive_home_dynamics.py unmodified.
+Re-run it yourself with:
+
+    python ast_dash/llm_report/pipeline_walkthrough.py
+
+Counts at each stage:
+
+    11 raw rows
+    -> 11 L0 observations
+    -> 40 L1 semantic events
+    -> 12 L2 activity episodes
+    -> 15 L3 person / social episodes
+    ->  2 L4 day records
+
+The structural fact that organises everything below: Levels 0 to 2 are keyed on
+SOUND. Levels 3 and 4 are keyed on A PERSON. Everything the application claims
+to do — monitoring family relationship dynamics — lives on the far side of that
+boundary, and the join key across it is the speaker name.
+
+
+--------------------------------------------------------------------------------
+THE MOCK EVENING
+--------------------------------------------------------------------------------
+
+Eleven rows, chosen so that between them they exercise every branch: a nullish
+label, a room that must be recovered from the device, two speakers in one
+recording, an unmapped AudioSet class, an unattributable voice, a composite
+activity rule, a long observation gap, and a second day so the longitudinal
+comparison has something to reach for.
+
+  ID   TIME       ROOM      LABELS                        SPEECH    WHAT IT TESTS
+  ---  ---------  --------  ----------------------------  --------  --------------------------
+  101  19:00:00   Kitchen   Frying, Dishes, None          -         nullish label discarded
+  102  19:02:30   Kitchen   Speech, Conversation,         Ilyas     two speakers, one row
+                            Inside small room             + Voula
+  103  19:04:00   Kitchen   Speech, Silence               Voula     inside the 120 s turn gap
+  104  19:06:00   Kitchen   Chopping, Cupboard            -         folds into cooking episode
+  105  20:15:00   Living    Television, Music             -         seeds a media episode
+  106  20:16:00   Living    Speech, Laughter              Rafael    viewer near the TV
+  107  20:17:30   Living    Speech                        Voula     second viewer -> co-presence
+  108  20:19:00   Living    Zither, Speech                Unknown   unmapped label AND an
+                                                                    unattributed voice
+  109  21:40:00   (none)    Water tap, Toilet flush,      -         room from device map,
+                            Breathing                               composite rule
+  110  22:59:00   Bedroom   Snoring                       -         after a 79-minute gap
+  201  Aug 31     Kitchen   Speech                        Ilyas     a second day
+       19:05:00
+
+
+================================================================================
+LEVEL 0 — CANONICAL OBSERVATIONS          (11 rows in, 11 observations out)
+================================================================================
+
+THE JOB
+Normalise the dashboard export. Nothing is interpreted here. Every field is
+either copied, parsed, or recorded as missing.
+
+WHAT IT DOES, PRECISELY
+
+  1. Timestamps are parsed from any of three accepted formats and emitted as
+     ISO. Rows whose timestamp will not parse are kept, not dropped, and sorted
+     last.
+
+  2. Labels are read from slots 1-3 with their probabilities. A nullish value
+     -- "", none, null, nan, "no speech detected", unknown -- is moved into
+     `raw_labels_discarded` rather than deleted, so the discard is auditable.
+
+  3. Room is resolved in a fixed order: the event's own room field, then
+     `device_room_map`, then unknown. Which one won is recorded in
+     `room_source`, so a room inferred from a device is never mistaken for a
+     room that was actually reported.
+
+  4. Diarisation is parsed out of the transcription string, because the
+     pipeline writes speaker identity into the text rather than into a column.
+     Markers are matched anywhere in the string, and each turn's words run from
+     the end of its own marker to the start of the next one.
+
+  5. Two speech flags are kept deliberately separate:
+       has_speech  -- a transcription exists at all
+       has_words   -- the recogniser actually produced words
+     A clip can be the first without being the second, and the distinction
+     matters at L1 where it sets the confidence.
+
+  6. Emotion is parsed from the string form "HAP (0.71)" into a label and a
+     confidence. The literal "None" means no emotion was produced.
+
+  7. Observations are sorted chronologically.
+
+WHAT THE EXAMPLE PRODUCED
+
+  Event 102 -- two speakers in one recording:
+
+    room='Kitchen' (source: event)
+    labels kept   : [('Speech', 0.71), ('Conversation', 0.52),
+                     ('Inside, small room', 0.33)]
+    has_speech=True  has_words=True  speakers=['Ilyas', 'Voula']
+      turn 0.0-4.2s  'Ilyas': 'Θα φάμε στις οκτώ.'
+      turn 4.5-9.1s  'Voula': 'Ναι, τελειώνω εδώ.'
+    emotion       : {'label': 'happy', 'confidence': 0.71}
+
+  Event 101 -- the discard is recorded, not silent:
+
+    labels kept     : [('Frying (food)', 0.82), ('Dishes, pots, and pans', 0.41)]
+    labels discarded: ['None']
+
+  Event 109 -- room recovered from the device map:
+
+    room='Bathroom' (source: device_map)
+    (the event itself carried no room at all)
+
+THE CONSEQUENTIAL ONE
+
+  Event 108's transcript says "Unknown:". But `unknown` is in the nullish set,
+  so the turn is kept with speaker=None and the observation ends with:
+
+    has_speech=True  has_words=True  speakers=[]
+      turn 0.0-2.1s  None: '...'
+
+  It is still speech. It now carries no person. Follow this row down through
+  the remaining levels -- it is the shape of 42% of real speech clips in the
+  measured evaluation.
+
+
+================================================================================
+LEVEL 1 — SEMANTIC EVENTS                 (11 observations -> 40 events)
+================================================================================
+
+THE JOB
+Translate each observation into meaning, through three independent extractors.
+Nothing above this level knows which modality produced what. This is where a
+future camera or door sensor would join the pipeline: by adding a fourth
+extractor and changing nothing else.
+
+WHAT IT DOES, PRECISELY
+
+  A. AUDIO LABEL EXTRACTOR
+     Each AudioSet label maps to zero or more semantic types through
+     SEMANTIC_MAPPINGS, which is deliberately data rather than logic.
+       - Several labels hitting the same type are combined: the strongest wins,
+         plus a small deterministic corroboration bonus, clamped at 0.95.
+       - A label with no mapping becomes `unknown_activity` and carries its own
+         uncertainty note -- surfaced, not silently dropped.
+       - A label mapped to the EMPTY LIST is deliberately ignored. That is how
+         "Silence" and "Inside, small room" produce nothing at all.
+       - Anything below min_semantic_confidence (0.05) is discarded.
+
+  B. DIARISATION EXTRACTOR
+     Runs independently of the labels, because the AudioSet head often scores
+     Speech low on recordings that plainly contain words. Emits:
+       - `speech_activity` at 0.90 when there are words, 0.70 when there are not
+       - one `identified_speaker` per named speaker
+       - `conversation_candidate` when two or more named speakers share one
+         recording -- the strongest single piece of turn-taking evidence
+         available
+
+  C. EMOTION EXTRACTOR
+     Emits `emotion_evidence` carrying the model's own confidence. Evidence,
+     never a conclusion.
+
+WHAT THE EXAMPLE PRODUCED
+
+  Event 102 -- one row becomes seven semantic events:
+
+    conversation_candidate     conf=0.52   via audio_labels
+    speech_activity            conf=0.76   via audio_labels   <- Speech 0.71
+                                                                 + corroboration
+    speech_activity            conf=0.90   via diarization
+    identified_speaker         conf=0.80   via diarization    person=Ilyas
+    identified_speaker         conf=0.80   via diarization    person=Voula
+    conversation_candidate     conf=0.75   via diarization
+    emotion_evidence           conf=0.71   via emotion_model
+
+    "Inside, small room" mapped to [] and produced nothing. Ambience, by design.
+
+  Event 108 -- the unmapped label is surfaced, the speaker is not:
+
+    speech_activity   conf=0.30   via audio_labels
+    unknown_activity  conf=0.44   via audio_labels   (unmapped label: Zither)
+    speech_activity   conf=0.90   via diarization
+    ... and NO identified_speaker, because L0 found no name.
+
+  Event 109 -- one row, four semantic types:
+
+    bathroom_use_candidate    0.50
+    faucet_use                0.70
+    human_presence_candidate  0.21
+    water_use                 0.70
+
+
+================================================================================
+LEVEL 2 — ACTIVITY EPISODES               (40 events -> 12 episodes)
+================================================================================
+
+THE JOB
+Merge semantic events that are close in time, room and meaning, so that
+"breathing, then water, then a flush" becomes one thing that happened rather
+than three separate readings.
+
+WHAT IT DOES, PRECISELY
+
+  1. Group by (room, semantic type), and split whenever the gap between
+     consecutive events exceeds that type's own allowance:
+       speech_activity           120 s
+       water_use                 300 s
+       object_access             180 s
+       cooking / food / media    600 s
+       default                   300 s
+
+  2. Supporting types never define an episode. `identified_speaker`,
+     `emotion_evidence`, `human_presence_candidate`, `movement_candidate`,
+     `faucet_use`, `object_handling_candidate` and `unknown_activity` describe
+     HOW something was observed rather than WHAT happened, so they fold into
+     whichever episode they overlap but never start one of their own.
+
+  3. Composite rules relabel and nudge. When the semantic types present satisfy
+     a rule -- and, for some rules, the room matches -- the episode is renamed
+     and its confidence boosted. Rules are evaluated in order and the first
+     match wins.
+
+  4. Duplicate episodes are merged.
+
+WHAT THE EXAMPLE PRODUCED
+
+  Events 101 and 104 merge across six minutes, then get relabelled:
+
+    act_20260830_0001  food_preparation_candidate  room=Kitchen
+      19:00:00 -> 19:06:00   (360 s)  conf=0.92    <- cooking 0.82 + boost 0.10
+      semantic types : ['cooking_candidate', 'emotion_evidence',
+                        'food_activity_candidate', 'identified_speaker']
+      from events    : [101, 104, 102, 103]
+
+    The rule requires cooking_candidate or food_activity_candidate, supported by
+    object_access -- which event 104's cupboard supplied. Note that the speaker
+    and emotion evidence from events 102 and 103 folded in as support without
+    changing what the episode IS.
+
+  Event 109 satisfies two rules and yields two episodes:
+
+    bathroom_use_candidate   conf=0.65    flush + water + presence
+    personal_care_candidate  conf=0.925   water + faucet, room in {Bathroom, WC}
+
+  The living room media episode hits the ceiling:
+
+    media_use  conf=0.95    Television 0.88 + Music 0.40, then the media_use
+                            composite -- clamped at max_semantic_confidence
+
+WHERE THE ROOMS COME FROM
+
+  The two bathroom episodes exist only because L0 resolved event 109's missing
+  room through the device map. Had that lookup failed, both would have been
+  room=None -- and co-presence at L3 explicitly refuses to treat a roomless
+  episode as evidence.
+
+
+================================================================================
+LEVEL 3 — PERSON AND SOCIAL EPISODES      (-> 15 episodes)
+================================================================================
+
+THE JOB
+The boundary of the whole system. Below here everything is keyed on sound; from
+here up, everything is keyed on a person. Six episode types are produced, and
+all of them join on the speaker name.
+
+WHAT IT DOES, PRECISELY
+
+  1. person_presence_evidence
+     One per observation per named speaker. Confidence 0.80 for a configured
+     household member, 0.50 for anyone else. Always carries the note "evidence
+     of presence at this moment only; continuous presence not implied", and a
+     non-member additionally carries "speaker not in configured household".
+
+  2. speech_episode
+     Turns are clustered while consecutive turns are within
+     conversation_gap_seconds (120 s) AND in the same room. Records turn count,
+     per-speaker turn counts, speaker changes measured on the ordered sequence,
+     up to ten transcript excerpts, and an aggregated emotion summary.
+
+  3. reciprocal_conversation_candidate
+     Fires only when TWO OR MORE KNOWN speakers appear in one cluster. Adds turn
+     balance (quieter party's turns over the louder party's), the response gaps
+     between consecutive turns by different speakers, and a confidence that
+     rises 0.05 per speaker change up to a 0.90 ceiling.
+
+  4. single_person_speech_episode
+     Exactly one known speaker in the cluster. Tagged "does not imply the person
+     was alone".
+
+  5. same_room_copresence_candidate
+     Two different members with presence evidence in the same room within
+     copresence_gap_seconds (300 s). Pairs are collected into windows and merged
+     first, so a run of alternating speech yields one co-presence episode rather
+     than one per pair of records. A roomless episode is never used.
+
+  6. shared_media_candidate
+     An L2 media episode with two or more people identified nearby. With exactly
+     one person it becomes `media_use_with_unidentified_viewers` (0.50); with
+     none it stays `media_use` (0.50) with "audience unknown".
+
+WHAT THE EXAMPLE PRODUCED
+
+  The kitchen exchange -- events 102 and 103 become a conversation:
+
+    soc_20260830_0007  reciprocal_conversation_candidate  Kitchen  conf=0.65
+      19:02:30 -> 19:04:03.8   participants=['Ilyas', 'Voula']
+        estimated_turns      : {"Ilyas": 1, "Voula": 2}
+        turn_balance         : 0.5      <- quieter party spoke half as often
+        speaker_changes      : 1
+        response_gaps_seconds: [0.3]
+        emotion_summary      : {"dominant": "happy",
+                                "distribution": {"happy": 0.721,
+                                                 "neutral": 0.279}}
+      ! turn counts derive from diarisation segments, not from continuous
+        voice-activity timing
+
+  The living room -- co-presence, then shared media:
+
+    same_room_copresence_candidate   Rafael + Voula, span 90 s
+    shared_media_candidate           participants=['Rafael', 'Voula']
+                                     the TV episode, now with an audience
+
+  Day two -- Ilyas alone:
+
+    single_person_speech_episode  participants=['Ilyas']  turn_count: 1
+      ! does not imply the person was alone
+
+EVENT 108, CONCLUDED
+
+  Its turn DID join the living-room speech cluster. turn_count is 3, and its
+  '...' appears in the transcript excerpts. But it contributed:
+
+      no person_presence_evidence
+      no participant in any episode
+      nothing to any pair
+
+  because it had no name to join on. It inflates the appearance of activity
+  while adding nothing that a person-level conclusion can be built from.
+
+  That is the exact mechanism by which the measured 42% Unknown rate becomes
+  missing relationships rather than visible gaps. And because
+  reciprocal_conversation_candidate requires TWO known speakers, a real exchange
+  with one end unattributed does not degrade gracefully -- it vanishes.
+
+
+================================================================================
+LEVEL 4 — DAILY AND LONGITUDINAL DYNAMICS  (-> 2 day records)
+================================================================================
+
+THE JOB
+Aggregate one day at a time, per person and per pair, and state the limits of
+the evidence alongside it. This is the object the LLM actually reads.
+
+WHAT IT DOES, PRECISELY
+
+  1. household_activity     episode counts by activity and by room, with the
+                            standing note that episode durations span detected
+                            evidence only
+
+  2. individual_patterns    per member: speech episode count, presence evidence
+                            count, rooms recognised in, an emotion distribution,
+                            and a breakdown of social participation by episode
+                            type. Only people the day actually evidences appear.
+
+  3. pair_dynamics          per pair: conversations, co-presence, shared
+                            activities, total interaction events, a mean turn
+                            balance, a joint emotion summary, and an
+                            evidence_strength of "moderate" at three or more
+                            shared episodes, otherwise "limited"
+
+  4. group_dynamics         multi-person episode count, largest group observed
+
+  5. no_observation_intervals
+                            every gap over no_observation_gap_seconds (1800 s),
+                            carried up with the note that this is absence of
+                            evidence, not evidence of silence
+
+  6. data_quality           how many events had no room, how much speech went
+                            unattributed, whether continuous monitoring is
+                            known, and an overall evidence quality rating
+
+  7. uncertainties          shipped as part of the payload, not as a footnote
+
+  8. baseline_comparison    against prior days; refuses to compare below
+                            min_baseline_days (7) of history
+
+WHAT THE EXAMPLE PRODUCED (30 August)
+
+  individual_patterns.Voula
+    speech_episode_count   : 2
+    presence_evidence_count: 3
+    recognized_rooms       : {"Kitchen": 2, "Living": 1}
+    emotion_summary        : {"dominant": "neutral",
+                              "distribution": {"neutral": 0.62, "happy": 0.38}}
+    social_participation   : {"reciprocal_conversation_candidate": 2,
+                              "same_room_copresence_candidate": 2,
+                              "shared_media_candidate": 1}
+
+  pair_dynamics.Ilyas__Voula
+    conversation_episode_count : 1
+    copresence_candidate_count : 1
+    shared_activity_candidate_count : 0
+    interaction_event_count    : 3
+    turn_balance_summary       : {"mean": 0.5, "samples": 1}
+    joint_emotion_summary      : {"dominant": "neutral",
+                                  "distribution": {"neutral": 0.62,
+                                                   "happy": 0.38}}
+    evidence_strength          : "moderate"
+
+  pair_dynamics.Rafael__Voula
+    conversation_episode_count : 1
+    copresence_candidate_count : 1
+    shared_activity_candidate_count : 1
+    interaction_event_count    : 4
+    turn_balance_summary       : {"mean": 1.0, "samples": 1}
+    evidence_strength          : "moderate"
+
+  observation gaps
+    19:06 -> 20:15    69 min
+    20:19 -> 21:40    81 min
+    21:40 -> 22:59    79 min
+    22:59 -> next day 1206 min
+
+  data_quality
+    raw_event_count                : 10
+    rooms_observed                 : [Bathroom, Bedroom, Kitchen, Living]
+    events_without_room            : 0
+    speech_event_count             : 5
+    identified_speaker_event_count : 4
+    unidentified_speech_event_count: 1      <- event 108, counted honestly
+    no_observation_interval_count  : 4
+    overall_evidence_quality       : "limited"
+
+  baseline_comparison
+    status: "insufficient_history"   days_available: 0   days_required: 7
+
+WHAT THE DESIGN GETS RIGHT
+
+  Event 108 is not swept away. It appears at L4 as
+  unidentified_speech_event_count: 1, and the four observation gaps are reported
+  as gaps rather than as a quiet house. The pipeline tells the model what it
+  could not see, which is precisely what stops missing evidence being read as
+  evidence of absence.
+
+
+================================================================================
+READING THIS AGAINST THE COMPONENT EVALUATION
+================================================================================
+
+Levels 0 through 2 are keyed on sound, and the components feeding them measured
+well: sound labelling is correct at rank one on 82.4% of clips and within the
+top three on 90.5%, and the speech gate drops no speech at all (100% recall).
+
+Levels 3 and 4 are keyed on a person, and the component feeding them -- speaker
+identity -- measured 51.1% accuracy, with 42% of speech clips left unnamed.
+
+Event 108 is that gap in miniature. The pipeline handles it correctly at every
+single step and still cannot produce a person from it, because there is no name
+to join on. Everything the daily report says about individuals and pairs rests
+on a join key that is currently right about half the time, and the failure is
+silent: a conversation with one end unattributed does not arrive marked
+uncertain, it does not arrive at all.
+
+The one configuration decision that changes this is the speaker abstain. With it
+in place, unattributed speech becomes unidentified_speech_event_count --
+visible, countable, and correctly excluded from pair dynamics. Without it
+(speaker_id.min_similarity = 0.0), every clip receives a name, and those same
+clips arrive at L4 as named participants in conversations that may never have
+happened.
+
+See tests/diagnostics/run_0829_0830/figure_commentary.txt for the full
+evaluation these figures come from.

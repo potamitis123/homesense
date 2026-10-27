@@ -1,0 +1,111 @@
+# =====================================================================
+# Target / flash / PSRAM / cache
+#
+# Values taken from the Waveshare ESP32-P4-WIFI6-Touch-LCD-5 examples
+# (04_wifistation and 08_lvgl_demo_v9 sdkconfig.defaults).
+#
+# Set FLASHSIZE_32MB instead if your board carries the 32 MiB part; the
+# partition table below only needs 16 MiB, so 16MB is the safe default.
+# =====================================================================
+CONFIG_IDF_TARGET="esp32p4"
+CONFIG_ESP32P4_SELECTS_REV_LESS_V3=y
+CONFIG_ESP32P4_REV_MIN_1=y
+CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_SPI_FLASH_SUPPORT_GD_CHIP=y
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_SPEED_200M=y
+CONFIG_SPIRAM_XIP_FROM_PSRAM=y
+CONFIG_SPIRAM_USE_MALLOC=y
+CONFIG_CACHE_L2_CACHE_256KB=y
+CONFIG_CACHE_L2_CACHE_LINE_128B=y
+CONFIG_IDF_EXPERIMENTAL_FEATURES=y
+
+# =====================================================================
+# RTOS / partitions / FAT
+# =====================================================================
+CONFIG_FREERTOS_HZ=1000
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=10240
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_FATFS_LFN_HEAP=y
+
+# The pipeline puts capture/streamer task stacks in PSRAM.
+CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM=y
+CONFIG_SPIRAM_ALLOW_STACK_EXTERNAL_MEMORY=y
+
+# Moves the non-ISR FreeRTOS functions out of IRAM into flash, worth up to
+# 8 KB. Needed because this app links LVGL 9, the esp_hosted WiFi transport
+# and mbedTLS together, which overruns internal RAM otherwise.
+CONFIG_FREERTOS_PLACE_FUNCTIONS_INTO_FLASH=y
+
+# =====================================================================
+# LVGL 9.4
+#
+# The S3 build ran LVGL 8 via esp_lvgl_port. This board's BSP renders
+# through esp_lv_adapter on LVGL 9, so the LVGL Kconfig namespace differs.
+# The UI scales up for the 720 px-wide panel, so it references 24/32/48
+# rather than the 16/24 pair the 320 px BOX-3 layout used.
+# =====================================================================
+CONFIG_LV_OS_FREERTOS=y
+CONFIG_LV_USE_CLIB_MALLOC=y
+CONFIG_LV_USE_CLIB_STRING=y
+CONFIG_LV_USE_CLIB_SPRINTF=y
+CONFIG_LV_DEF_REFR_PERIOD=15
+CONFIG_LV_OBJ_STYLE_CACHE=y
+CONFIG_LV_DRAW_SW_DRAW_UNIT_CNT=2
+# NOT enabling CONFIG_LV_ATTRIBUTE_FAST_MEM_USE_IRAM. Waveshare's LVGL demo
+# sets it, but that demo is graphics-only. Here LVGL shares internal RAM with
+# WiFi-over-hosted, mbedTLS and MQTT, and pushing the software blend routines
+# into IRAM on top of that overflows it at link time.
+CONFIG_LV_FONT_MONTSERRAT_16=y
+CONFIG_LV_FONT_MONTSERRAT_24=y
+CONFIG_LV_FONT_MONTSERRAT_32=y
+CONFIG_LV_FONT_MONTSERRAT_48=y
+
+# =====================================================================
+# mbedTLS / MQTT — push memory to PSRAM, allocate on demand
+# Carried over unchanged from the S3 build; all of these are generic.
+# =====================================================================
+CONFIG_MBEDTLS_EXTERNAL_MEM_ALLOC=y
+CONFIG_MBEDTLS_DYNAMIC_BUFFER=y
+CONFIG_MBEDTLS_DYNAMIC_FREE_PEER_CERT=y
+CONFIG_MBEDTLS_DYNAMIC_FREE_CONFIG_DATA=y
+CONFIG_MBEDTLS_SSL_IN_CONTENT_LEN=16384
+CONFIG_MBEDTLS_SSL_OUT_CONTENT_LEN=4096
+CONFIG_MQTT_BUFFER_SIZE=4096
+CONFIG_MQTT_OUTBOX_DATA_ON_EXTERNAL_MEMORY=y
+# TLS inbound MUST be 16384 to accept full-size TLS records from cloud brokers.
+# Outbound can stay small because *we* control what we send.
+
+# =====================================================================
+# WiFi
+#
+# The P4 has no radio. esp_wifi_remote forwards the esp_wifi_* API over
+# esp_hosted to the on-board ESP32-C6, so the CONFIG_ESP_WIFI_* buffer
+# tuning from the S3 build does not exist here and has been dropped
+# rather than carried over — those knobs now live on the C6 firmware.
+# =====================================================================
+CONFIG_ESP_WIFI_SOFTAP_SUPPORT=n
+
+# =====================================================================
+# lwIP — smaller windows/mailboxes
+# =====================================================================
+CONFIG_LWIP_TCP_SND_BUF_DEFAULT=5760
+CONFIG_LWIP_TCP_WND_DEFAULT=5760
+CONFIG_LWIP_TCP_RECVMBOX_SIZE=6
+CONFIG_LWIP_UDP_RECVMBOX_SIZE=6
+CONFIG_LWIP_TCPIP_RECVMBOX_SIZE=32
+
+# =====================================================================
+# Internal heap reserve for DMA (AES, I2S, MIPI-DSI, hosted SDIO)
+# =====================================================================
+CONFIG_SPIRAM_MALLOC_RESERVE_INTERNAL=98304
+
+# =====================================================================
+# Build
+#
+# -O2, not -Os: driving a 720x1280 MIPI-DSI panel through LVGL needs the
+# throughput, and this is what Waveshare validates against.
+# =====================================================================
+CONFIG_COMPILER_OPTIMIZATION_PERF=y

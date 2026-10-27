@@ -1,0 +1,12 @@
+{
+  "_comment": "Which room each sentinel is in. Edit the values; keep the keys matching the device names exactly as they appear in the dashboard's Device column. Used to stamp ast_table.room on new events, so moving a sentinel later does not rewrite the history of where earlier events happened.",
+
+  "box3-1": "Kitchen",
+  "box3-2": "Bedroom_2",
+  "esp32s3-1": "Bedroom_1",
+  "esp32s3-2": "Lab",
+  "esp32s3-3": "WC",
+  "p4-door-1": "Entrance",
+  "p4-sentinel-1": "Entrance",
+  "s3cam-1": "Lab2"
+}

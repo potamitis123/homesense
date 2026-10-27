@@ -1,0 +1,75 @@
+# HomeSense server: the Python packages the app imports, at the versions it
+# runs with. Python 3.10, in a conda environment (dash_env).
+#
+#   conda create -n dash_env python=3.10
+#   conda activate dash_env
+#   pip install -r requirements.txt
+#
+# PyTorch is built for CUDA 13.0; on another CUDA version change the index URL
+# and the +cu130 suffixes (https://pytorch.org/get-started/locally/).
+# Programs that are not Python packages -- ffmpeg, Mosquitto, Ollama -- are
+# listed in the README under "Technology stack".
+
+--extra-index-url https://download.pytorch.org/whl/cu130
+
+# ── deep learning ───────────────────────────────────────────────────
+torch==2.9.1+cu130
+torchaudio==2.9.1+cu130
+transformers==4.45.2          # AudioSet classifier (AST), CLAP embeddings
+accelerate==1.1.1
+huggingface-hub==0.34.3
+
+# ── speech ──────────────────────────────────────────────────────────
+faster-whisper==1.2.1         # speech recognition
+ctranslate2==4.6.3
+pyannote.audio==4.0.4         # diarisation
+speechbrain==1.0.3            # speaker identification (ECAPA)
+onnxruntime==1.23.2
+webrtcvad==2.0.10
+
+# ── audio ───────────────────────────────────────────────────────────
+librosa==0.10.2.post1
+soundfile==0.13.1
+pydub==0.25.1                 # needs ffmpeg on the PATH
+mutagen==1.47.0
+soxr==1.0.0
+PyAudio==0.2.14
+sounddevice==0.5.5
+PyOgg==0.6.14a1               # Opus for live audio
+av==16.1.0
+
+# ── numerics and data ───────────────────────────────────────────────
+numpy==2.2.6
+scipy==1.15.3
+pandas==2.2.3
+scikit-learn==1.7.2
+matplotlib==3.10.8
+
+# ── dashboard ───────────────────────────────────────────────────────
+dash==4.0.0
+dash-bootstrap-components==2.0.0
+dash-ag-grid==31.3.1
+dash-auth==2.3.0
+plotly==6.6.0
+Flask==3.1.3
+diskcache==5.6.3
+pillow==11.3.0
+pyqtgraph==0.14.0
+PyQt5==5.15.11
+
+# ── messaging, mobile API, networking ───────────────────────────────
+paho-mqtt==2.1.0
+fastapi==0.128.0
+starlette==0.50.0
+uvicorn==0.40.0
+pydantic==2.11.7
+pydantic-settings==2.13.1
+python-multipart==0.0.21
+PyJWT==2.12.1
+cryptography==46.0.5
+certifi==2026.2.25
+requests==2.32.5
+psutil==7.0.0
+
+# ── language models ─────────────────────────────────────────────────
+openai==1.99.1                # only when a hosted model is chosen; Ollama is reached over HTTP
