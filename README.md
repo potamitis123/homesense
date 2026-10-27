@@ -105,7 +105,41 @@ RTX 3060 Laptop GPU with 6 GB) and Anaconda installed in the default place.
    and point to the author's machine) and in the `https` part of
    `parameters.json`. Certificates are not in this repository.
 
-6. **Enrol the residents' voices.** Make one folder per person under
+6. **Point the server's name at the server, inside your home network.** The
+   sentinels do not use an IP address. They connect to the name
+   `audiosense.hmu.gr` (broker `mqtts://audiosense.hmu.gr:8883`, video
+   `https://audiosense.hmu.gr:8060`), and the certificate is issued to that
+   name, so TLS checks pass. That name is not looked up on the internet: the home
+   Wi-Fi answers it with the local address of the server PC. Set it up like
+   this:
+
+   1. **Give the server PC a fixed local address**, for example
+      `192.168.2.12`. Either make a DHCP reservation for the PC in the router,
+      or set a static address in the PC's network settings, outside the
+      router's DHCP range so that no other device gets it.
+   2. **Map the name to that address**, in one of two ways:
+      - *In the router (simplest).* Many home routers have a "local DNS",
+        "DNS host mapping" or "static DNS" page. Add an entry
+        `audiosense.hmu.gr → 192.168.2.12`. Every device on the Wi-Fi then
+        finds the server by that name.
+      - *With `dns_redirector.py` (if the router cannot do it).* It is a small
+        DNS server that answers `audiosense.hmu.gr` with this PC's address
+        and passes every other name on to 8.8.8.8. Run it as Administrator
+        (`python dns_redirector.py`). Then set the router's DHCP "DNS server"
+        to the PC's address, so that the sentinels ask the PC.
+   3. **Check it.** From the server PC, `ping audiosense.hmu.gr` should
+      answer from the PC's own address. `boot_sentinel.bat` checks the same
+      thing at start-up ("Sentinel hostname resolves") and warns you if the
+      name points somewhere else.
+
+   The easiest choice is to keep the name `audiosense.hmu.gr`, because it only
+   has to work inside your own network. If you use a name of your own, issue
+   your certificate to it and replace `audiosense.hmu.gr` in each sentinel's
+   settings (`mqtt_host`, `MQTT_URI`, `VIDEO_STREAM_URL`), in `DASHBOARD_URL`
+   at the top of `boot_sentinel.bat`, in `boot/preflight.py`, in
+   `dns_redirector.py`, and in `ast_src/audio_transport/session_manager.py`.
+
+7. **Enrol the residents' voices.** Make one folder per person under
    `speakers/` (for example `speakers/Anna/`) with a few recordings of that
    person speaking, then run:
 
@@ -117,7 +151,7 @@ RTX 3060 Laptop GPU with 6 GB) and Anaconda installed in the default place.
    voices can be told apart. Without it, speech is transcribed but not
    attributed.
 
-7. **Build and flash the sentinels.** Each board has its own ESP-IDF project in
+8. **Build and flash the sentinels.** Each board has its own ESP-IDF project in
    `sentinels/`. Its README says where the Wi-Fi and broker settings and the
    client certificate go.
 
