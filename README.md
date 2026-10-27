@@ -123,7 +123,8 @@ RTX 3060 Laptop GPU with 6 GB) and Anaconda installed in the default place.
 
 ## Running
 
-**Everything at once:**
+The whole app runs by double-clicking **`boot_sentinel.bat`** in the project
+folder (or running it from a terminal):
 
 ```bash
 boot_sentinel.bat
