@@ -13,6 +13,8 @@ the premises. Only derived representations are kept.
 The audio dashboard: filter and semantic search over recorded events, sentinel
 health, and per-event waveform, spectrum and spectrogram.
 
+See video of operation in: https://zenodo.org/records/23501750
+
 ## What the server does with a clip
 
 Sound classification against the AudioSet ontology, voice activity detection,
